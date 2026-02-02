@@ -47,7 +47,7 @@
         }
     },
     "archive": {
-        "exclude": ["/documentation", "/tests"]
+        "exclude": ["/tests"]
     },
     "replace": {
         "zendframework/zendframework1": ">=1.12.20"
