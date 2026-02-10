@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id: PostCodeTest.php 17798 2009-08-24 20:07:53Z thomas $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Validate_PostCodeTest::main');
-}
-
 /**
  * @see Zend_Validate_PostCode
  */
@@ -50,24 +44,12 @@ class Zend_Validate_PostCodeTest extends TestCase
      * @var Zend_Validate_PostCode
      */
     protected $_validator;
-
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Validate_PostCodeTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Creates a new Zend_Validate_PostCode object for each test method
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_PostCode('de_AT');
     }
@@ -187,8 +169,4 @@ class Zend_Validate_PostCodeTest extends TestCase
         $message = $this->_validator->getMessages();
         $this->assertStringContainsString('not appear to be a postal code', $message['postcodeNoMatch']);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Validate_PostCodeTest::main') {
-    Zend_Validate_PostCodeTest::main();
 }

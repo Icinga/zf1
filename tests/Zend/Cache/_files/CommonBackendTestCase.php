@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -22,6 +23,9 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
+
+require_once 'Zend/Cache/Backend/Interface.php';
+
 /**
  * @category   Zend
  * @package    Zend_Cache
@@ -30,33 +34,46 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Cache
  */
-abstract class Zend_Cache_CommonBackendTest extends TestCase
+abstract class Zend_Cache_CommonBackendTestCase extends TestCase
 {
     protected $_instance;
     protected $_className;
     protected $_root;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    abstract protected function getBackend(): Zend_Cache_Backend_Interface;
+
+    abstract protected function supportsTags(): bool;
+
+    protected function setUp(): void
     {
-        $this->_className = $name;
-        $this->_root = dirname(__FILE__);
         date_default_timezone_set('UTC');
-        parent::__construct($name, $data, $dataName);
+        $this->_root = dirname(__FILE__);
+        $this->mkdir();
+        $this->_instance = $this->getBackend();
+        $this->_className = $this->_instance::class;
+        $this->prepareBackend();
     }
 
-    public function set_up($notag = false)
+    protected function prepareBackend(): void
     {
-        $this->mkdir();
         $this->_instance->setDirectives(['logging' => true]);
-        if ($notag) {
-            $this->_instance->save('bar : data to cache', 'bar');
-            $this->_instance->save('bar2 : data to cache', 'bar2');
-            $this->_instance->save('bar3 : data to cache', 'bar3');
-        } else {
+        if ($this->supportsTags()) {
             $this->_instance->save('bar : data to cache', 'bar', ['tag3', 'tag4']);
             $this->_instance->save('bar2 : data to cache', 'bar2', ['tag3', 'tag1']);
             $this->_instance->save('bar3 : data to cache', 'bar3', ['tag2', 'tag3']);
+        } else {
+            $this->_instance->save('bar : data to cache', 'bar');
+            $this->_instance->save('bar2 : data to cache', 'bar2');
+            $this->_instance->save('bar3 : data to cache', 'bar3');
         }
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->_instance) {
+            $this->_instance->clean();
+        }
+        $this->rmdir();
     }
 
     public function mkdir()
@@ -82,32 +99,20 @@ abstract class Zend_Cache_CommonBackendTest extends TestCase
             return $this->_root . DIRECTORY_SEPARATOR . 'zend_cache_tmp_dir_' . $suffix;
         } else {
             if (getenv('TMPDIR')) {
-                return getenv('TMPDIR') . DIRECTORY_SEPARATOR . 'zend_cache_tmp_dir_' . $suffix;
+                return CommonBackendTest . phpgetenv('TMPDIR') . DIRECTORY_SEPARATOR . 'zend_cache_tmp_dir_' . $suffix;
             } else {
                 die("no writable tmpdir found");
             }
         }
     }
 
-    protected function tear_down()
-    {
-        if ($this->_instance) {
-            $this->_instance->clean();
-        }
-        $this->rmdir();
-    }
-
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorCorrectCall()
     {
         $this->fail('PLEASE IMPLEMENT A testConstructorCorrectCall !!!');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorBadOption()
     {
         try {
@@ -119,17 +124,13 @@ abstract class Zend_Cache_CommonBackendTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDirectivesCorrectCall()
     {
         $this->_instance->setDirectives(['lifetime' => 3600, 'logging' => true]);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDirectivesBadArgument()
     {
         try {
@@ -140,9 +141,7 @@ abstract class Zend_Cache_CommonBackendTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDirectivesBadDirective()
     {
         // A bad directive (not known by a specific backend) is possible
@@ -150,9 +149,7 @@ abstract class Zend_Cache_CommonBackendTest extends TestCase
         $this->_instance->setDirectives(['foo' => true, 'lifetime' => 3600]);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDirectivesBadDirective2()
     {
         try {
@@ -191,9 +188,7 @@ abstract class Zend_Cache_CommonBackendTest extends TestCase
         $this->assertFalse($this->_instance->test('barbar'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testTestWithAnExistingCacheId()
     {
         $res = $this->_instance->test('bar');
@@ -211,9 +206,7 @@ abstract class Zend_Cache_CommonBackendTest extends TestCase
         $this->assertFalse($this->_instance->test('barbar'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testTestWithAnExistingCacheIdAndANullLifeTime()
     {
         $this->_instance->setDirectives(['lifetime' => null]);

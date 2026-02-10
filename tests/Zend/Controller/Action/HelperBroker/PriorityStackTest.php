@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -23,11 +23,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @version    $Id$
  */
 
-// Call Zend_Controller_Action_HelperBrokerTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Action_HelperBrokerTest::main");
-}
-
 require_once 'Zend/Controller/Action/HelperBroker.php';
 require_once 'Zend/Controller/Action/Helper/ViewRenderer.php';
 require_once 'Zend/Controller/Action/Helper/Redirector.php';
@@ -49,7 +44,7 @@ class Zend_Controller_Action_HelperBroker_PriorityStackTest extends TestCase
      */
     public $stack = null;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->stack = new Zend_Controller_Action_HelperBroker_PriorityStack();
     }
@@ -74,7 +69,6 @@ class Zend_Controller_Action_HelperBroker_PriorityStackTest extends TestCase
         $this->assertEquals(2, $this->stack->getHighestPriority());
         $this->assertEquals(1, $this->stack->getLowestPriority());
     }
-
 
     public function testStackMaintainsReturnsCorrectNextPriorityWithSetPriorities()
     {

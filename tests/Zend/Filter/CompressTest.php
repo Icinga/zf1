@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id: $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Filter_CompressTest::main');
-}
-
 /**
  * @see Zend_Filter_Compress
  */
@@ -44,25 +38,14 @@ require_once 'Zend/Filter/Compress.php';
  */
 class Zend_Filter_CompressTest extends TestCase
 {
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Filter_CompressTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!extension_loaded('bz2')) {
             $this->markTestSkipped('This filter is tested with the bz2 extension');
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if (file_exists(dirname(__FILE__) . '/../_files/compressed.bz2')) {
             unlink(dirname(__FILE__) . '/../_files/compressed.bz2');
@@ -271,8 +254,4 @@ class Zend_Filter_CompressTest extends TestCase
             $this->assertStringContainsString('Unknown method', $e->getMessage());
         }
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Filter_CompressTest::main') {
-    Zend_Filter_CompressTest::main();
 }

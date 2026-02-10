@@ -1,8 +1,4 @@
 <?php
-
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
-
 /**
  * Zend Framework
  *
@@ -17,44 +13,20 @@ use PHPUnit\TextUI\TestRunner;
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Json
+ * @package    Zend_Loader
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Json_AllTests::main');
-}
-
-require_once 'Zend/Json/JsonXMLTest.php';
-
 /**
  * @category   Zend
- * @package    Zend_Json
+ * @package    Zend_Loader
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Json
  */
-class Zend_Json_AllTests
+class Service_ZendLoaderAutoloaderTestResource
 {
-    public static function main()
-    {
-        (new resources_Runner())->run(self::suite());
-    }
-
-    public static function suite()
-    {
-        $suite = new TestSuite('Zend Framework - Zend_Json');
-
-        $suite->addTestSuite('Zend_Json_JsonXMLTest');
-
-        return $suite;
-    }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Json_AllTests::main') {
-    Zend_Json_AllTests::main();
 }

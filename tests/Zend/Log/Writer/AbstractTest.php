@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Writer_AbstractTest::main');
-}
-
 /** Zend_Log_Writer_Abstract */
 require_once 'Zend/Log/Writer/Abstract.php';
 
@@ -46,14 +40,7 @@ class Zend_Log_Writer_AbstractTest extends TestCase
      * @var Zend_Log_Writer_Abstract
      */
     protected $_writer;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_writer = new Zend_Log_Writer_AbstractTest_Concrete();
     }
@@ -104,8 +91,4 @@ class Zend_Log_Writer_AbstractTest_Concrete extends Zend_Log_Writer_Abstract
     public static function factory($config)
     {
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Writer_AbstractTest::main') {
-    Zend_Log_Writer_AbstractTest::main();
 }

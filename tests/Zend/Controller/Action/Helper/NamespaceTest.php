@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id:$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Controller_Action_Helper_NamespaceTest::main');
-}
-
-
 /**
  * Test class for Zend_Controller_Action_Helper_Abstract.
  *
@@ -45,17 +38,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 class Zend_Controller_Action_Helper_NamespaceTest extends TestCase
 {
     /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Controller_Action_Helper_NamespaceTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    /**
      * @group ZF-10158
      */
     public function testGetNameWithNamespace()
@@ -65,14 +47,9 @@ class Zend_Controller_Action_Helper_NamespaceTest extends TestCase
         }
 
         require_once dirname(__FILE__) . '/../../_files/Helpers/NamespacedHelper.php';
-        
+
         $className = 'MyApp\Controller\Action\Helper\NamespacedHelper';
         $helper = new $className();
         $this->assertEquals('NamespacedHelper', $helper->getName());
     }
-}
-
-// Call Zend_Controller_Action_Helper_NamespaceTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === 'Zend_Controller_Action_Helper_NamespaceTest::main') {
-    Zend_Controller_Action_Helper_NamespaceTest::main();
 }

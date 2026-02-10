@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -57,7 +57,7 @@ class Zend_Filter_RealPathTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_filesPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files';
         $this->_filter = new Zend_Filter_RealPath();

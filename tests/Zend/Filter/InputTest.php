@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -66,7 +67,7 @@ class Zend_Filter_InputTest extends TestCase
         $this->assertFalse($input->isValid(), 'invalid input is valid');
         $messages = $input->getMessages();
         $this->assertSame($messages['field1']['notDigits'], $customMessage, 'The custom message is not used');
-        
+
         // test with a NotEmpty validator
         $data = ['field1' => ''];
         $customMessage = 'You should really supply a value...';
@@ -81,7 +82,7 @@ class Zend_Filter_InputTest extends TestCase
         $messages = $input->getMessages();
         $this->assertSame($messages['field1']['isEmpty'], $customMessage, 'For the NotEmpty validator the custom message is not used');
     }
-    
+
     /**
      *
      * If setAllowEmpty(true) is called, all fields are optional, but fields with
@@ -93,12 +94,12 @@ class Zend_Filter_InputTest extends TestCase
     {
         require_once 'Zend/Validate/NotEmpty.php';
         require_once 'Zend/Validate/Digits.php';
-        
+
         $data = [
             'field1' => 'foo',
             'field2' => ''
         ];
-        
+
         $validators = [
             'field1' => [
                 new Zend_Validate_NotEmpty(),
@@ -108,16 +109,16 @@ class Zend_Filter_InputTest extends TestCase
                     ]
                 ]
             ],
-        
+
             'field2' => [
                 new Zend_Validate_NotEmpty()
             ]
         ];
-        
+
         $options = [Zend_Filter_Input::ALLOW_EMPTY => true];
         $input = new Zend_Filter_Input(null, $validators, $data, $options);
         $this->assertFalse($input->isValid(), 'Ouch, the NotEmpty validators are ignored!');
-        
+
         $validators = [
             'field1' => [
                 'Digits',
@@ -131,7 +132,7 @@ class Zend_Filter_InputTest extends TestCase
             ],
 
         ];
-        
+
         $data = [
             'field1' => 0,
             'field2' => ''
@@ -139,9 +140,9 @@ class Zend_Filter_InputTest extends TestCase
         $options = [Zend_Filter_Input::ALLOW_EMPTY => true];
         $input = new Zend_Filter_Input(null, $validators, $data, $options);
         $this->assertFalse($input->isValid(), 'Ouch, if the NotEmpty validator is not the first rule, the NotEmpty validators are ignored !');
-        
+
         // and now with a string 'NotEmpty' instead of an instance:
-        
+
         $validators = [
             'field1' => [
                 'NotEmpty',
@@ -154,18 +155,18 @@ class Zend_Filter_InputTest extends TestCase
             ],
 
         ];
-        
+
         $data = [
             'field1' => '',
             'field2' => ''
         ];
-        
+
         $options = [Zend_Filter_Input::ALLOW_EMPTY => true];
         $input = new Zend_Filter_Input(null, $validators, $data, $options);
         $this->assertFalse($input->isValid(), 'If the NotEmpty validator is a string, the NotEmpty validator is ignored !');
-        
+
         // and now with an array
-        
+
         $validators = [
             'field1' => [
                 ['NotEmpty', 'integer'],
@@ -178,12 +179,12 @@ class Zend_Filter_InputTest extends TestCase
             ],
 
         ];
-        
+
         $data = [
             'field1' => 0,
             'field2' => ''
         ];
-        
+
         $options = [Zend_Filter_Input::ALLOW_EMPTY => true];
         $input = new Zend_Filter_Input(null, $validators, $data, $options);
         $this->assertFalse($input->isValid(), 'If the NotEmpty validator is an array, the NotEmpty validator is ignored !');
@@ -224,7 +225,7 @@ class Zend_Filter_InputTest extends TestCase
             'field1' => '',
             'field2' => ''
         ];
-        
+
         $validators = [
             'field1' => [
                 new Zend_Validate_NotEmpty(),
@@ -234,20 +235,20 @@ class Zend_Filter_InputTest extends TestCase
                     ]
                 ]
             ],
-        
+
             'field2' => [
                 new Zend_Validate_NotEmpty()
             ]
         ];
-        
+
         $input = new Zend_Filter_Input(null, $validators, $data);
-        
+
         $this->assertFalse($input->isValid());
         $messages = $input->getMessages();
         $this->assertFalse(is_array($messages['field1']['isEmpty']), 'oh oh, we  may have got nested messages');
         $this->assertTrue(isset($messages['field1']['isEmpty']), 'oh no, we not even got the normally expected messages');
     }
-    
+
     /**
      * @group ZF-11142, ZF-8446, ZF-9289
      */
@@ -268,7 +269,7 @@ class Zend_Filter_InputTest extends TestCase
                     'presence' => 'required'
                 ]
         ];
-        
+
         $data = ['field1' => 0.0, 'field2' => ''];
         $input = new Zend_Filter_Input(null, $validators, $data);
         $this->assertFalse($input->isValid());
@@ -1479,7 +1480,7 @@ class Zend_Filter_InputTest extends TestCase
             );
         }
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testSetPluginLoader()
     {
         $input = new Zend_Filter_Input(null, null);
@@ -2325,15 +2326,15 @@ class Zend_Filter_InputTest extends TestCase
         $input = new Zend_Filter_Input(null, $validators, $data, $options);
         $this->assertFalse($input->isValid(), 'If the NotEmpty validator is an array, the NotEmpty validator is ignored !');
     }
-    
+
     /**
      * This test doesn't include any assertions as it's purpose is to
      * ensure that passing an empty array value into a $validators rule
      * doesn't cause a notice to be emitted
      *
      * @group ZF-11819
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testValidatorRuleCanHaveEmptyArrayAsMetacommandValue()
     {
         $validators = [

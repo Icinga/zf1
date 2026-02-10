@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -40,7 +41,7 @@ class Zend_Mail_InterfaceTest extends TestCase
 {
     protected $_mboxFile;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_mboxFile = dirname(__FILE__) . '/_files/test.mbox/INBOX';
     }
@@ -74,7 +75,7 @@ class Zend_Mail_InterfaceTest extends TestCase
         $subject = $list[1]->subject;
         $this->assertEquals('Simple Message', $subject);
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testArraySetFail()
     {
         $list = new Zend_Mail_Storage_Mbox(['filename' => $this->_mboxFile]);
@@ -155,7 +156,7 @@ class Zend_Mail_InterfaceTest extends TestCase
             $this->fail('exception raised while calling noop thru fallback');
         }
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testWrongVariable()
     {
         $list = new Zend_Mail_Storage_Mbox(['filename' => $this->_mboxFile]);
@@ -175,7 +176,7 @@ class Zend_Mail_InterfaceTest extends TestCase
         $headers = $list[1]->getHeaders();
         $this->assertTrue(count($headers) > 0);
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testWrongHeader()
     {
         $list = new Zend_Mail_Storage_Mbox(['filename' => $this->_mboxFile]);

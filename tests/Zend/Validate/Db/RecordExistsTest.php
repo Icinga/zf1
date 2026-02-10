@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -23,11 +24,9 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @version    $Id$
  */
 
-
 /**
  * PHPUnit_Framework_TestCase
  */
-
 
 /**
  * @see Zend_Db_Adapter_Pdo_Sqlite
@@ -84,7 +83,7 @@ class Zend_Validate_Db_RecordExistsTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_adapterHasResult = new Db_MockHasResult();
         $this->_adapterNoResult = new Db_MockNoResult();
@@ -170,8 +169,8 @@ class Zend_Validate_Db_RecordExistsTest extends TestCase
      * and no default is set.
      *
      * @return void
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testThrowsExceptionWithNoAdapter()
     {
         Zend_Db_Table_Abstract::setDefaultAdapter(null);

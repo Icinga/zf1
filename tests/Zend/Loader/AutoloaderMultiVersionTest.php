@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Loader_AutoloaderMultiVersionTest::main');
-}
 
 /**
  * @see Zend_Loader_Autoloader
@@ -83,14 +77,7 @@ class Zend_Loader_AutoloaderMultiVersionTest extends TestCase
      * @var \Zend_Loader_Autoloader|mixed
      */
     protected $autoloader;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         // Store original autoloaders
         $this->loaders = spl_autoload_functions();
@@ -116,7 +103,7 @@ class Zend_Loader_AutoloaderMultiVersionTest extends TestCase
         $this->autoloader = Zend_Loader_Autoloader::getInstance();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         // Restore original autoloaders
         $loaders = spl_autoload_functions();
@@ -256,8 +243,4 @@ class Zend_Loader_AutoloaderMultiVersionTest extends TestCase
         }
         return $value;
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Loader_AutoloaderMultiVersionTest::main') {
-    Zend_Loader_AutoloaderMultiVersionTest::main();
 }

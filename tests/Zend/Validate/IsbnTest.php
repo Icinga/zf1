@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -26,7 +26,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @see Zend_Validate_Isbn
  */
 require_once 'Zend/Validate/Isbn.php';
-
 
 /**
  * @category   Zend

@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Writer_ZendMonitorTest::main');
-}
-
 /** Zend_Log_Writer_ZendMonitor */
 require_once 'Zend/Log/Writer/ZendMonitor.php';
 
@@ -42,16 +37,10 @@ require_once 'Zend/Log/Writer/ZendMonitor.php';
  */
 class Zend_Log_Writer_ZendMonitorTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * @group ZF-10081
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testWrite()
     {
         $writer = new Zend_Log_Writer_ZendMonitor();
@@ -71,8 +60,4 @@ class Zend_Log_Writer_ZendMonitorTest extends TestCase
         $writer = new Zend_Log_Writer_ZendMonitor();
         $this->assertTrue(is_bool($writer->isEnabled()));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Writer_ZendMonitorTest::main') {
-    Zend_Log_Writer_ZendMonitorTest::main();
 }

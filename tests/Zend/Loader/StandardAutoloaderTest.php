@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -22,10 +22,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Loader_StandardAutoloaderTest::main');
-}
 
 require_once 'Zend/Loader/StandardAutoloader.php';
 require_once 'Zend/Loader/TestAsset/StandardAutoloader.php';
@@ -50,7 +46,7 @@ class Zend_Loader_StandardAutoloaderTest extends TestCase
      */
     protected $includePath;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         // Store original autoloaders
         $this->loaders = spl_autoload_functions();
@@ -64,7 +60,7 @@ class Zend_Loader_StandardAutoloaderTest extends TestCase
         $this->includePath = get_include_path();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         // Restore original autoloaders
         $loaders = spl_autoload_functions();
@@ -233,8 +229,4 @@ class Zend_Loader_StandardAutoloaderTest extends TestCase
         $prefixes->setAccessible(true);
         $this->assertEquals($expected, $prefixes->getValue($loader));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Loader_StandardAutoloaderTest::main') {
-    Zend_Loader_StandardAutoloaderTest::main();
 }

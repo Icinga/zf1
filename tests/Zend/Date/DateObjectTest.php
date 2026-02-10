@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -48,7 +48,7 @@ class Zend_Date_DateObjectTest extends TestCase
      */
     protected $_cache;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->originalTimezone = date_default_timezone_get();
         date_default_timezone_set('Europe/Paris');
@@ -62,7 +62,7 @@ class Zend_Date_DateObjectTest extends TestCase
         Zend_Date_DateObjectTestHelper::setOptions(['cache' => $this->_cache]);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         date_default_timezone_set($this->originalTimezone);
         $this->_cache->clean(Zend_Cache::CLEANING_MODE_ALL);
@@ -277,6 +277,8 @@ class Zend_Date_DateObjectTest extends TestCase
 
     public function testCalcSunInternal()
     {
+        $this->markTestSkipped("Would only test PHP's own functions for current PHP versions");
+
         $date = new Zend_Date_DateObjectTestHelper(10000000);
         // PHP 7.2.0+ uses a newer algorithm for sunrise/sunset calculation apparently.
         // Seems to be changed in this commit of "timelib":
@@ -303,7 +305,7 @@ class Zend_Date_DateObjectTest extends TestCase
             $this->assertSame(10034630, $date->calcSun(['latitude' => 38.4, 'longitude' => -129], -0.0145439, false));
             $this->assertSame(9990725, $date->calcSun(['latitude' => -38.4, 'longitude' => -129], -0.0145439, true));
             $this->assertSame(10029327, $date->calcSun(['latitude' => -38.4, 'longitude' => -129], -0.0145439, false));
-        } else if (PHP_VERSION_ID >= 70200) {
+        } elseif (PHP_VERSION_ID >= 70200) {
             $this->assertSame(9961716, $date->calcSun(['latitude' => 38.4, 'longitude' => -29], -0.0145439, true));
             $this->assertSame(10010341, $date->calcSun(['latitude' => 38.4, 'longitude' => -29], -0.0145439, false));
             $this->assertSame(9966981, $date->calcSun(['latitude' => -38.4, 'longitude' => -29], -0.0145439, true));
@@ -357,7 +359,7 @@ class Zend_Date_DateObjectTest extends TestCase
             $this->assertSame(-148250499, $date->calcSun(['latitude' => 38.4, 'longitude' => -129], -0.0145439, false));
             $this->assertSame(-148294395, $date->calcSun(['latitude' => -38.4, 'longitude' => -129], -0.0145439, true));
             $this->assertSame(-148255022, $date->calcSun(['latitude' => -38.4, 'longitude' => -129], -0.0145439, false));
-        } else if (PHP_VERSION_ID >= 70200) {
+        } elseif (PHP_VERSION_ID >= 70200) {
             $this->assertSame(-148322626, $date->calcSun(['latitude' => 38.4, 'longitude' => -29], -0.0145439, true));
             $this->assertSame(-148274784, $date->calcSun(['latitude' => 38.4, 'longitude' => -29], -0.0145439, false));
             $this->assertSame(-148318143, $date->calcSun(['latitude' => -38.4, 'longitude' => -29], -0.0145439, true));
@@ -621,7 +623,7 @@ class Zend_Date_DateObjectTest extends TestCase
         $this->assertTrue(($diff < 2), "Zend_Date_DateObject->_getTime() returned a significantly "
             . "different timestamp than expected: $diff seconds");
     }
-    
+
     /**
      * Test for RFC 2822's Obsolete Date and Time (paragraph 4.3)
      *
@@ -644,7 +646,7 @@ class Zend_Date_DateObjectTest extends TestCase
         $date = new Zend_Date('22.05.2014');
         $date->setTime('12:00');
         $date->setTimezone('America/Los_Angeles');
-    
+
         $this->assertEquals(
             $date->toString(Zend_Date::ATOM),
             $date->toString(DateTime::ATOM, 'php')

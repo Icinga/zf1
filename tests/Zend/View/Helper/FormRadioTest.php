@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_FormRadioTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_FormRadioTest::main");
-}
 
 require_once 'Zend/View/Helper/FormRadio.php';
 require_once 'Zend/View.php';
@@ -57,20 +50,7 @@ class Zend_View_Helper_FormRadioTest extends TestCase
      * @var Zend_View_Helper_FormRadio
      */
     protected $helper;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_FormRadioTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->view = new Zend_View();
         $this->view->doctype('HTML4_LOOSE'); // Set default doctype
@@ -419,7 +399,7 @@ class Zend_View_Helper_FormRadioTest extends TestCase
 
         $this->assertSame($expected, $actual);
     }
-    
+
     /**
      * @group ZF-4191
      */
@@ -431,7 +411,7 @@ class Zend_View_Helper_FormRadioTest extends TestCase
              0 => 'Test 0',
              1 => 'Test 1'
         ];
-        
+
         $formRadio = new Zend_View_Helper_FormRadio();
         $formRadio->setView(new Zend_View());
         $html = $formRadio->formRadio($name, -1, null, $options);
@@ -439,11 +419,11 @@ class Zend_View_Helper_FormRadioTest extends TestCase
             $fid = "{$name}-{$key}";
             $this->assertMatchesRegularExpression('/<input([^>]*)(id="' . $fid . '")/', $html);
         }
-        
+
         // Assert that radio for value -1 is the selected one
         $this->assertMatchesRegularExpression('/<input([^>]*)(id="' . $name . '--1")([^>]*)(checked="checked")/', $html);
     }
-    
+
     /**
      * @group ZF-11477
      */
@@ -500,12 +480,12 @@ class Zend_View_Helper_FormRadioTest extends TestCase
              'value' => 'bar',
              'options' => $options,
          ]);
- 
+
         $this->assertStringContainsString('<br />', $html);
         $count = substr_count($html, '<br />');
         $this->assertEquals(2, $count);
     }
- 
+
     /**
      * @group ZF-11620
      */
@@ -522,14 +502,9 @@ class Zend_View_Helper_FormRadioTest extends TestCase
              'value' => 'bar',
              'options' => $options,
          ]);
- 
+
         $this->assertStringContainsString('<br>', $html);
         $count = substr_count($html, '<br>');
         $this->assertEquals(2, $count);
     }
-}
-
-// Call Zend_View_Helper_FormRadioTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_FormRadioTest::main") {
-    Zend_View_Helper_FormRadioTest::main();
 }

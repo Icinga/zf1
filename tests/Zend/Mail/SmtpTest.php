@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -28,7 +29,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  */
 require_once 'Zend/Mail/Protocol/Smtp.php';
 
-
 /**
  * Zend_Mail_Transport_Smtp
  */
@@ -48,8 +48,12 @@ class Zend_Mail_SmtpTest extends TestCase
     protected $_transport;
     protected $_connection;
 
-    protected function set_up()
+    protected function setUp(): void
     {
+        if (TESTS_ZEND_MAIL_SMTP_ENABLED !== true) {
+            $this->markTestSkipped('SMTP tests are not enabled in test configuration.');
+        }
+
         $this->_params = ['host' => TESTS_ZEND_MAIL_SMTP_HOST,
                                'port' => TESTS_ZEND_MAIL_SMTP_PORT,
                                'username' => TESTS_ZEND_MAIL_SMTP_USER,
@@ -57,9 +61,7 @@ class Zend_Mail_SmtpTest extends TestCase
                                'auth' => TESTS_ZEND_MAIL_SMTP_AUTH];
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testTransportSetup()
     {
         try {

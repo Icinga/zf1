@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_FormResetTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_FormResetTest::main");
-}
 
 require_once 'Zend/View/Helper/FormReset.php';
 require_once 'Zend/View.php';
@@ -56,25 +49,13 @@ class Zend_View_Helper_FormResetTest extends TestCase
      * @var Zend_View_Helper_FormReset
      */
     protected $helper;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_FormResetTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         if (Zend_Registry::isRegistered('Zend_View_Helper_Doctype')) {
             $registry = Zend_Registry::getInstance();
@@ -91,7 +72,7 @@ class Zend_View_Helper_FormResetTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->helper, $this->view);
     }
@@ -130,9 +111,4 @@ class Zend_View_Helper_FormResetTest extends TestCase
         $test = $this->helper->formReset('foo', 'bar');
         $this->assertStringContainsString(' />', $test);
     }
-}
-
-// Call Zend_View_Helper_FormResetTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_FormResetTest::main") {
-    Zend_View_Helper_FormResetTest::main();
 }

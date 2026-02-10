@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -48,7 +48,7 @@ class Zend_Mail_SmtpProtocolTest extends TestCase
      */
     protected $_protocol;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_protocol = new ProtocolMock();
     }
@@ -149,7 +149,6 @@ class Zend_Mail_SmtpProtocolTest extends TestCase
 
         $this->assertEquals($expectedDialog, $this->_protocol->dialog);
     }
-
 
     /**
      * @depends testRcptExpects250
@@ -283,7 +282,6 @@ class Zend_Mail_SmtpProtocolTest extends TestCase
         $this->_protocol->rcpt('to@example.com');
     }
 
-
     public function testMailBeforeHeloThrowsException()
     {
         try {
@@ -335,7 +333,6 @@ class Zend_Mail_SmtpProtocolTest extends TestCase
         return $this->_protocol->dialog;
     }
 }
-
 
 class ProtocolMock extends Zend_Mail_Protocol_Smtp
 {

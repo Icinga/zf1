@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -65,8 +65,12 @@ class Zend_Mail_MaildirMessageOldTest extends TestCase
     protected $_maildir;
     protected $_tmpdir;
 
-    protected function set_up()
+    protected function setUp(): void
     {
+        if (TESTS_ZEND_MAIL_MAILDIR_ENABLED !== true) {
+            $this->markTestSkipped('Maildir tests are not enabled in test configuration.');
+        }
+
         $this->_originalMaildir = dirname(__FILE__) . '/_files/test.maildir/';
         if (!is_dir($this->_originalMaildir . '/cur/')) {
             $this->markTestSkipped('You have to unpack maildir.tar in Zend/Mail/_files/test.maildir/ '
@@ -115,8 +119,12 @@ class Zend_Mail_MaildirMessageOldTest extends TestCase
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
+        if (TESTS_ZEND_MAIL_MAILDIR_ENABLED !== true) {
+            return;
+        }
+
         foreach (['cur', 'new'] as $dir) {
             $dh = opendir($this->_tmpdir . $dir);
             while (($entry = readdir($dh)) !== false) {
@@ -130,7 +138,6 @@ class Zend_Mail_MaildirMessageOldTest extends TestCase
             rmdir($this->_tmpdir . $dir);
         }
     }
-
 
     public function testFetchHeader()
     {

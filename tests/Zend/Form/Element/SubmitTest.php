@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Form_Element_SubmitTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Element_SubmitTest::main");
-}
 
 require_once 'Zend/Form/Element/Submit.php';
 require_once 'Zend/Form.php';
@@ -52,25 +45,13 @@ class Zend_Form_Element_SubmitTest extends TestCase
      * @var Zend_Form_Element_Submit
      */
     protected $element;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Element_SubmitTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Registry::_unsetInstance();
         Zend_Form::setDefaultTranslator(null);
@@ -83,7 +64,7 @@ class Zend_Form_Element_SubmitTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -287,9 +268,4 @@ class Zend_Form_Element_SubmitTest extends TestCase
     {
         $this->assertSame($this->element, $this->element->loadDefaultDecorators());
     }
-}
-
-// Call Zend_Form_Element_SubmitTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Element_SubmitTest::main") {
-    Zend_Form_Element_SubmitTest::main();
 }

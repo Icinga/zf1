@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -31,11 +29,6 @@ require_once 'Zend/Controller/Router/Route/Module.php';
 /** Zend_Controller_Front */
 require_once 'Zend/Controller/Front.php';
 
-// Call Zend_Controller_Router_Route_ModuleTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Router_Route_ModuleTest::main");
-}
-
 /**
  * @category   Zend
  * @package    Zend_Controller
@@ -50,20 +43,7 @@ class Zend_Controller_Router_Route_ModuleTest extends TestCase
     protected $_request;
     protected $_dispatcher;
     protected $route;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Router_Route_ModuleTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $front = Zend_Controller_Front::getInstance();
         $front->resetInstance();
@@ -485,9 +465,4 @@ class Zend_Controller_Router_Route_ModuleTest extends TestCase
         $url = $this->route->assemble($params);
         $this->assertStringNotContainsString('"><script>alert(11639)<', $url);
     }
-}
-
-// Call Zend_Controller_Router_Route_ModuleTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Router_Route_ModuleTest::main") {
-    Zend_Controller_Router_Route_ModuleTest::main();
 }

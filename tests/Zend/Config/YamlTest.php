@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -109,7 +109,7 @@ class Zend_Config_YamlTest extends TestCase
      */
     protected $_yamlSingleQuotedString;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_iniFileConfig = dirname(__FILE__) . '/_files/config.yaml';
         $this->_iniFileAllSectionsConfig = dirname(__FILE__) . '/_files/allsections.yaml';

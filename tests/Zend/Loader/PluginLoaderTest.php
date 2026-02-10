@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Loader_PluginLoaderTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Loader_PluginLoaderTest::main');
-}
 
 require_once 'Zend/Loader/PluginLoader.php';
 
@@ -55,25 +48,13 @@ class Zend_Loader_PluginLoaderTest extends TestCase
     protected $key;
 
     protected $_includeCache;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Loader_PluginLoaderTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         if (file_exists((string) $this->_includeCache)) {
             unlink($this->_includeCache);
@@ -90,7 +71,7 @@ class Zend_Loader_PluginLoaderTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->clearStaticPaths();
         Zend_Loader_PluginLoader::setIncludeFileCache(null);
@@ -430,14 +411,14 @@ class Zend_Loader_PluginLoaderTest extends TestCase
         $loader->addPrefixPath('Zend_View_Helper', $this->libPath . '/Zend/View/Helper');
         $loader->addPrefixPath('ZfTest', dirname(__FILE__) . '/_files/ZfTest');
         try {
-            $className = $loader->load('CacheTest');
+            $className = $loader->load('TestCache');
         } catch (Exception $e) {
             $paths = $loader->getPaths();
             $this->fail(sprintf("Failed loading helper; paths: %s", var_export($paths, 1)));
         }
         $this->assertTrue(file_exists($cacheFile));
         $cache = file_get_contents($cacheFile);
-        $this->assertStringContainsString('CacheTest.php', $cache);
+        $this->assertStringContainsString('TestCache.php', $cache);
     }
 
     /**
@@ -555,9 +536,4 @@ class Zend_Loader_PluginLoaderTest extends TestCase
 
         $this->assertEquals('Zfns\Foo_Demo', $className);
     }
-}
-
-// Call Zend_Loader_PluginLoaderTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === 'Zend_Loader_PluginLoaderTest::main') {
-    Zend_Loader_PluginLoaderTest::main();
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -47,7 +47,7 @@ class Zend_Validate_Sitemap_ChangefreqTest extends TestCase
     /**
      * Prepares the environment before running a test
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_Sitemap_Changefreq();
     }
@@ -55,7 +55,7 @@ class Zend_Validate_Sitemap_ChangefreqTest extends TestCase
     /**
      * Cleans up the environment after running a test
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->_validator = null;
     }

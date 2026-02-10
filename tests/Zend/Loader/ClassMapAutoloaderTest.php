@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Loader_ClassMapAutoloaderTest::main');
-}
 
 require_once 'Zend/Loader/ClassMapAutoloader.php';
 
@@ -55,14 +49,7 @@ class Zend_Loader_ClassMapAutoloaderTest extends TestCase
      * @var Zend_Loader_ClassMapAutoloader
      */
     private $loader;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         // Store original autoloaders
         $this->loaders = spl_autoload_functions();
@@ -78,7 +65,7 @@ class Zend_Loader_ClassMapAutoloaderTest extends TestCase
         $this->loader = new Zend_Loader_ClassMapAutoloader();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         // Restore original autoloaders
         $loaders = spl_autoload_functions();
@@ -245,8 +232,4 @@ class Zend_Loader_ClassMapAutoloaderTest extends TestCase
         $this->loader->autoload('some\namespacedclass');
         $this->assertTrue(class_exists('some\namespacedclass', false));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Loader_ClassMapAutoloaderTest::main') {
-    Zend_Loader_ClassMapAutoloaderTest::main();
 }

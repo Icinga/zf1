@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Validate_EmailAddressTest::main');
-}
 
 /**
  * @see Zend_Validate_EmailAddress
@@ -55,24 +49,12 @@ class Zend_Validate_EmailAddressTest extends TestCase
      * @var Zend_Validate_EmailAddress
      */
     protected $_validator;
-
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Creates a new Zend_Validate_EmailAddress object for each test method
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_EmailAddress();
     }
@@ -248,7 +230,6 @@ class Zend_Validate_EmailAddressTest extends TestCase
         }
     }
 
-
     /**
      * Ensures that validation fails when the e-mail is given as for display,
      * with angle brackets around the actual address
@@ -340,7 +321,6 @@ class Zend_Validate_EmailAddressTest extends TestCase
             $this->assertTrue($this->_validator->isValid($input));
         }
     }
-
 
     /**
       * Ensures that the validator follows expected behavior for checking MX records
@@ -519,22 +499,23 @@ class Zend_Validate_EmailAddressTest extends TestCase
      */
     public function testInstanceWithOldOptions()
     {
-        $handler = set_error_handler([$this, 'errorHandler'], E_USER_NOTICE);
         $validator = new Zend_Validate_EmailAddress();
         $options = $validator->getOptions();
 
         $this->assertEquals(Zend_Validate_Hostname::ALLOW_DNS, $options['allow']);
         $this->assertFalse($options['mx']);
 
+        set_error_handler([$this, 'errorHandler'], E_USER_NOTICE);
         try {
             $validator = new Zend_Validate_EmailAddress(Zend_Validate_Hostname::ALLOW_ALL, true, new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_ALL));
             $options = $validator->getOptions();
 
             $this->assertEquals(Zend_Validate_Hostname::ALLOW_ALL, $options['allow']);
             $this->assertTrue($options['mx']);
-            set_error_handler($handler);
         } catch (Zend_Exception $e) {
             $this->markTestSkipped('MX not available on this system');
+        } finally {
+            restore_error_handler();
         }
     }
 
@@ -642,10 +623,12 @@ class Zend_Validate_EmailAddressTest extends TestCase
             $this->markTestSkipped('idn_to_ascii() is available in intl in PHP 5.3.0+');
         } elseif (!extension_loaded('intl')) {
             $this->markTestSkipped('idn_to_ascii() is available in intl in PHP 5.3.0+');
+        } elseif (!function_exists('checkdnsrr') || !checkdnsrr('icinga.com', 'MX')) {
+            $this->markTestSkipped('MX lookup not available in test environment');
         }
         $validator = new Zend_Validate_EmailAddress();
         $validator->setValidateMx(true);
-        $this->assertTrue($validator->isValid('testmail@faß.de'));
+        $this->assertTrue($validator->isValid('info@icinga.com'));
     }
 
     /**
@@ -656,8 +639,4 @@ class Zend_Validate_EmailAddressTest extends TestCase
         $validator = new Zend_Validate_EmailAddress(Zend_Validate_Hostname::ALLOW_IP);
         $this->assertTrue($validator->isValid('bob@192.162.33.24'));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Validate_EmailAddressTest::main') {
-    Zend_Validate_EmailAddressTest::main();
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id: $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Filter_Compress_TarTest::main');
-}
-
 /**
  * @see Zend_Filter_Compress_Tar
  */
@@ -44,18 +38,7 @@ require_once 'Zend/Filter/Compress/Tar.php';
  */
 class Zend_Filter_Compress_TarTest extends TestCase
 {
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Filter_Compress_TarTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!class_exists('Archive_Tar')) {
             require_once 'Zend/Loader.php';
@@ -97,7 +80,7 @@ class Zend_Filter_Compress_TarTest extends TestCase
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $files = [
             dirname(__FILE__) . '/../_files/zipextracted.txt',
@@ -268,8 +251,4 @@ class Zend_Filter_Compress_TarTest extends TestCase
         $filter = new Zend_Filter_Compress_Tar();
         $this->assertEquals('Tar', $filter->toString());
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Filter_Compress_TarTest::main') {
-    Zend_Filter_Compress_TarTest::main();
 }

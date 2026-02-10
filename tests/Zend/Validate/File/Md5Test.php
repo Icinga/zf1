@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_Md5Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_Md5Test::main");
-}
-
 /**
  * @see Zend_Validate_File_Md5
  */
@@ -47,17 +40,6 @@ require_once 'Zend/Validate/File/Md5.php';
  */
 class Zend_Validate_File_Md5Test extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_Md5Test");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Ensures that the validator follows expected behavior
      *
@@ -205,9 +187,4 @@ class Zend_Validate_File_Md5Test extends TestCase
         $validator->addHash(['12321', '12121']);
         $this->assertEquals(['12345' => 'md5', '12344' => 'md5', '12321' => 'md5', '12121' => 'md5'], $validator->getMd5());
     }
-}
-
-// Call Zend_Validate_File_Md5Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_Md5Test::main") {
-    Zend_Validate_File_Md5Test::main();
 }

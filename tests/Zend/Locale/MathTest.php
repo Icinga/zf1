@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -29,7 +30,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 require_once 'Zend/Locale/Math.php';
 require_once 'Zend/Locale/Math/PhpMath.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Locale
@@ -45,7 +45,7 @@ class Zend_Locale_MathTest extends TestCase
     /**
      * setup for tests (BCMath is not designed to normalize localized numbers)
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         self::$savedLocale = setlocale(LC_NUMERIC, '0');
         if (self::$savedLocale != 'C') {
@@ -56,7 +56,7 @@ class Zend_Locale_MathTest extends TestCase
     /**
      * teardown for tests (restore whatever setlocale was previously in place)
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if (self::$savedLocale != 'C') {
             setlocale(LC_NUMERIC, self::$savedLocale);
@@ -95,8 +95,8 @@ class Zend_Locale_MathTest extends TestCase
     /**
      * test round()
      * expect string when BCMath extension is enabled
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testRound2()
     {
         if (!defined('TESTS_ZEND_I18N_EXTENDED_COVERAGE') || TESTS_ZEND_I18N_EXTENDED_COVERAGE == false) {

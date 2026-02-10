@@ -1,6 +1,8 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -125,7 +127,7 @@ class Zend_Mail_MailTest extends TestCase
 {
     protected $numAssertions;
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Mail::clearDefaultFrom();
         Zend_Mail::clearDefaultReplyTo();
@@ -768,9 +770,7 @@ class Zend_Mail_MailTest extends TestCase
         $this->assertTrue(strpos(implode('', $mock->headers['Date']), 'Mon, 29 Jun 1981') === 0);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDateInvalidString()
     {
         $mail = new Zend_Mail();
@@ -782,9 +782,7 @@ class Zend_Mail_MailTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDateInvalidType()
     {
         $mail = new Zend_Mail();
@@ -796,9 +794,7 @@ class Zend_Mail_MailTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDateInvalidObject()
     {
         $mail = new Zend_Mail();
@@ -810,9 +806,7 @@ class Zend_Mail_MailTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetDateTwice()
     {
         $mail = new Zend_Mail();
@@ -852,9 +846,7 @@ class Zend_Mail_MailTest extends TestCase
         $this->assertTrue(strlen($mock->headers['Message-Id'][0]) > 0);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetMessageIdTwice()
     {
         $mail = new Zend_Mail();
@@ -902,9 +894,9 @@ class Zend_Mail_MailTest extends TestCase
 
     /**
      * @group ZF-1688
-     * @dataProvider dataSubjects
-     * @doesNotPerformAssertions
      */
+    #[DataProvider('dataSubjects')]
+    #[DoesNotPerformAssertions]
     public function testIfLongSubjectsHaveCorrectLineBreaksAndEncodingMarks($subject)
     {
         $mail = new Zend_Mail("UTF-8");
@@ -1019,8 +1011,8 @@ class Zend_Mail_MailTest extends TestCase
     /**
      * @group ZF-9011
      *
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testSendmailTransportThrowsExceptionWithInvalidParams()
     {
         $mail = new Zend_Mail("UTF-8");

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_InlineScriptTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_InlineScriptTest::main");
-}
 
 /** Zend_View_Helper_InlineScript */
 require_once 'Zend/View/Helper/InlineScript.php';
@@ -61,25 +54,13 @@ class Zend_View_Helper_InlineScriptTest extends TestCase
      * @var string
      */
     public $basePath;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_InlineScriptTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $regKey = Zend_View_Helper_Placeholder_Registry::REGISTRY_KEY;
         if (Zend_Registry::isRegistered($regKey)) {
@@ -96,7 +77,7 @@ class Zend_View_Helper_InlineScriptTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->helper);
     }
@@ -117,9 +98,4 @@ class Zend_View_Helper_InlineScriptTest extends TestCase
         $placeholder = $this->helper->inlineScript();
         $this->assertTrue($placeholder instanceof Zend_View_Helper_InlineScript);
     }
-}
-
-// Call Zend_View_Helper_InlineScriptTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_InlineScriptTest::main") {
-    Zend_View_Helper_InlineScriptTest::main();
 }

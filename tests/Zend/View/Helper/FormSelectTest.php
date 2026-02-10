@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_FormSelectTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_FormSelectTest::main");
-}
 
 require_once 'Zend/View/Helper/FormSelect.php';
 require_once 'Zend/View.php';
@@ -55,25 +48,13 @@ class Zend_View_Helper_FormSelectTest extends TestCase
      * @var Zend_View_Helper_FormSelect
      */
     protected $helper;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_FormSelectTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->view = new Zend_View();
         $this->helper = new Zend_View_Helper_FormSelect();
@@ -86,7 +67,7 @@ class Zend_View_Helper_FormSelectTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->helper, $this->view);
     }
@@ -371,7 +352,7 @@ class Zend_View_Helper_FormSelectTest extends TestCase
         ]);
         $this->assertMatchesRegularExpression('/<optgroup[^>]*?id="baz-optgroup-bar"[^>]*?"bar"[^>]*?/', $html, $html);
     }
- 
+
     public function testCanApplyOptionClasses()
     {
         $html = $this->helper->formSelect([
@@ -391,9 +372,4 @@ class Zend_View_Helper_FormSelectTest extends TestCase
         $this->assertMatchesRegularExpression('/.*<option[^>]*?(value="foo")?(class="fooClass").*/', $html, $html);
         $this->assertMatchesRegularExpression('/.*<option[^>]*?(value="bar")?(class="barClass").*/', $html, $html);
     }
-}
-
-// Call Zend_View_Helper_FormSelectTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_FormSelectTest::main") {
-    Zend_View_Helper_FormSelectTest::main();
 }

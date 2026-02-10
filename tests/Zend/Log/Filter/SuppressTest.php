@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Filter_SuppressTest::main');
-}
-
 /** Zend_Log */
 require_once 'Zend/Log.php';
 
@@ -49,14 +43,7 @@ class Zend_Log_Filter_SuppressTest extends TestCase
      * @var \Zend_Log_Filter_Suppress|mixed
      */
     protected $filter;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->filter = new Zend_Log_Filter_Suppress();
     }
@@ -100,8 +87,4 @@ class Zend_Log_Filter_SuppressTest extends TestCase
         $logger = Zend_Log::factory($cfg['log']);
         $this->assertTrue($logger instanceof Zend_Log);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Filter_SuppressTest::main') {
-    Zend_Log_Filter_SuppressTest::main();
 }

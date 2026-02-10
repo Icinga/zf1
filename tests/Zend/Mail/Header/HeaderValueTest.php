@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -33,7 +34,7 @@ class Zend_Mail_Header_HeaderValueTest extends TestCase
     /**
      * Data for filter value
      */
-    public function getFilterValues()
+    public static function getFilterValues()
     {
         return [
             ["This is a\n test", "This is a test"],
@@ -50,8 +51,8 @@ class Zend_Mail_Header_HeaderValueTest extends TestCase
         ];
     }
 
+    #[DataProvider('getFilterValues')]
     /**
-     * @dataProvider getFilterValues
      * @group ZF2015-04
      */
     public function testFilterValue($value, $expected)
@@ -59,7 +60,7 @@ class Zend_Mail_Header_HeaderValueTest extends TestCase
         $this->assertEquals($expected, Zend_Mail_Header_HeaderValue::filter($value));
     }
 
-    public function validateValues()
+    public static function validateValues()
     {
         return [
             ["This is a\n test", 'assertFalse'],
@@ -79,8 +80,8 @@ class Zend_Mail_Header_HeaderValueTest extends TestCase
         ];
     }
 
+    #[DataProvider('validateValues')]
     /**
-     * @dataProvider validateValues
      * @group ZF2015-04
      */
     public function testValidateValue($value, $assertion)
@@ -88,7 +89,7 @@ class Zend_Mail_Header_HeaderValueTest extends TestCase
         $this->{$assertion}(Zend_Mail_Header_HeaderValue::isValid($value));
     }
 
-    public function assertValues()
+    public static function assertValues()
     {
         return [
             ["This is a\n test"],
@@ -102,8 +103,8 @@ class Zend_Mail_Header_HeaderValueTest extends TestCase
         ];
     }
 
+    #[DataProvider('assertValues')]
     /**
-     * @dataProvider assertValues
      * @group ZF2015-04
      */
     public function testAssertValidRaisesExceptionForInvalidValues($value)

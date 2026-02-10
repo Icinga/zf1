@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -38,7 +39,6 @@ require_once 'Zend/Mail/Protocol/Imap.php';
  */
 require_once 'Zend/Config.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Mail
@@ -51,8 +51,12 @@ class Zend_Mail_ImapTest extends TestCase
 {
     protected $_params;
 
-    protected function set_up()
+    protected function setUp(): void
     {
+        if (TESTS_ZEND_MAIL_IMAP_ENABLED !== true) {
+            $this->markTestSkipped('IMAP tests are not enabled in test configuration.');
+        }
+
         $this->_params = ['host' => TESTS_ZEND_MAIL_IMAP_HOST,
                                'user' => TESTS_ZEND_MAIL_IMAP_USER,
                                'password' => TESTS_ZEND_MAIL_IMAP_PASSWORD];
@@ -110,9 +114,7 @@ class Zend_Mail_ImapTest extends TestCase
         closedir($dh);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConnectOk()
     {
         try {
@@ -122,9 +124,7 @@ class Zend_Mail_ImapTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConnectConfig()
     {
         try {
@@ -134,9 +134,7 @@ class Zend_Mail_ImapTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConnectFailure()
     {
         $this->_params['host'] = 'example.example';
@@ -150,9 +148,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception raised while connecting to example.example');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNoParams()
     {
         try {
@@ -164,10 +160,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception raised with empty params');
     }
 
-
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConnectSSL()
     {
         if (!TESTS_ZEND_MAIL_IMAP_SSL) {
@@ -182,9 +175,7 @@ class Zend_Mail_ImapTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConnectTLS()
     {
         if (!TESTS_ZEND_MAIL_IMAP_TLS) {
@@ -199,9 +190,7 @@ class Zend_Mail_ImapTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testInvalidService()
     {
         $this->_params['port'] = TESTS_ZEND_MAIL_IMAP_INVALID_PORT;
@@ -215,9 +204,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception while connection to invalid port');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrongService()
     {
         $this->_params['port'] = TESTS_ZEND_MAIL_IMAP_WRONG_PORT;
@@ -231,9 +218,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception while connection to wrong port');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrongUsername()
     {
         // this also triggers ...{chars}<NL>token for coverage
@@ -248,9 +233,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception while using wrong username');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWithInstanceConstruction()
     {
         $protocol = new Zend_Mail_Protocol_Imap($this->_params['host']);
@@ -259,9 +242,7 @@ class Zend_Mail_ImapTest extends TestCase
         $mail = new Zend_Mail_Storage_Imap($protocol);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWithNotConnectedInstance()
     {
         $protocol = new Zend_Mail_Protocol_Imap();
@@ -274,9 +255,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception while using not connected low-level class');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWithNotLoggedInstance()
     {
         $protocol = new Zend_Mail_Protocol_Imap($this->_params['host']);
@@ -289,9 +268,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception while using not logged in low-level class');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrongFolder()
     {
         $this->_params['folder'] = 'this folder does not exist on your server';
@@ -305,10 +282,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception with not existing folder');
     }
 
-
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testClose()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -336,9 +310,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->assertFalse($mail->hasCreate);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNoop()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -362,7 +334,6 @@ class Zend_Mail_ImapTest extends TestCase
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
         $shouldSizes = [1 => 397, 89, 694, 452, 497, 101, 139];
-
 
         $sizes = $mail->getSize();
         $this->assertEquals($shouldSizes, $sizes);
@@ -421,9 +392,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->assertEquals($mail->countMessages(), $count - 1);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testTooLateCount()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -439,9 +408,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception raised while counting messages on closed connection');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testLoadUnknownFolder()
     {
         $this->_params['folder'] = 'UnknownFolder';
@@ -466,9 +433,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->assertEquals($mail->getCurrentFolder(), 'subfolder/test');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testUnknownFolder()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -533,7 +498,6 @@ class Zend_Mail_ImapTest extends TestCase
             $this->assertEquals($localName, $folder->getLocalName());
         }
     }
-
 
     public function testCountFolder()
     {
@@ -609,9 +573,7 @@ class Zend_Mail_ImapTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrongUniqueId()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -624,9 +586,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no exception while getting number for invalid id');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCreateFolder()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -643,9 +603,7 @@ class Zend_Mail_ImapTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCreateExistingFolder()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -659,9 +617,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('should not be able to create existing folder');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRemoveFolderName()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -675,9 +631,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('folder still exists');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRemoveFolderInstance()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -691,9 +645,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('folder still exists');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRemoveInvalidFolder()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -706,9 +658,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->fail('no error while removing invalid folder');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRenameFolder()
     {
         $mail = new Zend_Mail_Storage_Imap($this->_params);
@@ -826,7 +776,6 @@ class Zend_Mail_ImapTest extends TestCase
         $this->assertEquals($status['exists'], 7);
     }
 
-
     public function testExamine()
     {
         $protocol = new Zend_Mail_Protocol_Imap($this->_params['host']);
@@ -836,9 +785,7 @@ class Zend_Mail_ImapTest extends TestCase
         $this->assertEquals($status['exists'], 7);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testClosedSocketNewlineToken()
     {
         $protocol = new Zend_Mail_Protocol_Imap($this->_params['host']);
@@ -918,7 +865,6 @@ class Zend_Mail_ImapTest extends TestCase
         $mail->selectFolder('INBOX');
         $fromCount = $mail->countMessages();
         $mail->moveMessage(1, 'subfolder/test');
-
 
         $this->assertEquals($fromCount - 1, $mail->countMessages());
         $mail->selectFolder('subfolder/test');

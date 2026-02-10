@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_HeadScriptTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_HeadScriptTest::main");
-}
 
 /** Zend_View_Helper_HeadScript */
 require_once 'Zend/View/Helper/HeadScript.php';
@@ -61,25 +55,13 @@ class Zend_View_Helper_HeadScriptTest extends TestCase
      * @var string
      */
     public $basePath;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_HeadScriptTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $regKey = Zend_View_Helper_Placeholder_Registry::REGISTRY_KEY;
         if (Zend_Registry::isRegistered($regKey)) {
@@ -96,7 +78,7 @@ class Zend_View_Helper_HeadScriptTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->helper);
     }
@@ -118,9 +100,8 @@ class Zend_View_Helper_HeadScriptTest extends TestCase
         $this->assertTrue($placeholder instanceof Zend_View_Helper_HeadScript);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testSetPrependAppendAndOffsetSetThrowExceptionsOnInvalidItems()
     {
         try {
@@ -261,9 +242,8 @@ class Zend_View_Helper_HeadScriptTest extends TestCase
         $this->_testOverloadOffsetSet('script');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testOverloadingThrowsExceptionWithInvalidMethod()
     {
         try {
@@ -273,9 +253,8 @@ class Zend_View_Helper_HeadScriptTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testOverloadingWithTooFewArgumentsRaisesException()
     {
         try {
@@ -394,9 +373,8 @@ document.write(bar.strlen());');
         $this->assertStringContainsString('bogus="deferred"', $test);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testCanPerformMultipleSerialCaptures()
     {
         $this->helper->headScript()->captureStart();
@@ -460,7 +438,6 @@ document.write(bar.strlen());');
         $this->helper->offsetSetFile(10, 'test3.js');
         $this->helper->offsetSetFile(5, 'test4.js');
 
-
         $test = $this->helper->toString();
 
         $expected = '<script type="text/javascript" src="test1.js"></script>' . PHP_EOL
@@ -470,7 +447,7 @@ document.write(bar.strlen());');
 
         $this->assertEquals($expected, $test);
     }
-    
+
     /**
      * @group ZF-12048
      */
@@ -479,7 +456,7 @@ document.write(bar.strlen());');
         $this->helper->appendFile('foo.js');
         $this->helper->appendFile('bar.js');
         $this->helper->setFile('foo.js');
-        
+
         $expected = '<script type="text/javascript" src="foo.js"></script>';
         $test = $this->helper->toString();
         $this->assertEquals($expected, $test);
@@ -564,9 +541,4 @@ document.write(bar.strlen());');
         $this->assertStringContainsString('<!--[if !IE]><!--><', $test);
         $this->assertStringContainsString('<!--<![endif]-->', $test);
     }
-}
-
-// Call Zend_View_Helper_HeadScriptTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_HeadScriptTest::main") {
-    Zend_View_Helper_HeadScriptTest::main();
 }

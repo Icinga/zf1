@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Controller_Router_RewriteTest::main');
-}
 
 /** Zend_Controller_Router_Rewrite */
 require_once 'Zend/Controller/Router/Rewrite.php';
@@ -53,7 +47,6 @@ require_once 'Zend/Controller/Router/Route/Hostname.php';
 /** Zend_Uri_Http */
 require_once 'Zend/Uri/Http.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Controller
@@ -66,20 +59,7 @@ require_once 'Zend/Uri/Http.php';
 class Zend_Controller_Router_RewriteTest extends TestCase
 {
     protected $_router;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Router_RewriteTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_router = new Zend_Controller_Router_Rewrite();
         $front = Zend_Controller_Front::getInstance();
@@ -89,7 +69,7 @@ class Zend_Controller_Router_RewriteTest extends TestCase
         $this->_router->setFrontController($front);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->_router);
     }
@@ -734,7 +714,6 @@ class Zend_Controller_Router_RewriteTest extends TestCase
         $this->assertEquals('/articles/777', $url);
     }
 
-
     /**
      * Test that it is possible to generate a URL with a numerical key
      *
@@ -764,7 +743,7 @@ class Zend_Controller_Router_RewriteTest extends TestCase
             $this->_router->assemble($params)
         );
     }
-    
+
     /**
      * @group ZF-11393
      */
@@ -774,7 +753,6 @@ class Zend_Controller_Router_RewriteTest extends TestCase
         $this->_router->assemble(null);
     }
 }
-
 
 /**
  * Zend_Controller_Router_RewriteTest_Request - request object for router testing
@@ -894,8 +872,4 @@ class Zend_Controller_Router_Route_Interface_Mockup implements Zend_Controller_R
     {
         return $this->_request;
     }
-}
-
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Router_RewriteTest::main") {
-    Zend_Controller_Router_RewriteTest::main();
 }

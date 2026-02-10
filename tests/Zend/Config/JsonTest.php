@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -61,7 +61,7 @@ class Zend_Config_JsonTest extends TestCase
     protected $_iniFileAllSectionsConfig;
     protected $_iniFileCircularConfig;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_iniFileConfig = dirname(__FILE__) . '/_files/config.json';
         $this->_iniFileAllSectionsConfig = dirname(__FILE__) . '/_files/allsections.json';
@@ -200,7 +200,6 @@ class Zend_Config_JsonTest extends TestCase
             $this->assertStringContainsString('cannot be found', $expected->getMessage());
         }
     }
-
 
     public function testCanLoadConfigWithNoSections()
     {

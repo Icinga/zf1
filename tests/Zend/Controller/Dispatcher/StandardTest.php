@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Controller_Dispatcher_StandardTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Dispatcher_StandardTest::main");
-}
-
 require_once 'Zend/Controller/Dispatcher/Standard.php';
 require_once 'Zend/Controller/Action/HelperBroker.php';
 require_once 'Zend/Controller/Front.php';
@@ -51,20 +45,7 @@ class Zend_Controller_Dispatcher_StandardTest extends TestCase
     protected $error;
 
     protected $_dispatcher;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Dispatcher_StandardTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (isset($this->error)) {
             unset($this->error);
@@ -79,7 +60,7 @@ class Zend_Controller_Dispatcher_StandardTest extends TestCase
         ]);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->_dispatcher);
     }
@@ -158,7 +139,6 @@ class Zend_Controller_Dispatcher_StandardTest extends TestCase
         require_once dirname(__FILE__) . '/../_files/ManuallyIncludedControllers.php';
         $request = new Zend_Controller_Request_Http();
 
-
         $this->_dispatcher->setParam('prefixDefaultModule', true);
 
         $request->setControllerName('included');
@@ -218,9 +198,7 @@ class Zend_Controller_Dispatcher_StandardTest extends TestCase
         $this->assertStringContainsString('Index action called', $this->_dispatcher->getResponse()->getBody());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testDispatchValidControllerWithInvalidAction()
     {
         $request = new Zend_Controller_Request_Http();
@@ -236,9 +214,7 @@ class Zend_Controller_Dispatcher_StandardTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testDispatchInvalidController()
     {
         $request = new Zend_Controller_Request_Http();
@@ -715,9 +691,4 @@ class Zend_Controller_Dispatcher_StandardTest extends TestCase
             $this->assertStringContainsString('No default module', $e->getMessage());
         }
     }
-}
-
-// Call Zend_Controller_Dispatcher_StandardTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Dispatcher_StandardTest::main") {
-    Zend_Controller_Dispatcher_StandardTest::main();
 }

@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Form_DisplayGroupTest::main');
-}
 
 require_once 'Zend/Form/DisplayGroup.php';
 
@@ -67,14 +62,7 @@ class Zend_Form_DisplayGroupTest extends TestCase
      * @var \Zend_Form_DisplayGroup|mixed
      */
     protected $group;
-
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Form_DisplayGroupTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Registry::_unsetInstance();
         Zend_Form::setDefaultTranslator(null);
@@ -93,7 +81,7 @@ class Zend_Form_DisplayGroupTest extends TestCase
         );
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -351,7 +339,6 @@ class Zend_Form_DisplayGroupTest extends TestCase
         $this->assertTrue(array_key_exists('div2', $decorators));
     }
 
-
     public function testCanClearAllDecorators()
     {
         $this->_checkZf2794();
@@ -555,9 +542,7 @@ class Zend_Form_DisplayGroupTest extends TestCase
         $this->assertSame(['b', 'c', 'a'], $order);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRemovingElementsShouldNotRaiseExceptionsDuringIteration()
     {
         $this->setupIteratorElements();
@@ -602,9 +587,7 @@ class Zend_Form_DisplayGroupTest extends TestCase
         $this->assertEquals('foobar', $this->group->getAttrib('class'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetOptionsOmitsAccessorsRequiringObjectsOrMultipleParams()
     {
         $options = $this->getOptions();
@@ -863,8 +846,4 @@ class Zend_Form_DisplayGroupTest_DisplayGroup extends Zend_Form_DisplayGroup
     {
         $this->setDisableLoadDefaultDecorators(true);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Form_DisplayGroupTest::main') {
-    Zend_Form_DisplayGroupTest::main();
 }

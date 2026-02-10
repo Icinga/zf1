@@ -1,6 +1,8 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -69,8 +71,8 @@ class Zend_Http_CookieJarTest extends TestCase
     /**
      * Check we get an expection if a non-valid cookie is passed to addCookie
      *
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testExceptAddInvalidCookie()
     {
         $jar = new Zend_Http_CookieJar();
@@ -113,8 +115,8 @@ class Zend_Http_CookieJarTest extends TestCase
     /**
      * Test we get an exception in case of invalid response objects
      *
-     * @dataProvider invalidResponseProvider
      */
+    #[DataProvider('invalidResponseProvider')]
     public function testExceptAddCookiesInvalidResponse($resp)
     {
         $this->expectException(Zend_Http_Exception::class);
@@ -261,8 +263,8 @@ class Zend_Http_CookieJarTest extends TestCase
 
     /**
      * Test we get a proper exception when an invalid URI is passed
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testExceptGetCookieInvalidUri()
     {
         $cookie = Zend_Http_Cookie::fromString('foo=bar; domain=www.example.com; path=/tests');
@@ -287,8 +289,8 @@ class Zend_Http_CookieJarTest extends TestCase
     /**
      * Test we get a proper exception when an invalid return constant is passed
      *
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testExceptGetCookieInvalidReturnType()
     {
         $cookie = Zend_Http_Cookie::fromString('foo=bar; domain=example.com;');
@@ -306,8 +308,8 @@ class Zend_Http_CookieJarTest extends TestCase
     /**
      * Test we can get all matching cookies for a request, with session cookies
      *
-     * @dataProvider cookieMatchTestProvider
      */
+    #[DataProvider('cookieMatchTestProvider')]
     public function testGetMatchingCookies($url, $expected)
     {
         $jar = new Zend_Http_CookieJar();
@@ -443,8 +445,8 @@ class Zend_Http_CookieJarTest extends TestCase
 
     /**
      * Test we get a proper exception when an invalid URI is passed
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testExceptGetMatchingCookiesInvalidUri()
     {
         $jar = new Zend_Http_CookieJar();

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_Sha1Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_Sha1Test::main");
-}
-
 /**
  * @see Zend_Validate_File_Sha1
  */
@@ -47,17 +40,6 @@ require_once 'Zend/Validate/File/Sha1.php';
  */
 class Zend_Validate_File_Sha1Test extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_Sha1Test");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Ensures that the validator follows expected behavior
      *
@@ -205,9 +187,4 @@ class Zend_Validate_File_Sha1Test extends TestCase
         $validator->addHash(['12321', '12121']);
         $this->assertEquals(['12345' => 'sha1', '12344' => 'sha1', '12321' => 'sha1', '12121' => 'sha1'], $validator->getSha1());
     }
-}
-
-// Call Zend_Validate_File_Sha1Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_Sha1Test::main") {
-    Zend_Validate_File_Sha1Test::main();
 }

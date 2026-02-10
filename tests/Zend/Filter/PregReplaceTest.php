@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,17 +24,10 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-
-// Call Zend_Filter_PregReplaceTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Filter_PregReplaceTest::main');
-}
-
 /**
  * @see Zend_Filter_PregReplace
  */
 require_once 'Zend/Filter/PregReplace.php';
-
 
 /**
  * Test class for Zend_Filter_PregReplace.
@@ -53,19 +45,7 @@ class Zend_Filter_PregReplaceTest extends TestCase
      * @var \Zend_Filter_PregReplace|mixed
      */
     protected $filter;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Filter_PregReplaceTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->filter = new Zend_Filter_PregReplace();
     }
@@ -124,7 +104,7 @@ class Zend_Filter_PregReplaceTest extends TestCase
         $this->assertNotEquals($string, $filtered);
         $this->assertEquals('foo/bar', $filtered);
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testFilterThrowsExceptionWhenNoMatchPatternPresent()
     {
         $string = 'controller/action';
@@ -153,9 +133,4 @@ class Zend_Filter_PregReplaceTest extends TestCase
 class XPregReplace extends Zend_Filter_PregReplace
 {
     protected $_matchPattern = '~(&gt;){3,}~i';
-}
-
-// Call Zend_Filter_PregReplaceTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === 'Zend_Filter_PregReplaceTest::main') {
-    Zend_Filter_PregReplaceTest::main();
 }

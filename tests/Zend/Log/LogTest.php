@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_LogTest::main');
-}
 
 /** Zend_Log */
 require_once 'Zend/Log.php';
@@ -70,14 +65,7 @@ class Zend_Log_LogTest extends TestCase
      * @var bool|mixed
      */
     protected $expectingLogging;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->log = fopen('php://memory', 'w+');
         $this->writer = new Zend_Log_Writer_Stream($this->log);
@@ -336,11 +324,9 @@ class Zend_Log_LogTest extends TestCase
         $logger->addWriter($writer);
         $this->errWriter = $writer;
 
-
-        $oldErrorLevel = error_reporting();
+        $oldErrorLevel = error_reporting(E_ALL);
 
         $this->expectingLogging = true;
-        error_reporting(E_ALL | E_STRICT);
 
         $oldHandler = set_error_handler([$this, 'verifyHandlerData']);
         $logger->registerErrorHandler();
@@ -481,8 +467,8 @@ class Zend_Log_LogTest extends TestCase
 
     /**
      * @group ZF-9176
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testLogConstructFromConfigFormatter()
     {
         $config = [
@@ -503,8 +489,8 @@ class Zend_Log_LogTest extends TestCase
 
     /**
      * @group ZF-9176
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testLogConstructFromConfigCustomFormatter()
     {
         $config = [
@@ -552,7 +538,7 @@ class Zend_Log_LogTest extends TestCase
 
         $this->assertEquals('c', $logger->getTimestampFormat());
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testFactorySupportsPHP53Namespaces()
     {
         if (version_compare(PHP_VERSION, '5.3.0') < 0) {
@@ -641,8 +627,4 @@ class ZLTest_My_Log extends Zend_Log
 }
 class ZLTest_My_LogNotExtending
 {
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_LogTest::main') {
-    Zend_Log_LogTest::main();
 }

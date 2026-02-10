@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -22,10 +23,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Controller_Router_RouteTest::main');
-}
 
 /** @see Zend_Controller_Request_Http */
 require_once 'Zend/Controller/Request/Http.php';
@@ -62,14 +59,18 @@ class Zend_Controller_Router_RouteTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         // Backup server array
         $this->_server = $_SERVER;
 
         // Clean host env
-        unset($_SERVER['HTTP_HOST'],
-            $_SERVER['HTTPS'], $_SERVER['SERVER_NAME'], $_SERVER['SERVER_PORT']);
+        unset(
+            $_SERVER['HTTP_HOST'],
+            $_SERVER['HTTPS'],
+            $_SERVER['SERVER_NAME'],
+            $_SERVER['SERVER_PORT']
+        );
 
         // Set translator
         $translator = new Zend_Translate('array', ['foo' => 'en_foo', 'bar' => 'en_bar'], 'en');
@@ -84,7 +85,7 @@ class Zend_Controller_Router_RouteTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         // Restore server array
         $_SERVER = $this->_server;
@@ -159,7 +160,6 @@ class Zend_Controller_Router_RouteTest extends TestCase
 
         $this->assertEquals(false, $values);
     }
-
 
     public function testNotMatchedWithVariablesAndStatic()
     {
@@ -332,9 +332,7 @@ class Zend_Controller_Router_RouteTest extends TestCase
         $this->assertEquals('authors/martel', $url);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAssembleWithoutValue()
     {
         $route = new Zend_Controller_Router_Route('authors/:name');
@@ -803,8 +801,4 @@ class Zend_Controller_Router_RouteTest extends TestCase
         $values = $route->match(':foo/@bar/en_foo');
         $this->assertEquals($values['myvar'], 'foo');
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Controller_Router_RouteTests::main') {
-    Zend_Controller_Router_RouteTests::main();
 }

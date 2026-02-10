@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Controller_Action_Helper_RedirectorTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Action_Helper_RedirectorTest::main");
-}
 
 require_once 'Zend/Controller/Front.php';
 require_once 'Zend/Controller/Action.php';
@@ -80,16 +74,6 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
      * @var Zend_Controller_Action
      */
     public $controller;
-
-    /**
-     * Runs the test methods of this class.
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Action_Helper_RedirectorTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Set up redirector
      *
@@ -98,7 +82,7 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
      *
      * Also resets the front controller instance.
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $front = Zend_Controller_Front::getInstance();
         $front->resetInstance();
@@ -128,7 +112,7 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
     /**
      * Unset all properties
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->redirector);
         unset($this->controller);
@@ -174,9 +158,7 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRedirectorShouldOnlyAllowValidHttpRedirectCodes()
     {
         try {
@@ -275,7 +257,6 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
         $this->assertEquals('/blog', $this->redirector->getRedirectUrl());
     }
 
-
     public function testSetGotoRoute()
     {
         $router = Zend_Controller_Front::getInstance()->getRouter();
@@ -344,9 +325,7 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
         $this->assertEquals('/blog/list/error', $this->redirector->getRedirectUrl());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testGotoAndExit()
     {
         $this->markTestSkipped(
@@ -375,9 +354,7 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
         $this->assertEquals('/blog/archive/281', $this->redirector->getRedirectUrl());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testGotoRouteAndExit()
     {
         $this->markTestSkipped(
@@ -394,9 +371,7 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
         $this->assertEquals('/foo/bar', $this->redirector->getRedirectUrl());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testGotoUrlAndExit()
     {
         $this->markTestSkipped(
@@ -404,9 +379,7 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRedirectAndExit()
     {
         $this->markTestSkipped(
@@ -604,9 +577,4 @@ class Zend_Controller_Action_Helper_RedirectorTest extends TestCase
  */
 class Zend_Controller_Action_Helper_Redirector_TestController extends Zend_Controller_Action
 {
-}
-
-// Call Zend_Controller_Action_Helper_RedirectorTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Action_Helper_RedirectorTest::main") {
-    Zend_Controller_Action_Helper_RedirectorTest::main();
 }

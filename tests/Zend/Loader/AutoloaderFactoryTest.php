@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -23,10 +21,6 @@ use PHPUnit\TextUI\TestRunner;
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Loader_AutoloaderFactoryTest::main');
-}
 
 /*
  * Preload a number of classes to ensure they're available once we've disabled
@@ -54,14 +48,7 @@ class Zend_Loader_AutoloaderFactoryTest extends TestCase
      * @var string|bool|mixed
      */
     protected $includePath;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         // Store original autoloaders
         $this->loaders = spl_autoload_functions();
@@ -81,7 +68,7 @@ class Zend_Loader_AutoloaderFactoryTest extends TestCase
         $this->includePath = get_include_path();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Loader_AutoloaderFactory::unregisterAutoloaders();
         // Restore original autoloaders
@@ -240,8 +227,4 @@ class Zend_Loader_AutoloaderFactoryTest extends TestCase
         }
         $this->assertTrue($found, 'StandardAutoloader not registered with spl_autoload');
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Loader_AutoloaderFactoryTest::main') {
-    Zend_Loader_AutoloaderFactoryTest::main();
 }

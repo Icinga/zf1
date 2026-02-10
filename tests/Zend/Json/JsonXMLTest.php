@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -23,13 +24,10 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @version    $Id$
  */
 
-error_reporting(E_ALL | E_STRICT); // now required for each test suite
-
 /**
  * Zend_Json
  */
 require_once 'Zend/Json.php';
-
 
 /**
  * @category   Zend
@@ -591,8 +589,8 @@ EOT;
 
     /**
      * @group ZF-11385
-     * @dataProvider providerNestingDepthIsHandledProperly
      */
+    #[DataProvider('providerNestingDepthIsHandledProperly')]
     public function testNestingDepthIsHandledProperlyWhenNestingDepthExceedsMaximum($xmlStringContents)
     {
         $this->expectException(Zend_Json_Exception::class);
@@ -602,8 +600,8 @@ EOT;
 
     /**
      * @group ZF-11385
-     * @dataProvider providerNestingDepthIsHandledProperly
      */
+    #[DataProvider('providerNestingDepthIsHandledProperly')]
     public function testNestingDepthIsHandledProperlyWhenNestingDepthDoesNotExceedMaximum($xmlStringContents)
     {
         try {

@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -50,7 +50,7 @@ class Zend_Filter_HtmlEntitiesTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_filter = new Zend_Filter_HtmlEntities();
     }
@@ -269,6 +269,7 @@ class Zend_Filter_HtmlEntitiesTest extends TestCase
         } catch (Zend_Filter_Exception $e) {
             $this->assertTrue($e instanceof Zend_Filter_Exception);
         }
+        restore_error_handler();
     }
 
     /**

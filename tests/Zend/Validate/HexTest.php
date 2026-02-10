@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -28,7 +28,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  */
 require_once 'Zend/Validate/Hex.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Validate
@@ -51,7 +50,7 @@ class Zend_Validate_HexTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_Hex();
     }

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id:$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Stdlib_SplPriorityQueueTest::main');
-}
-
 require_once 'Zend/Stdlib/SplPriorityQueue.php';
 
 /**
@@ -45,14 +39,7 @@ class Zend_Stdlib_SplPriorityQueueTest extends TestCase
      * @var \Zend_Stdlib_SplPriorityQueue|mixed
      */
     protected $queue;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->queue = new Zend_Stdlib_SplPriorityQueue();
         $this->queue->insert('foo', 3);
@@ -106,8 +93,4 @@ class Zend_Stdlib_SplPriorityQueueTest extends TestCase
         $test = $this->queue->toArray();
         $this->assertSame($expected, $test, var_export($test, 1));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Stdlib_SplPriorityQueueTest::main') {
-    Zend_Stdlib_SplPriorityQueueTest::main();
 }

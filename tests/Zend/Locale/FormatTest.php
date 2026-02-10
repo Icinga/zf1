@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\Error\Notice;
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -42,7 +42,7 @@ class Zend_Locale_FormatTest extends TestCase
     /**
      * teardown / cleanup
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         // if the setlocale option is enabled, then don't change the setlocale below
         if (defined('TESTS_ZEND_LOCALE_FORMAT_SETLOCALE') && TESTS_ZEND_LOCALE_FORMAT_SETLOCALE === false) {
@@ -112,7 +112,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals('-0,75', Zend_Locale_Format::toNumber(-0.75, ['locale' => 'de_DE', 'precision' => 2]));
     }
 
-
     /**
      * test isNumber
      * expected boolean
@@ -136,7 +135,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertTrue(Zend_Locale_Format::isNumber('2,34E-7', ['locale' => 'de_AT']));
         $this->assertFalse(Zend_Locale_Format::isNumber('2.34E-7E-7', ['locale' => 'de_AT']));
     }
-
 
     /**
      * test getFloat
@@ -191,7 +189,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals('1234567.12345', Zend_Locale_Format::getFloat('1.234.567,12345', $options));
     }
 
-
     /**
      * test toFloat
      * expected string
@@ -227,7 +224,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals('1.234.567,1234500', Zend_Locale_Format::toFloat(1234567.12345, $options));
     }
 
-
     /**
      * test isFloat
      * expected boolean
@@ -248,7 +244,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertTrue(Zend_Locale_Format::isFloat('123.345'));
         $this->assertTrue(Zend_Locale_Format::isFloat('+123.345'));
     }
-
 
     /**
      * test getInteger
@@ -280,7 +275,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals(1234567, Zend_Locale_Format::getInteger('1.234.567,12345', $options));
     }
 
-
     /**
      * test toInteger
      * expected string
@@ -306,7 +300,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals('-46', Zend_Locale_Format::toInteger(-45.99, $options));
     }
 
-
     /**
      * test isInteger
      * expected boolean
@@ -317,7 +310,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertFalse(Zend_Locale_Format::isInteger('-1.234.567,12345', ['locale' => 'de_AT']));
         $this->assertFalse(Zend_Locale_Format::isInteger('textwithoutnumber', ['locale' => 'de_AT']));
     }
-
 
     /**
      * test getDate
@@ -405,7 +397,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals(11, $value['month']);
         $this->assertEquals(2006, $value['year']);
 
-
         try {
             $value = Zend_Locale_Format::getDate('Nov 10 2006', ['date_format' => 'dd.MMM.yy', 'locale' => 'de_AT']);
             $this->fail("exception expected");
@@ -417,7 +408,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals(10, $value['day']);
         $this->assertEquals(11, $value['month']);
         $this->assertEquals(2006, $value['year']);
-
 
         try {
             $value = Zend_Locale_Format::getDate('2006 10 Nov.', ['date_format' => 'dd.MMM.yy', 'locale' => 'de_AT']);
@@ -535,7 +525,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertEquals(10, $value['day']);
         $this->assertEquals(11, $value['month']);
         $this->assertEquals(2006, $value['year']);
-
 
         try {
             $value = Zend_Locale_Format::getDate('Nov 10 2006', ['locale' => 'de_AT']);
@@ -668,7 +657,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertFalse(Zend_Locale_Format::checkDateFormat('20.04.2007 00:20', ['date_format' => 'dd.MMMM.yyyy ss:mm:HH']));
     }
 
-
     /**
      * test checkDateFormat -> time
      * expected boolean
@@ -682,7 +670,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertTrue(Zend_Locale_Format::checkDateFormat('13', ['date_format' => 'HH:mm',    'locale' => 'de_AT']));
         $this->assertFalse(Zend_Locale_Format::checkDateFormat('00:13', ['date_format' => 'ss:mm:HH', 'locale' => 'de_AT']));
     }
-
 
     /**
      * test toNumberSystem
@@ -889,7 +876,6 @@ class Zend_Locale_FormatTest extends TestCase
         Zend_Locale_Format::setOptions(['date_format' => null, 'locale' => null]); // test tearDown
     }
 
-
     /**
      * test convertPhpToIso
      * expected boolean
@@ -935,7 +921,6 @@ class Zend_Locale_FormatTest extends TestCase
         $this->assertSame('HHmmss', Zend_Locale_Format::convertPhpToIsoFormat('His'));
         $this->assertSame("dd MMMM yyyy 'alle' H:mm:ss", Zend_Locale_Format::convertPhpToIsoFormat('d F Y \a\l\l\e G:i:s'));
     }
-
 
     /**
      * Test toFloat()/toNumber() when a different setlocale() is in effect,

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Form_Decorator_HtmlTagTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Decorator_HtmlTagTest::main");
-}
-
 require_once 'Zend/Form/Decorator/HtmlTag.php';
 
 require_once 'Zend/Form/Element.php';
@@ -51,25 +44,13 @@ class Zend_Form_Decorator_HtmlTagTest extends TestCase
      * @var Zend_Form_Decorator_HtmlTag
      */
     protected $decorator;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Decorator_HtmlTagTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->decorator = new Zend_Form_Decorator_HtmlTag();
     }
@@ -80,7 +61,7 @@ class Zend_Form_Decorator_HtmlTagTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -243,9 +224,4 @@ class Zend_Form_Decorator_HtmlTagTest extends TestCase
         $this->decorator->setOption('tag', 'dl');
         $this->assertEquals('dl', $this->decorator->getTag());
     }
-}
-
-// Call Zend_Form_Decorator_HtmlTagTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Decorator_HtmlTagTest::main") {
-    Zend_Form_Decorator_HtmlTagTest::main();
 }

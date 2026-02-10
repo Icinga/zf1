@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -64,7 +65,7 @@ class Zend_DateTest extends TestCase
     private $_cache = null;
     private $_orig = [];
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->originalTimezone = date_default_timezone_get();
         date_default_timezone_set('Indian/Maldives');
@@ -83,7 +84,7 @@ class Zend_DateTest extends TestCase
         Zend_Date::setOptions(['format_type' => 'iso']);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Date::setOptions($this->_orig);
         $this->_cache->clean(Zend_Cache::CLEANING_MODE_ALL);
@@ -289,8 +290,8 @@ class Zend_DateTest extends TestCase
 
     /**
      * Test for setTimestamp
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testSetTimestamp2()
     {
         try {
@@ -326,8 +327,8 @@ class Zend_DateTest extends TestCase
 
     /**
      * Test for addTimestamp
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testAddTimestamp2()
     {
         try {
@@ -353,8 +354,8 @@ class Zend_DateTest extends TestCase
 
     /**
      * Test for subTimestamp
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testSubTimestamp2()
     {
         try {

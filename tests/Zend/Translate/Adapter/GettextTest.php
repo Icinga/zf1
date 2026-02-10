@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -44,20 +42,7 @@ class Zend_Translate_Adapter_GettextTest extends TestCase
      * @var bool
      */
     protected $_errorOccurred;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Translate_Adapter_GettextTest");
-        $result = (new resources_Runner())->run($suite);
-        Zend_Translate_Adapter_Gettext::removeCache();
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (Zend_Translate_Adapter_Gettext::hasCache()) {
             Zend_Translate_Adapter_Gettext::removeCache();
@@ -326,9 +311,4 @@ class Zend_Translate_Adapter_GettextTest extends TestCase
     {
         $this->_errorOccurred = true;
     }
-}
-
-// Call Zend_Translate_Adapter_GettextTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Translate_Adapter_GettextTest::main") {
-    Zend_Translate_GettextTest::main();
 }

@@ -20,6 +20,9 @@
  */
 
 /** @see Zend_Controller_Front */
+
+use PHPUnit\Framework\TestCase;
+
 require_once 'Zend/Controller/Front.php';
 
 /** @see Zend_Controller_Action_HelperBroker */
@@ -37,14 +40,14 @@ require_once 'Zend/Registry.php';
 /**
  * Functional testing scaffold for MVC applications
  *
- * @uses       PHPUnit_Framework_TestCase
+ * @uses       PHPUnit\Framework\TestCase
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_TestCase
+abstract class Zend_Test_PHPUnit_ControllerTestCase extends TestCase
 {
     /**
      * @var mixed Bootstrap file path or callback
@@ -262,6 +265,332 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     }
 
     /**
+     * Assert that a CSS selector matches at least one node.
+     *
+     * @param string $selector
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertQuery($selector, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        if ($nodes->length === 0) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" matched any nodes', $selector));
+        }
+    }
+
+    /**
+     * Assert that a CSS selector does not match any nodes.
+     *
+     * @param string $selector
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertNotQuery($selector, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        if ($nodes->length !== 0) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" matched no nodes', $selector));
+        }
+    }
+
+    /**
+     * Assert that content of a CSS selector contains a string.
+     *
+     * @param string $selector
+     * @param mixed $match
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertQueryContentContains($selector, $match, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        $needle = (string) $match;
+        foreach ($nodes as $node) {
+            if (strpos($node->textContent, $needle) !== false) {
+                return;
+            }
+        }
+        $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" content contains "%s"', $selector, $needle));
+    }
+
+    /**
+     * Assert that content of a CSS selector does not contain a string.
+     *
+     * @param string $selector
+     * @param mixed $match
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertNotQueryContentContains($selector, $match, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        $needle = (string) $match;
+        foreach ($nodes as $node) {
+            if (strpos($node->textContent, $needle) !== false) {
+                $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" content does not contain "%s"', $selector, $needle));
+            }
+        }
+    }
+
+    /**
+     * Assert that content of a CSS selector matches a regex.
+     *
+     * @param string $selector
+     * @param string $pattern
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertQueryContentRegex($selector, $pattern, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        foreach ($nodes as $node) {
+            if (preg_match($pattern, $node->textContent)) {
+                return;
+            }
+        }
+        $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" content matches "%s"', $selector, $pattern));
+    }
+
+    /**
+     * Assert that content of a CSS selector does not match a regex.
+     *
+     * @param string $selector
+     * @param string $pattern
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertNotQueryContentRegex($selector, $pattern, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        foreach ($nodes as $node) {
+            if (preg_match($pattern, $node->textContent)) {
+                $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" content does not match "%s"', $selector, $pattern));
+            }
+        }
+    }
+
+    /**
+     * Assert that a CSS selector matches at least a minimum number of nodes.
+     *
+     * @param string $selector
+     * @param int $min
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertQueryCountMin($selector, $min, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        if ($nodes->length < $min) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" matched at least %d nodes', $selector, $min));
+        }
+    }
+
+    /**
+     * Assert that a CSS selector matches at most a maximum number of nodes.
+     *
+     * @param string $selector
+     * @param int $max
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertQueryCountMax($selector, $max, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        if ($nodes->length > $max) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" matched at most %d nodes', $selector, $max));
+        }
+    }
+
+    /**
+     * Assert that a CSS selector matches exactly a number of nodes.
+     *
+     * @param string $selector
+     * @param int $count
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertQueryCount($selector, $count, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryCss($selector, $content);
+        if ($nodes->length !== $count) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that selector "%s" matched %d nodes', $selector, $count));
+        }
+    }
+
+    /**
+     * Assert that an XPath query matches at least one node.
+     *
+     * @param string $xpath
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertXpath($xpath, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        if ($nodes->length === 0) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" matched any nodes', $xpath));
+        }
+    }
+
+    /**
+     * Assert that an XPath query matches no nodes.
+     *
+     * @param string $xpath
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertNotXpath($xpath, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        if ($nodes->length !== 0) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" matched no nodes', $xpath));
+        }
+    }
+
+    /**
+     * Assert that XPath content contains a string.
+     *
+     * @param string $xpath
+     * @param mixed $match
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertXpathContentContains($xpath, $match, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        $needle = (string) $match;
+        foreach ($nodes as $node) {
+            if (strpos($node->textContent, $needle) !== false) {
+                return;
+            }
+        }
+        $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" content contains "%s"', $xpath, $needle));
+    }
+
+    /**
+     * Assert that XPath content does not contain a string.
+     *
+     * @param string $xpath
+     * @param mixed $match
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertNotXpathContentContains($xpath, $match, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        $needle = (string) $match;
+        foreach ($nodes as $node) {
+            if (strpos($node->textContent, $needle) !== false) {
+                $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" content does not contain "%s"', $xpath, $needle));
+            }
+        }
+    }
+
+    /**
+     * Assert that XPath content matches a regex.
+     *
+     * @param string $xpath
+     * @param string $pattern
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertXpathContentRegex($xpath, $pattern, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        foreach ($nodes as $node) {
+            if (preg_match($pattern, $node->textContent)) {
+                return;
+            }
+        }
+        $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" content matches "%s"', $xpath, $pattern));
+    }
+
+    /**
+     * Assert that XPath content does not match a regex.
+     *
+     * @param string $xpath
+     * @param string $pattern
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertNotXpathContentRegex($xpath, $pattern, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        foreach ($nodes as $node) {
+            if (preg_match($pattern, $node->textContent)) {
+                $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" content does not match "%s"', $xpath, $pattern));
+            }
+        }
+    }
+
+    /**
+     * Assert that an XPath query matches at least a minimum number of nodes.
+     *
+     * @param string $xpath
+     * @param int $min
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertXpathCountMin($xpath, $min, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        if ($nodes->length < $min) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" matched at least %d nodes', $xpath, $min));
+        }
+    }
+
+    /**
+     * Assert that an XPath query matches at most a maximum number of nodes.
+     *
+     * @param string $xpath
+     * @param int $max
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertXpathCountMax($xpath, $max, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        if ($nodes->length > $max) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" matched at most %d nodes', $xpath, $max));
+        }
+    }
+
+    /**
+     * Assert that an XPath query matches exactly a number of nodes.
+     *
+     * @param string $xpath
+     * @param int $count
+     * @param string|null $content
+     * @param string $message
+     */
+    public function assertXpathCount($xpath, $count, $content = null, $message = '')
+    {
+        $this->_incrementAssertionCount();
+        $nodes = $this->_queryXpath($xpath, $content);
+        if ($nodes->length !== $count) {
+            $this->_failDomAssertion($message ?: sprintf('Failed asserting that XPath "%s" matched %d nodes', $xpath, $count));
+        }
+    }
+
+    /**
      * Assert that response is a redirect
      *
      * @param string $message
@@ -269,8 +598,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertRedirect($message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/Redirect.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect();
+        require_once 'Zend/Test/PHPUnit/Constraint/Redirect41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect41();
         $response   = $this->response;
         if (!$constraint->evaluate($response, __FUNCTION__)) {
             $constraint->fail($response, $message);
@@ -285,8 +614,8 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertNotRedirect($message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/Redirect.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect();
+        require_once 'Zend/Test/PHPUnit/Constraint/Redirect41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect41();
         $response   = $this->response;
         if (!$constraint->evaluate($response, __FUNCTION__)) {
             $constraint->fail($response, $message);
@@ -302,10 +631,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertRedirectTo($url, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/Redirect.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect();
+        require_once 'Zend/Test/PHPUnit/Constraint/Redirect41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $url)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $url)) {
             $constraint->fail($response, $message);
         }
     }
@@ -319,10 +648,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertNotRedirectTo($url, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/Redirect.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect();
+        require_once 'Zend/Test/PHPUnit/Constraint/Redirect41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $url)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $url)) {
             $constraint->fail($response, $message);
         }
     }
@@ -336,10 +665,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertRedirectRegex($pattern, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/Redirect.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect();
+        require_once 'Zend/Test/PHPUnit/Constraint/Redirect41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $pattern)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $pattern)) {
             $constraint->fail($response, $message);
         }
     }
@@ -353,10 +682,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertNotRedirectRegex($pattern, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/Redirect.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect();
+        require_once 'Zend/Test/PHPUnit/Constraint/Redirect41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_Redirect41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $pattern)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $pattern)) {
             $constraint->fail($response, $message);
         }
     }
@@ -370,10 +699,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertResponseCode($code, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $code)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $code)) {
             $constraint->fail($response, $message);
         }
     }
@@ -387,11 +716,11 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertNotResponseCode($code, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $constraint->setNegate(true);
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $code)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $code)) {
             $constraint->fail($response, $message);
         }
     }
@@ -405,10 +734,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertHeader($header, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $header)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $header)) {
             $constraint->fail($response, $message);
         }
     }
@@ -422,11 +751,11 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertNotHeader($header, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $constraint->setNegate(true);
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $header)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $header)) {
             $constraint->fail($response, $message);
         }
     }
@@ -441,10 +770,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertHeaderContains($header, $match, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $header, $match)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $header, $match)) {
             $constraint->fail($response, $message);
         }
     }
@@ -459,11 +788,11 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertNotHeaderContains($header, $match, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $constraint->setNegate(true);
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $header, $match)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $header, $match)) {
             $constraint->fail($response, $message);
         }
     }
@@ -478,10 +807,10 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertHeaderRegex($header, $pattern, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $header, $pattern)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $header, $pattern)) {
             $constraint->fail($response, $message);
         }
     }
@@ -496,11 +825,11 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
     public function assertNotHeaderRegex($header, $pattern, $message = '')
     {
         $this->_incrementAssertionCount();
-        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader.php';
-        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader();
+        require_once 'Zend/Test/PHPUnit/Constraint/ResponseHeader41.php';
+        $constraint = new Zend_Test_PHPUnit_Constraint_ResponseHeader41();
         $constraint->setNegate(true);
         $response   = $this->response;
-        if (!$constraint->evaluate($response, __FUNCTION__, $header, $pattern)) {
+        if (!$constraint->evaluate($response, __FUNCTION__, false, $header, $pattern)) {
             $constraint->fail($response, $message);
         }
     }
@@ -751,20 +1080,176 @@ abstract class Zend_Test_PHPUnit_ControllerTestCase extends PHPUnit_Framework_Te
      */
     protected function _incrementAssertionCount()
     {
+        if (method_exists($this, 'addToAssertionCount')) {
+            $this->addToAssertionCount(1);
+        }
+
         $stack = debug_backtrace();
         foreach ($stack as $step) {
             if (isset($step['object'])
-                && $step['object'] instanceof PHPUnit_Framework_TestCase
+                && $step['object'] instanceof \PHPUnit\Framework\TestCase
+                && $step['object'] !== $this
             ) {
-                if (version_compare(PHPUnit_Runner_Version::id(), '3.3.0', 'lt')) {
-                    break;
-                } elseif (version_compare(PHPUnit_Runner_Version::id(), '3.3.3', 'lt')) {
-                    $step['object']->incrementAssertionCounter();
-                } else {
-                    $step['object']->addToAssertionCount(1);
-                }
+                $step['object']->addToAssertionCount(1);
                 break;
             }
         }
+    }
+
+    /**
+     * Return number of assertions performed on this test case.
+     *
+     * @return int
+     */
+    public function getNumAssertions()
+    {
+        if (method_exists($this, 'numberOfAssertionsPerformed')) {
+            return $this->numberOfAssertionsPerformed();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Fail with a Zend_Test constraint exception.
+     *
+     * @param string $message
+     * @throws Zend_Test_PHPUnit_Constraint_Exception
+     */
+    protected function _failDomAssertion($message)
+    {
+        require_once 'Zend/Test/PHPUnit/Constraint/Exception.php';
+        throw new Zend_Test_PHPUnit_Constraint_Exception($message);
+    }
+
+    /**
+     * Query DOM using a CSS selector (limited support).
+     *
+     * @param string $selector
+     * @param string|null $content
+     * @return DOMNodeList
+     */
+    protected function _queryCss($selector, $content = null)
+    {
+        $xpath = $this->_cssToXpath($selector);
+        return $this->_queryXpath($xpath, $content);
+    }
+
+    /**
+     * Query DOM using XPath.
+     *
+     * @param string $xpath
+     * @param string|null $content
+     * @return DOMNodeList
+     */
+    protected function _queryXpath($xpath, $content = null)
+    {
+        $xpath = $this->_normalizeXpath($xpath);
+        $doc = $this->_getDomDocument($content);
+        $xpathObj = new DOMXPath($doc);
+        return $xpathObj->query($xpath);
+    }
+
+    /**
+     * Convert a minimal subset of CSS selectors to XPath.
+     *
+     * Supports tag, #id, and .class with descendant separators.
+     *
+     * @param string $selector
+     * @return string
+     */
+    protected function _cssToXpath($selector)
+    {
+        $selector = trim($selector);
+        if ($selector === '') {
+            return '//*';
+        }
+
+        $parts = preg_split('/\s+/', $selector);
+        $xpath = '';
+        foreach ($parts as $part) {
+            if ($part === '') {
+                continue;
+            }
+            $xpath .= '//' . $this->_cssTokenToXpath($part);
+        }
+        return $xpath;
+    }
+
+    /**
+     * Convert a single CSS token to XPath.
+     *
+     * @param string $token
+     * @return string
+     */
+    protected function _cssTokenToXpath($token)
+    {
+        $tag = '*';
+        $id = null;
+        $classes = [];
+
+        if (preg_match('/^([a-zA-Z0-9_-]*)?(?:#([a-zA-Z0-9_-]+))?(?:\.([a-zA-Z0-9_.-]+))?$/', $token, $matches)) {
+            if ($matches[1] !== '') {
+                $tag = $matches[1];
+            }
+            if (!empty($matches[2])) {
+                $id = $matches[2];
+            }
+            if (!empty($matches[3])) {
+                $classes = array_filter(explode('.', $matches[3]));
+            }
+        } else {
+            return $token;
+        }
+
+        $predicates = [];
+        if ($id !== null) {
+            $predicates[] = "@id='{$id}'";
+        }
+        foreach ($classes as $class) {
+            $predicates[] = "contains(concat(' ', normalize-space(@class), ' '), ' {$class} ')";
+        }
+
+        if ($predicates) {
+            $tag .= '[' . implode(' and ', $predicates) . ']';
+        }
+
+        return $tag;
+    }
+
+    /**
+     * Build a DOMDocument from response content.
+     *
+     * @param string|null $content
+     * @return DOMDocument
+     */
+    protected function _getDomDocument($content = null)
+    {
+        if ($content === null) {
+            $content = $this->getResponse()->getBody();
+        }
+
+        $doc = new DOMDocument();
+        $previous = libxml_use_internal_errors(true);
+        $doc->loadHTML('<?xml encoding="UTF-8">' . (string) $content);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        return $doc;
+    }
+
+    /**
+     * Normalize XPath expressions for class matching.
+     *
+     * @param string $xpath
+     * @return string
+     */
+    protected function _normalizeXpath($xpath)
+    {
+        return preg_replace(
+            "/contains\\(@class,\\s*'([^']+)'\\)/",
+            "contains(concat(' ', normalize-space(@class), ' '), '$1')",
+            $xpath
+        );
     }
 }

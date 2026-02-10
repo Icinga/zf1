@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+
 /**
  * Zend Framework
  *
@@ -47,7 +50,7 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
      *
      * @var array
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         if (defined('TESTS_ZEND_HTTP_CLIENT_HTTP_PROXY') &&
               TESTS_ZEND_HTTP_CLIENT_HTTP_PROXY) {
@@ -87,7 +90,7 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
                 'proxy_pass' => $pass,
             ];
 
-            parent::set_up();
+            parent::setUp();
         } else {
             $this->markTestSkipped("Zend_Http_Client proxy server tests are not enabled in TestConfiguration.php");
         }
@@ -112,9 +115,8 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
         $this->assertEquals($this->client->getLastRequest(), $res->getBody(), 'Response body should be exactly like the last request');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testGetLastRequest()
     {
         /**
@@ -123,7 +125,7 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
          * the TRACE response
          */
     }
-    
+
     /**
      * @group ZF-3189
      */
@@ -132,14 +134,14 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
         // Change the adapter
         $this->config['adapter'] = 'ZF3189_ProxyAdapter';
         $this->config['useragent'] = 'ZendTest';
-        parent::set_up();
-        
+        parent::setUp();
+
         $base = preg_replace("/^http:/", "https:", $this->baseuri);
         $this->client->setUri($base . 'testSimpleRequests.php');
 
         // Ensure we're proxying a HTTPS request
         $this->assertEquals('https', $this->client->getUri()->getScheme());
-        
+
         // Perform the request
         $this->client->request();
 
@@ -148,7 +150,7 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
             $this->client->getAdapter()->getLastConnectHandshakeRequest()
         );
     }
-    
+
     /**
      * @group ZF-3189
      */
@@ -156,15 +158,15 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
     {
         // Change the adapter
         $this->config['adapter'] = 'ZF3189_ProxyAdapter';
-        parent::set_up();
-        
+        parent::setUp();
+
         $base = preg_replace("/^http:/", "https:", $this->baseuri);
         $this->client->setUri($base . 'testSimpleRequests.php');
         $this->client->setHeaders('User-Agent', 'ZendTest');
 
         // Ensure we're proxying a HTTPS request
         $this->assertEquals('https', $this->client->getUri()->getScheme());
-        
+
         // Perform the request
         $this->client->request();
         print_r($this->client->getAdapter()->getLastConnectHandshakeRequest());
@@ -173,7 +175,7 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
             $this->client->getAdapter()->getLastConnectHandshakeRequest()
         );
     }
-    
+
     /**
      * @group ZF-3189
      */
@@ -181,19 +183,19 @@ class Zend_Http_Client_ProxyAdapterTest extends Zend_Http_Client_SocketTest
     {
         // Change the adapter
         $this->config['adapter'] = 'ZF3189_ProxyAdapter';
-        parent::set_up();
-        
+        parent::setUp();
+
         $base = preg_replace("/^http:/", "https:", $this->baseuri);
         $this->client->setUri($base . 'testSimpleRequests.php');
         $this->client->setHeaders('Proxy-Authorization', 'FooBarBaz');
 
         // Ensure we're proxying a HTTPS request
         $this->assertEquals('https', $this->client->getUri()->getScheme());
-        
+
         // Perform the request
         $this->client->request();
         print_r($this->client->getAdapter()->getLastConnectHandshakeRequest());
-        
+
         $resp = $this->client->getAdapter()->getLastConnectHandshakeRequest();
         $this->assertEquals(1, preg_match_all('/\r\nProxy-Authorization: ([^\r\n]+)\r\n/i', $resp, $matches));
         $this->assertEquals('FooBarBaz', $matches[1][0]);

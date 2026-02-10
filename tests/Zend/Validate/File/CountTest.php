@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_CountTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_CountTest::main");
-}
-
 /**
  * @see Zend_Validate_File_Count
  */
@@ -45,17 +38,6 @@ require_once 'Zend/Validate/File/Count.php';
  */
 class Zend_Validate_File_CountTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_CountTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Ensures that the validator follows expected behavior
      *
@@ -175,9 +157,4 @@ class Zend_Validate_File_CountTest extends TestCase
         $validator->setMin(100);
         $this->assertEquals(1000000, $validator->getMax());
     }
-}
-
-// Call Zend_Validate_File_CountTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_CountTest::main") {
-    Zend_Validate_File_CountTest::main();
 }

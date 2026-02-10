@@ -1,8 +1,4 @@
 <?php
-
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
-
 /**
  * Zend Framework
  *
@@ -17,44 +13,20 @@ use PHPUnit\TextUI\TestRunner;
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Test
+ * @package    Zend_Loader
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Test_AllTests::main');
-}
-
-require_once 'Zend/Test/PHPUnit/AllTests.php';
-
 /**
  * @category   Zend
- * @package    Zend_Test
+ * @package    Zend_Loader
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Test
  */
-class Zend_Test_AllTests
+class ZfTest_TestCache
 {
-    public static function main()
-    {
-        (new resources_Runner())->run(self::suite());
-    }
-
-    public static function suite()
-    {
-        $suite = new TestSuite('Zend Framework - Zend_Test');
-
-        $suite->addTest(Zend_Test_PHPUnit_AllTests::suite());
-
-        return $suite;
-    }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Test_AllTests::main') {
-    Zend_Test_AllTests::main();
 }

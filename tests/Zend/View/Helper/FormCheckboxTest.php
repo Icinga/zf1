@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_FormCheckboxTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_FormCheckboxTest::main");
-}
 
 require_once 'Zend/View/Helper/FormCheckbox.php';
 require_once 'Zend/View.php';
@@ -58,20 +51,7 @@ class Zend_View_Helper_FormCheckboxTest extends TestCase
      * @var Zend_View_Helper_FormImage
      */
     protected $helper;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_FormCheckboxTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (Zend_Registry::isRegistered('Zend_View_Helper_Doctype')) {
             $registry = Zend_Registry::getInstance();
@@ -358,9 +338,4 @@ class Zend_View_Helper_FormCheckboxTest extends TestCase
             $html
         );
     }
-}
-
-// Call Zend_View_Helper_FormCheckboxTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_FormCheckboxTest::main") {
-    Zend_View_Helper_FormCheckboxTest::main();
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_View_Helper_Placeholder_Container_AbstractTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_Placeholder_ContainerTest::main");
-}
-
 /** Zend_View_Helper_Placeholder_Container */
 require_once 'Zend/View/Helper/Placeholder/Container.php';
 
@@ -50,25 +43,13 @@ class Zend_View_Helper_Placeholder_ContainerTest extends TestCase
      * @var Zend_View_Helper_Placeholder_Container
      */
     public $container;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_Placeholder_ContainerTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->container = new Zend_View_Helper_Placeholder_Container([]);
     }
@@ -79,7 +60,7 @@ class Zend_View_Helper_Placeholder_ContainerTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->container);
     }
@@ -466,9 +447,4 @@ class Zend_View_Helper_Placeholder_ContainerTest extends TestCase
         $this->container->setPrefix('</li></ul>');
         $this->assertEquals('', (string) $this->container);
     }
-}
-
-// Call Zend_View_Helper_Placeholder_ContainerTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_Placeholder_ContainerTest::main") {
-    Zend_View_Helper_Placeholder_ContainerTest::main();
 }

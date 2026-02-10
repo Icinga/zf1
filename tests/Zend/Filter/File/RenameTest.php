@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Filter_File_RenameTest::main");
-}
 
 /**
  * @see Zend_Filter_File_Rename
@@ -85,24 +79,12 @@ class Zend_Filter_File_RenameTest extends TestCase
      * @var string
      */
     protected $_newDirFile;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Filter_File_RenameTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets the path to test files
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_filesPath = dirname(__FILE__) . DIRECTORY_SEPARATOR
                           . '..' . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
@@ -132,7 +114,7 @@ class Zend_Filter_File_RenameTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if (!file_exists($this->_oldFile)) {
             copy($this->_origFile, $this->_oldFile);
@@ -465,8 +447,4 @@ class Zend_Filter_File_RenameTest extends TestCase
             $this->assertStringContainsString('Invalid options', $e->getMessage());
         }
     }
-}
-
-if (PHPUnit_MAIN_METHOD === "Zend_Filter_File_RenameTest::main") {
-    Zend_Filter_File_RenameTest::main();
 }

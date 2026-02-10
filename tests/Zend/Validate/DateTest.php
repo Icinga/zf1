@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -57,7 +58,7 @@ class Zend_Validate_DateTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_Date();
     }
@@ -220,6 +221,7 @@ class Zend_Validate_DateTest extends TestCase
     /**
      * @ZF-6374
      */
+    #[RunInSeparateProcess]
     public function testUsingApplicationLocale()
     {
         Zend_Registry::set('Zend_Locale', new Zend_Locale('de'));

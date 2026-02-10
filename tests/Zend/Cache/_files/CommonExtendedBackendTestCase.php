@@ -21,9 +21,9 @@
  */
 
 /**
- * @see Zend_Cache_CommonBackendTest
+ * @see Zend_Cache_CommonBackendTestCase
  */
-require_once 'CommonBackendTest.php';
+require_once 'CommonBackendTestCase.php';
 
 /**
  * @category   Zend
@@ -33,18 +33,14 @@ require_once 'CommonBackendTest.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Cache
  */
-class Zend_Cache_CommonExtendedBackendTest extends Zend_Cache_CommonBackendTest
+abstract class Zend_Cache_CommonExtendedBackendTestCase extends Zend_Cache_CommonBackendTestCase
 {
     private $_capabilities;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    protected function setUp(): void
     {
-        parent::__construct($name);
-    }
+        parent::setUp();
 
-    public function set_up($notag = false)
-    {
-        parent::set_up($notag);
         $this->_capabilities = $this->_instance->getCapabilities();
     }
 
@@ -132,7 +128,6 @@ class Zend_Cache_CommonExtendedBackendTest extends Zend_Cache_CommonBackendTest
         $res = $this->_instance->getIdsMatchingTags(['tag9999']);
         $this->assertTrue(count($res) == 0);
     }
-
 
     public function testGetIdsMatchingTags4()
     {

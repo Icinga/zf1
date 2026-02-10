@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Form_ElementTest::main');
-}
 
 require_once 'Zend/Form/Element.php';
 
@@ -62,14 +57,7 @@ class Zend_Form_ElementTest extends TestCase
      * @var string
      */
     private $error;
-
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Form_ElementTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Registry::_unsetInstance();
         Zend_Form::setDefaultTranslator(null);
@@ -82,7 +70,7 @@ class Zend_Form_ElementTest extends TestCase
         Zend_Controller_Action_HelperBroker::resetHelpers();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -104,9 +92,7 @@ class Zend_Form_ElementTest extends TestCase
         return $view;
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorRequiresMinimallyElementName()
     {
         try {
@@ -785,7 +771,6 @@ class Zend_Form_ElementTest extends TestCase
         $this->assertEquals(1, $order['Zend_Validate_Alnum'], var_export($order, 1));
     }
 
-
     public function testCanAddMultipleValidators()
     {
         $this->_checkZf2794();
@@ -1073,9 +1058,7 @@ class Zend_Form_ElementTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCanValidateElement()
     {
         $this->element->addValidator(new Zend_Validate_NotEmpty())
@@ -1696,9 +1679,7 @@ class Zend_Form_ElementTest extends TestCase
         $this->assertEquals('bat', $this->element->baz);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetOptionsSkipsCallsToSetOptionsAndSetConfig()
     {
         $options = $this->getOptions();
@@ -1708,9 +1689,7 @@ class Zend_Form_ElementTest extends TestCase
         $this->element->setOptions($options);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetOptionsSkipsSettingAccessorsRequiringObjectsWhenNoObjectPresent()
     {
         $options = $this->getOptions();
@@ -2241,7 +2220,7 @@ class Zend_Form_ElementTest extends TestCase
         $validator = $username->getValidator('regex');
         $this->assertTrue($this->isBreakChainOnFailure($username, get_class($validator)));
     }
-    
+
     /**
      * @group ZF-12173
      */
@@ -2312,8 +2291,4 @@ class Zend_Form_ElementTest_ArrayFilter implements Zend_Filter_Interface
         }
         return (strstr($value, 'ba'));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Form_ElementTest::main') {
-    Zend_Form_ElementTest::main();
 }

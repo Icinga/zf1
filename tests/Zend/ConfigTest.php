@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -66,7 +66,7 @@ class Zend_ConfigTest extends TestCase
      */
     protected $_invalidkey;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         // Arrays representing common config configurations
         $this->_all = [

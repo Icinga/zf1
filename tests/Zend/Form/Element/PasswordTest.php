@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Form_Element_PasswordTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Element_PasswordTest::main");
-}
 
 require_once 'Zend/Form/Element/Password.php';
 require_once 'Zend/View.php';
@@ -54,25 +47,13 @@ class Zend_Form_Element_PasswordTest extends TestCase
      * @var array
      */
     protected $errors;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Element_PasswordTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->errors = [];
         $this->element = new Zend_Form_Element_Password('foo');
@@ -84,7 +65,7 @@ class Zend_Form_Element_PasswordTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -187,9 +168,4 @@ class Zend_Form_Element_PasswordTest extends TestCase
         $test = $this->element->render();
         $this->assertStringContainsString('value="foobar"', $test);
     }
-}
-
-// Call Zend_Form_Element_PasswordTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Element_PasswordTest::main") {
-    Zend_Form_Element_PasswordTest::main();
 }

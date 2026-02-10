@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_FormTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_FormTest::main");
-}
 
 require_once 'Zend/View.php';
 require_once 'Zend/View/Helper/Form.php';
@@ -55,26 +48,13 @@ class Zend_View_Helper_FormTest extends TestCase
      * @var Zend_View_Helper_Form
      */
     protected $helper;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_FormTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @access protected
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->view = new Zend_View();
         $this->helper = new Zend_View_Helper_Form();
@@ -87,7 +67,7 @@ class Zend_View_Helper_FormTest extends TestCase
      *
      * @access protected
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -115,7 +95,7 @@ class Zend_View_Helper_FormTest extends TestCase
         $form = $this->helper->form('', ['action' => '/foo', 'method' => 'get', 'id' => null]);
         $this->assertDoesNotMatchRegularExpression('/<form[^>]*(id="")/', $form);
     }
-    
+
     /**
      * @group ZF-10791
      */
@@ -125,7 +105,7 @@ class Zend_View_Helper_FormTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/<form[^>]*(name="OrigName")/', $form);
         $this->assertMatchesRegularExpression('/<form[^>]*(name="SomeNameAttr")/', $form);
     }
-    
+
     /**
      * @group ZF-10791
      */
@@ -134,7 +114,7 @@ class Zend_View_Helper_FormTest extends TestCase
         $form = $this->helper->form('', ['action' => '/foo', 'method' => 'get']);
         $this->assertDoesNotMatchRegularExpression('/<form[^>]*(name=".*")/', $form);
     }
-    
+
     /**
      * @group ZF-10791
      */
@@ -143,7 +123,7 @@ class Zend_View_Helper_FormTest extends TestCase
         $form = $this->helper->form('FormName', ['action' => '/foo', 'method' => 'get']);
         $this->assertMatchesRegularExpression('/<form[^>]*(name="FormName")/', $form);
     }
-    
+
     /**
      * @group ZF-10791
      */
@@ -152,7 +132,7 @@ class Zend_View_Helper_FormTest extends TestCase
         $form = $this->helper->form('', ['action' => '/foo', 'method' => 'get', 'name' => null]);
         $this->assertDoesNotMatchRegularExpression('/<form[^>]*(name=".*")/', $form);
     }
-    
+
     /**
      * @group ZF-10791
      */
@@ -161,7 +141,7 @@ class Zend_View_Helper_FormTest extends TestCase
         $form = $this->helper->form('RealName', ['action' => '/foo', 'method' => 'get', 'name' => null]);
         $this->assertMatchesRegularExpression('/<form[^>]*(name="RealName")/', $form);
     }
-        
+
     /**
      * @group ZF-10791
      */
@@ -171,7 +151,7 @@ class Zend_View_Helper_FormTest extends TestCase
         $form = $this->helper->form('FormName', ['action' => '/foo', 'method' => 'get']);
         $this->assertDoesNotMatchRegularExpression('/<form[^>]*(name="FormName")/', $form);
     }
-        
+
     /**
      * @group ZF-10791
      */
@@ -192,9 +172,4 @@ class Zend_View_Helper_FormTest extends TestCase
         $form = $this->helper->form('');
         $this->assertDoesNotMatchRegularExpression('/<form[^>]*(action="")/', $form);
     }
-}
-
-// Call Zend_View_Helper_FormTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_FormTest::main") {
-    Zend_View_Helper_FormTest::main();
 }

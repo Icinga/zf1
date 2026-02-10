@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -34,14 +35,12 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  */
 class Zend_Http_Client_Skip_SocketTest extends TestCase
 {
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->markTestSkipped("Zend_Http_Client dynamic tests are not enabled in TestConfiguration.php");
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSocket()
     {
         // this is here only so we have at least one test
@@ -59,14 +58,12 @@ class Zend_Http_Client_Skip_SocketTest extends TestCase
  */
 class Zend_Http_Client_Skip_ProxyAdapterTest extends TestCase
 {
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->markTestSkipped("Zend_Http_Client proxy server tests are not enabled in TestConfiguration.php");
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testProxyAdapter()
     {
         // this is here only so we have at least one test

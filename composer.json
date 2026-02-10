@@ -20,15 +20,10 @@
     }
   },
   "autoload-dev": {
+    "files": ["tests/phar-compat-aliases.php"],
     "psr-0": {
       "Zend_": "tests/",
       "resources_": "tests/"
     }
-  },
-  "scripts": {
-    "test": [
-      "Composer\\Config::disableProcessTimeout",
-      "phpunit --bootstrap tests/TestHelper.php tests/Zend/AllTests.php"
-    ]
   }
 }

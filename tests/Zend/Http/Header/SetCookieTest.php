@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -217,8 +218,8 @@ class Zend_Http_Header_SetCookieTest extends TestCase
     }
     
     /**
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testGetFieldValue($cStr, $info, $expected)
     {
         $cookie = Zend_Http_Header_SetCookie::fromString($cStr);
@@ -230,8 +231,8 @@ class Zend_Http_Header_SetCookieTest extends TestCase
     }
     
     /**
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testToString($cStr, $info, $expected)
     {
         $cookie = Zend_Http_Header_SetCookie::fromString($cStr);
@@ -242,8 +243,8 @@ class Zend_Http_Header_SetCookieTest extends TestCase
     }
 
     /**
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testAddingAsRawHeaderToResponseObject($cStr, $info, $expected)
     {
         $response = new Zend_Controller_Response_HttpTestCase();
@@ -400,7 +401,7 @@ class Zend_Http_Header_SetCookieTest extends TestCase
         ];
     }
 
-    public function invalidCookieComponentValues()
+    public static function invalidCookieComponentValues()
     {
         return [
             'setName' => ['setName', "This\r\nis\nan\revil\r\n\r\nvalue"],
@@ -411,9 +412,9 @@ class Zend_Http_Header_SetCookieTest extends TestCase
         ];
     }
 
+    #[DataProvider('invalidCookieComponentValues')]
     /**
      * @group ZF2015-04
-     * @dataProvider invalidCookieComponentValues
      */
     public function testDoesNotAllowCRLFAttackVectorsViaSetters($setter, $value)
     {

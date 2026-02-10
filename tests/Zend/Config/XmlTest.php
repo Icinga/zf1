@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -73,7 +73,7 @@ class Zend_Config_XmlTest extends TestCase
     protected $_xmlFileCircularConfig;
     protected $_xmlFileInvalid;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_xmlFileConfig = dirname(__FILE__) . '/_files/config.xml';
         $this->_xmlFileAllSectionsConfig = dirname(__FILE__) . '/_files/allsections.xml';
@@ -236,6 +236,11 @@ class Zend_Config_XmlTest extends TestCase
             $config = new Zend_Config_Xml($this->_xmlFileInvalid);
             $this->fail('An expected Zend_Config_Exception has not been raised');
         } catch (Zend_Config_Exception $expected) {
+            /**
+             * Zend_Config_Xml construct missing call restore_error_handler()
+             * on internal exception handler when xml file not exist.
+             */
+            restore_error_handler();
             $this->assertStringContainsString('failed to load', $expected->getMessage());
         }
         try {
@@ -353,7 +358,6 @@ EOT;
         </db>
         <debug>false</debug>
     </staging>
-
 
 </config>
 EOT;

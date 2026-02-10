@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -45,12 +46,12 @@ class Zend_Http_Client_ClientTest extends TestCase
      * Set up the test case
      *
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->client = new Zend_Http_Client();
     }
 
-    public function invalidHeaders()
+    public static function invalidHeaders()
     {
         return [
             'invalid-name-cr' => ["X-Foo-\rBar", 'value'],
@@ -65,8 +66,8 @@ class Zend_Http_Client_ClientTest extends TestCase
         ];
     }
 
+    #[DataProvider('invalidHeaders')]
     /**
-     * @dataProvider invalidHeaders
      * @group ZF2015-04
      */
     public function testHeadersContainingCRLFInjectionRaiseAnException($name, $value)

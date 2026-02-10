@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -31,10 +29,6 @@ require_once 'Zend/Controller/Router/Route/Hostname.php';
 /** Zend_Controller_Request_Http */
 require_once 'Zend/Controller/Request/Http.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Controller_Router_Route_HostnameTest::main');
-}
-
 /**
  * @category   Zend
  * @package    Zend_Controller
@@ -46,18 +40,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
  */
 class Zend_Controller_Router_Route_HostnameTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Router_Route_HostnameTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testCorrectStaticHostMatch()
     {
         $route = $this->_getStaticHostRoute();
@@ -274,8 +256,4 @@ class Zend_Controller_Router_RewriteTest_Request_Stub extends Zend_Controller_Re
     {
         return $this->_scheme;
     }
-}
-
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Router_Route_HostnameTest::main") {
-    Zend_Controller_Router_Route_HostnameTest::main();
 }

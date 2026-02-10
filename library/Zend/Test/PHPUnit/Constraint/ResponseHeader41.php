@@ -20,17 +20,20 @@
  * @version    $Id$
  */
 
+use PHPUnit\Framework\Constraint\Constraint;
+use SebastianBergmann\Comparator\ComparisonFailure;
+
 /**
  * Response header PHPUnit Constraint
  *
- * @uses       PHPUnit_Framework_Constraint
+ * @uses       PHPUnit\Framework\Constraint\Constraint
  * @category   Zend
  * @package    Zend_Test
  * @subpackage PHPUnit
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Test_PHPUnit_Constraint_ResponseHeader41 extends PHPUnit_Framework_Constraint
+class Zend_Test_PHPUnit_Constraint_ResponseHeader41 extends Constraint
 {
     /**#@+
      * Assertion type constants
@@ -119,7 +122,7 @@ class Zend_Test_PHPUnit_Constraint_ResponseHeader41 extends PHPUnit_Framework_Co
      *     public function evaluate($other, $description = '', $returnResult = FALSE)
      * We use the new interface for PHP-strict checking, but emulate the old one
      */
-    public function evaluate($response, $assertType = '', $variable = FALSE)
+    public function evaluate(mixed $response, string $assertType = '', bool $returnResult = false, ...$args): ?bool
     {
         if (!$response instanceof Zend_Controller_Response_Abstract) {
             require_once 'Zend/Test/PHPUnit/Constraint/Exception.php';
@@ -138,8 +141,15 @@ class Zend_Test_PHPUnit_Constraint_ResponseHeader41 extends PHPUnit_Framework_Co
 
         $this->_assertType = $assertType;
 
-        $argv     = func_get_args();
-        $argc     = func_num_args();
+        $argv = [$response, $assertType];
+        // might be called with two extra arguments
+        if (isset($args[0])) {
+            $argv[] = $args[0];
+        }
+        if (isset($args[1])) {
+            $argv[] = $args[1];
+        }
+        $argc = count($argv);
 
         switch ($assertType) {
             case self::ASSERT_RESPONSE_CODE:
@@ -204,7 +214,7 @@ class Zend_Test_PHPUnit_Constraint_ResponseHeader41 extends PHPUnit_Framework_Co
      * NOTE 2:
      * Interface changed again in PHPUnit 4.1.0 because of refactoring to SebastianBergmann\Comparator
      */
-    public function fail($other, $description, ?\SebastianBergmann\Comparator\ComparisonFailure $cannot_be_used = NULL)
+    public function fail(mixed $other, string $description, ?ComparisonFailure $comparisonFailure = null): never
     {
         require_once 'Zend/Test/PHPUnit/Constraint/Exception.php';
         switch ($this->_assertType) {
@@ -255,7 +265,7 @@ class Zend_Test_PHPUnit_Constraint_ResponseHeader41 extends PHPUnit_Framework_Co
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return '';
     }

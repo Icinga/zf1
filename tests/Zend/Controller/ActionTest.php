@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,12 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Controller_ActionTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_ActionTest::main");
-}
-
-
 require_once 'Zend/Controller/Action.php';
 require_once 'Zend/Controller/Action/Helper/Redirector.php';
 require_once 'Zend/Controller/Action/Helper/ViewRenderer.php';
@@ -52,20 +45,7 @@ class Zend_Controller_ActionTest extends TestCase
      * @var \Zend_Controller_ActionTest_TestController|mixed
      */
     protected $_controller;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_ActionTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Controller_Action_HelperBroker::resetHelpers();
         $front = Zend_Controller_Front::getInstance();
@@ -85,7 +65,7 @@ class Zend_Controller_ActionTest extends TestCase
         $redirector->setExit(false);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->_controller);
     }
@@ -200,9 +180,7 @@ class Zend_Controller_ActionTest extends TestCase
         $this->assertStringNotContainsString('Prerun ran', $body, $body);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRun2()
     {
         $this->_controller->getRequest()->setActionName('bar');
@@ -557,9 +535,4 @@ class Zend_Controller_ActionTest_TestController extends Zend_Controller_Action
     {
         $this->getResponse()->setBody("Should never see this\n");
     }
-}
-
-// Call Zend_Controller_ActionTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_ActionTest::main") {
-    Zend_Controller_ActionTest::main();
 }

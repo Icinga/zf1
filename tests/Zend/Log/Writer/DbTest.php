@@ -1,9 +1,7 @@
 <?php
 
 use PHPUnit\Framework\Error;
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Writer_DbTest::main');
-}
 
 /** Zend_Log_Writer_Db */
 require_once 'Zend/Log/Writer/Db.php';
@@ -57,14 +51,7 @@ class Zend_Log_Writer_DbTest extends TestCase
      * @var \Zend_Log_Writer_Db|mixed
      */
     protected $writer;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->tableName = 'db-table-name';
 
@@ -256,7 +243,6 @@ class Zend_Log_Writer_DbTest extends TestCase
     }
 }
 
-
 class Zend_Log_Writer_DbTest_MockDbAdapter
 {
     public $calls = [];
@@ -265,8 +251,4 @@ class Zend_Log_Writer_DbTest_MockDbAdapter
     {
         $this->calls[$method][] = $params;
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Writer_DbTest::main') {
-    Zend_Log_Writer_DbTest::main();
 }

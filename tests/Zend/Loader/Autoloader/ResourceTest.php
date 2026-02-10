@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Loader_Autoloader_ResourceTest::main');
-}
 
 /**
  * @see Zend_Loader_Autoloader
@@ -81,14 +76,7 @@ class Zend_Loader_Autoloader_ResourceTest extends TestCase
      * @var \Zend_Loader_Autoloader_Resource|mixed
      */
     protected $loader;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         // Store original autoloaders
         $this->loaders = spl_autoload_functions();
@@ -113,7 +101,7 @@ class Zend_Loader_Autoloader_ResourceTest extends TestCase
         ]);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         // Restore original autoloaders
         $loaders = spl_autoload_functions();
@@ -150,9 +138,7 @@ class Zend_Loader_Autoloader_ResourceTest extends TestCase
         $loader = new Zend_Loader_Autoloader_Resource('foo');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAutoloaderConstructorShouldAcceptZendConfigObject()
     {
         $config = new Zend_Config(['namespace' => 'Foo', 'basePath' => dirname(__FILE__)]);
@@ -306,8 +292,8 @@ class Zend_Loader_Autoloader_ResourceTest extends TestCase
         $this->loader->addResourceTypes([
             'model' => ['path' => 'models', 'namespace' => 'Model'],
         ]);
-        $object = $this->loader->load('ZendLoaderAutoloaderResourceTest', 'model');
-        $this->assertTrue($object instanceof FooBar_Model_ZendLoaderAutoloaderResourceTest);
+        $object = $this->loader->load('ZendLoaderAutoloaderTestResource', 'model');
+        $this->assertTrue($object instanceof FooBar_Model_ZendLoaderAutoloaderTestResource);
     }
 
     public function testSuccessiveCallsToLoadSameResourceShouldReturnSameObject()
@@ -315,9 +301,9 @@ class Zend_Loader_Autoloader_ResourceTest extends TestCase
         $this->loader->addResourceTypes([
             'form' => ['path' => 'forms', 'namespace' => 'Form'],
         ]);
-        $object = $this->loader->load('ZendLoaderAutoloaderResourceTest', 'form');
-        $this->assertTrue($object instanceof FooBar_Form_ZendLoaderAutoloaderResourceTest);
-        $test = $this->loader->load('ZendLoaderAutoloaderResourceTest', 'form');
+        $object = $this->loader->load('ZendLoaderAutoloaderTestResource', 'form');
+        $this->assertTrue($object instanceof FooBar_Form_ZendLoaderAutoloaderTestResource);
+        $test = $this->loader->load('ZendLoaderAutoloaderTestResource', 'form');
         $this->assertSame($object, $test);
     }
 
@@ -330,8 +316,8 @@ class Zend_Loader_Autoloader_ResourceTest extends TestCase
         $loader->addResourceTypes([
             'service' => ['path' => 'services', 'namespace' => 'Service'],
         ]);
-        $test = $loader->load('ZendLoaderAutoloaderResourceTest', 'service');
-        $this->assertTrue($test instanceof Service_ZendLoaderAutoloaderResourceTest);
+        $test = $loader->load('ZendLoaderAutoloaderTestResource', 'service');
+        $this->assertTrue($test instanceof Service_ZendLoaderAutoloaderTestResource);
     }
 
     public function testPassingClassOfDifferentNamespaceToAutoloadShouldReturnFalse()
@@ -475,8 +461,4 @@ class Zend_Loader_Autoloader_ResourceTest extends TestCase
         $path = $this->loader->getClassPath('Foo_Bar_Model_Baz');
         $this->assertEquals(dirname(__FILE__) . '/_files/models/Baz.php', $path, var_export($path, 1));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Loader_Autoloader_ResourceTest::main') {
-    Zend_Loader_Autoloader_ResourceTest::main();
 }

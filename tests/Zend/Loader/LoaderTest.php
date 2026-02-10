@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -27,10 +25,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Loader_LoaderTest::main');
-}
-
 /**
  * @package    Zend_Loader
  * @subpackage UnitTests
@@ -40,12 +34,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
  */
 class Zend_Loader_LoaderTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testLoadTraitDoesNotThrowException()
     {
         $traitName = 'Zend_Loader_TestAsset_TestTrait';
@@ -56,8 +44,4 @@ class Zend_Loader_LoaderTest extends TestCase
 
         $this->assertTrue(trait_exists($traitName, false));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Loader_LoaderTest::main') {
-    Zend_Loader_LoaderTest::main();
 }

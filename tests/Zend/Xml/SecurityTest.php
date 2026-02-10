@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Xml_SecurityTest::main');
-}
-
 /**
  * @see Zend_Xml_Security
  */
@@ -46,12 +41,6 @@ require_once 'Zend/Xml/Exception.php';
  */
 class Zend_Xml_SecurityTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
- 
     public function testScanForXEE()
     {
         $xml = <<<XML
@@ -65,7 +54,7 @@ XML;
         $this->expectException('Zend_Xml_Exception');
         $result = Zend_Xml_Security::scan($xml);
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testScanForXXE()
     {
         $file = tempnam(sys_get_temp_dir(), 'Zend_XML_Security');
@@ -167,8 +156,4 @@ XML;
 </results>
 XML;
     }
-}
-
-if (PHPUnit_MAIN_METHOD === "Zend_Xml_SecurityTest::main") {
-    Zend_Xml_SecurityTest::main();
 }

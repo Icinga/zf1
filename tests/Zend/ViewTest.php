@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id $
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_ViewTest::main');
-}
 
 /**
  * Zend_View
@@ -73,21 +68,14 @@ class Zend_ViewTest extends TestCase
      * @var Zend_View
      */
     protected $view;
-
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_ViewTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->notices = [];
         $this->errorReporting = error_reporting();
         $this->displayErrors = ini_get('display_errors');
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         error_reporting($this->errorReporting);
         ini_set('display_errors', $this->displayErrors);
@@ -561,10 +549,10 @@ class Zend_ViewTest extends TestCase
     }
 
     /**
-     * @doesNotPerformAssertions
      *
      * @return void
      */
+    #[DoesNotPerformAssertions]
     public function testUnset()
     {
         $view = new Zend_View();
@@ -976,7 +964,6 @@ class Zend_ViewTest extends TestCase
             $this->assertStringContainsString('only takes strings', $e->getMessage());
         }
 
-
         try {
             $helper = $view->getHelper('Datetime');
         } catch (Exception $e) {
@@ -1160,7 +1147,7 @@ class Zend_ViewTest extends TestCase
         $paths = $view->getScriptPaths();
         $this->assertContains($path, $paths, var_export($paths, 1));
     }
-    
+
     /**
      * @group ZF-10042
      */
@@ -1185,9 +1172,4 @@ class Zend_ViewTest_Extension extends Zend_View
         $this->assign('foo', 'bar');
         $this->setScriptPath(dirname(__FILE__) . '/View/_templates');
     }
-}
-
-// Call Zend_ViewTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_ViewTest::main") {
-    Zend_ViewTest::main();
 }

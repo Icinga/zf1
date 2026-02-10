@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Validate_AbstractTest::main');
-}
 
 /** Zend_Validate_Abstract */
 require_once 'Zend/Validate/Abstract.php';
@@ -57,18 +51,6 @@ class Zend_Validate_AbstractTest extends TestCase
      * @var bool
      */
     protected $_errorOccurred;
-
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Validate_AbstractTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function clearRegistry()
     {
         if (Zend_Registry::isRegistered('Zend_Translate')) {
@@ -82,14 +64,14 @@ class Zend_Validate_AbstractTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->clearRegistry();
         Zend_Validate_Abstract::setDefaultTranslator(null);
         $this->validator = new Zend_Validate_AbstractTest_Concrete();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->clearRegistry();
         Zend_Validate_Abstract::setDefaultTranslator(null);
@@ -325,8 +307,4 @@ class Zend_Validate_AbstractTest_Concrete extends Zend_Validate_Abstract
         $this->_error(self::FOO_MESSAGE);
         return false;
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Validate_AbstractTest::main') {
-    Zend_Validate_AbstractTest::main();
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id $
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_TranslateTest::main');
-}
 
 /**
  * Zend_Translate
@@ -53,19 +47,7 @@ class Zend_TranslateTest extends TestCase
      * @var bool
      */
     protected $_errorOccured;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_TranslateTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (Zend_Translate::hasCache()) {
             Zend_Translate::removeCache();
@@ -936,9 +918,4 @@ class Zend_TranslateTest extends TestCase
     {
         return 1;
     }
-}
-
-// Call Zend_TranslateTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_TranslateTest::main") {
-    Zend_TranslateTest::main();
 }

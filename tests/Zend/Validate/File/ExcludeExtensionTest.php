@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_ExcludeExtensionTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_ExcludeExtensionTest::main");
-}
-
 /**
  * @see Zend_Validate_File_ExcludeExtension
  */
@@ -47,17 +40,6 @@ require_once 'Zend/Validate/File/ExcludeExtension.php';
  */
 class Zend_Validate_File_ExcludeExtensionTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_ExcludeExtensionTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Ensures that the validator follows expected behavior
      *
@@ -188,9 +170,4 @@ class Zend_Validate_File_ExcludeExtensionTest extends TestCase
         $validator->addExtension('');
         $this->assertEquals(['mo', 'gif', 'jpg', 'to', 'zip', 'ti'], $validator->getExtension());
     }
-}
-
-// Call Zend_Validate_File_ExcludeExtensionTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_ExcludeExtensionTest::main") {
-    Zend_Validate_File_ExtensionTest::main();
 }

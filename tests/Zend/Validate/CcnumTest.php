@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -27,7 +27,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @see Zend_Validate_Ccnum
  */
 require_once 'Zend/Validate/Ccnum.php';
-
 
 /**
  * @category   Zend
@@ -56,13 +55,13 @@ class Zend_Validate_CcnumTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         set_error_handler([$this, 'errorHandlerIgnore']);
         $this->_validator = new Zend_Validate_Ccnum();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         restore_error_handler();
     }

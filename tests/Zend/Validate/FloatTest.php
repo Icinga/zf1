@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -55,7 +55,7 @@ class Zend_Validate_FloatTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_locale = setlocale(LC_ALL, 0); //backup locale
 
@@ -67,7 +67,7 @@ class Zend_Validate_FloatTest extends TestCase
         $this->_validator = new Zend_Validate_Float();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         //restore locale
         if (is_string($this->_locale) && strpos($this->_locale, ';')) {

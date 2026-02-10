@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,20 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Controller_Plugin_BrokerTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Plugin_BrokerTest::main");
-
-    $basePath = realpath(dirname(__FILE__) . str_repeat(DIRECTORY_SEPARATOR . '..', 3));
-
-    set_include_path(
-        $basePath . DIRECTORY_SEPARATOR . 'tests'
-        . PATH_SEPARATOR . $basePath . DIRECTORY_SEPARATOR . 'library'
-        . PATH_SEPARATOR . get_include_path()
-    );
-}
-
-
 require_once 'Zend/Controller/Front.php';
 require_once 'Zend/Controller/Action/HelperBroker.php';
 require_once 'Zend/Controller/Request/Http.php';
@@ -57,20 +42,7 @@ require_once 'Zend/Controller/Response/Cli.php';
 class Zend_Controller_Plugin_BrokerTest extends TestCase
 {
     public $controller;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Plugin_BrokerTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->controller = Zend_Controller_Front::getInstance();
         $this->controller->resetInstance();
@@ -90,7 +62,6 @@ class Zend_Controller_Plugin_BrokerTest extends TestCase
             $this->assertStringContainsString('already', $expected->getMessage());
         }
     }
-
 
     public function testUsingFrontController()
     {
@@ -226,9 +197,7 @@ class Zend_Controller_Plugin_BrokerTest extends TestCase
         $this->assertSame($expected, $plugins);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRegisterPluginThrowsExceptionOnDuplicateStackIndex()
     {
         $broker = new Zend_Controller_Plugin_Broker();
@@ -345,10 +314,4 @@ class Zend_Controller_Plugin_BrokerTest_ExceptionTestPlugin extends Zend_Control
     {
         throw new Exception('dispatchLoopShutdown triggered exception');
     }
-}
-
-
-// Call Zend_Controller_Plugin_BrokerTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Plugin_BrokerTest::main") {
-    Zend_Controller_Plugin_BrokerTest::main();
 }

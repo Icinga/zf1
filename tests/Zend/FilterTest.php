@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -27,7 +27,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @see Zend_Filter
  */
 require_once 'Zend/Filter.php';
-
 
 /**
  * @category   Zend
@@ -61,7 +60,7 @@ class Zend_FilterTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->error = null;
         $this->_filter = new Zend_Filter();
@@ -72,7 +71,7 @@ class Zend_FilterTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Filter::setDefaultNamespaces([]);
     }
@@ -232,7 +231,6 @@ class Zend_FilterTest extends TestCase
     }
 }
 
-
 class Zend_FilterTest_LowerCase implements Zend_Filter_Interface
 {
     public function filter($value)
@@ -240,7 +238,6 @@ class Zend_FilterTest_LowerCase implements Zend_Filter_Interface
         return strtolower($value);
     }
 }
-
 
 class Zend_FilterTest_StripUpperCase implements Zend_Filter_Interface
 {

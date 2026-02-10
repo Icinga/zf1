@@ -1341,6 +1341,13 @@ class Zend_Locale
         return $languages;
     }
 
+    public static function resetObject()
+    {
+        self::$_auto = null;
+        self::$_environment = null;
+        self::$_browser = null;
+    }
+
     /**
      * Sets a new locale
      *
