@@ -90,7 +90,6 @@ require_once 'Zend/Search/Lucene/AllTests.php';
 require_once 'Zend/Serializer/AllTests.php';
 require_once 'Zend/Server/AllTests.php';
 // require_once 'Zend/Session/AllTests.php';
-// require_once 'Zend/Soap/AllTests.php';
 require_once 'Zend/Tag/AllTests.php';
 // require_once 'Zend/Test/AllTests.php';
 require_once 'Zend/Text/AllTests.php';
@@ -157,7 +156,6 @@ class Zend_AllTests
         $suite->addTestSuite('Zend_OpenIdTest');
         $suite->addTest(Zend_OpenId_AllTests::suite());
         // $suite->addTest(Zend_Session_AllTests::suite());
-        // $suite->addTest(Zend_Soap_AllTests::suite());
 
         return $suite;
     }
