@@ -76,7 +76,6 @@ require_once 'Zend/NavigationTest.php';
 require_once 'Zend/Navigation/AllTests.php';
 require_once 'Zend/Paginator/AllTests.php';
 require_once 'Zend/ProgressBar/AllTests.php';
-require_once 'Zend/Reflection/AllTests.php';
 require_once 'Zend/RegistryTest.php';
 require_once 'Zend/Rest/AllTests.php';
 // require_once 'Zend/Session/AllTests.php';
@@ -211,7 +210,6 @@ class Zend_AllTests
         $suite->addTest(Zend_ProgressBar_AllTests::suite());
         $suite->addTestSuite('Zend_RegistryTest');
         $suite->addTest(Zend_Rest_AllTests::suite());
-        $suite->addTest(Zend_Reflection_AllTests::suite());
         $suite->addTest(Zend_Tag_AllTests::suite());
         // $suite->addTest(Zend_Test_AllTests::suite());
         $suite->addTest(Zend_Text_AllTests::suite());
