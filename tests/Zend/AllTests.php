@@ -81,7 +81,6 @@ require_once 'Zend/Reflection/AllTests.php';
 require_once 'Zend/RegistryTest.php';
 require_once 'Zend/Rest/AllTests.php';
 require_once 'Zend/Serializer/AllTests.php';
-require_once 'Zend/Server/AllTests.php';
 // require_once 'Zend/Session/AllTests.php';
 require_once 'Zend/Tag/AllTests.php';
 // require_once 'Zend/Test/AllTests.php';
@@ -217,7 +216,6 @@ class Zend_AllTests
         $suite->addTest(Zend_Rest_AllTests::suite());
         $suite->addTest(Zend_Reflection_AllTests::suite());
         $suite->addTest(Zend_Serializer_AllTests::suite());
-        // $suite->addTest(Zend_Server_AllTests::suite());
         $suite->addTest(Zend_Tag_AllTests::suite());
         // $suite->addTest(Zend_Test_AllTests::suite());
         $suite->addTest(Zend_Text_AllTests::suite());

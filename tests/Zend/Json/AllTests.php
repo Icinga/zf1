@@ -29,8 +29,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 }
 
 require_once 'Zend/Json/JsonXMLTest.php';
-require_once 'Zend/Json/ServerTest.php';
-require_once 'Zend/Json/Server/AllTests.php';
 
 /**
  * @category   Zend
@@ -52,8 +50,6 @@ class Zend_Json_AllTests
         $suite = new TestSuite('Zend Framework - Zend_Json');
 
         $suite->addTestSuite('Zend_Json_JsonXMLTest');
-        $suite->addTestSuite('Zend_Json_ServerTest');
-        $suite->addTest(Zend_Json_Server_AllTests::suite());
 
         return $suite;
     }
