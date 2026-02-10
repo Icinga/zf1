@@ -75,7 +75,6 @@ require_once 'Zend/MimeTest.php';
 require_once 'Zend/Mime/AllTests.php';
 require_once 'Zend/NavigationTest.php';
 require_once 'Zend/Navigation/AllTests.php';
-// require_once 'Zend/Oauth/AllTests.php';
 // require_once 'Zend/OpenIdTest.php';
 // require_once 'Zend/OpenId/AllTests.php';
 require_once 'Zend/Paginator/AllTests.php';
@@ -216,7 +215,6 @@ class Zend_AllTests
         $suite->addTest(Zend_Mime_AllTests::suite());
         $suite->addTestSuite('Zend_NavigationTest');
         $suite->addTest(Zend_Navigation_AllTests::suite());
-        // $suite->addTest(Zend_Oauth_AllTests::suite());
         $suite->addTest(Zend_Paginator_AllTests::suite());
         $suite->addTest(Zend_ProgressBar_AllTests::suite());
         $suite->addTestSuite('Zend_RegistryTest');
