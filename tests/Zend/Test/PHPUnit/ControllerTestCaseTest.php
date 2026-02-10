@@ -157,20 +157,6 @@ class Zend_Test_PHPUnit_ControllerTestCaseTest extends TestCase
         $this->assertSame($response, $test);
     }
 
-    public function testGetQueryShouldReturnQueryTestCase()
-    {
-        $query = $this->testCase->getQuery();
-        $this->assertTrue($query instanceof Zend_Dom_Query);
-    }
-
-    public function testGetQueryShouldReturnSameQueryObjectOnRepeatedCalls()
-    {
-        $query = $this->testCase->getQuery();
-        $this->assertTrue($query instanceof Zend_Dom_Query);
-        $test = $this->testCase->getQuery();
-        $this->assertSame($query, $test);
-    }
-
     public function testOverloadingShouldReturnRequestResponseAndFrontControllerObjects()
     {
         $request = $this->testCase->getRequest();
