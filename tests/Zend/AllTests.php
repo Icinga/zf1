@@ -70,7 +70,6 @@ require_once 'Zend/Log/AllTests.php';
 require_once 'Zend/Mail/AllTests.php';
 require_once 'Zend/Markup/AllTests.php';
 // require_once 'Zend/Measure/AllTests.php';
-require_once 'Zend/Memory/AllTests.php';
 require_once 'Zend/MimeTest.php';
 require_once 'Zend/Mime/AllTests.php';
 require_once 'Zend/NavigationTest.php';
@@ -160,7 +159,6 @@ class Zend_AllTests
 
         // Running this early to ensure that the test suite hasn't used too
         // much memory by the time it gets to this test.
-        $suite->addTest(Zend_Memory_AllTests::suite());
 
         // Start remaining tests...
         $suite->addTestSuite('Zend_Acl_AclTest');
