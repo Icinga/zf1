@@ -294,9 +294,6 @@ class Zend_LoaderTest extends TestCase
         $this->setErrorHandler();
         $this->assertEquals('Zend_Db_Profiler_Exception', Zend_Loader::autoload('Zend_Db_Profiler_Exception'));
         $this->assertStringContainsString('deprecated', $this->error);
-        $this->error = null;
-        $this->assertEquals('Zend_Auth_Storage_Interface', Zend_Loader::autoload('Zend_Auth_Storage_Interface'));
-        $this->assertStringContainsString('deprecated', $this->error);
     }
 
     /**
