@@ -107,7 +107,6 @@ require_once 'Zend/VersionTest.php';
 require_once 'Zend/ViewTest.php';
 require_once 'Zend/View/AllTests.php';
 // if (PHP_OS != 'AIX') {
-//     require_once 'Zend/Wildfire/AllTests.php';
 // }
 
 /**
@@ -254,7 +253,6 @@ class Zend_AllTests
         $suite->addTest(Zend_View_AllTests::suite());
         $suite->addTestSuite('Zend_VersionTest');
         // if (PHP_OS != 'AIX') {
-        //     $suite->addTest(Zend_Wildfire_AllTests::suite());
         // }
 
         return $suite;
