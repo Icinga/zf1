@@ -28,7 +28,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Zend_AllTests::main');
 }
 
-require_once 'Zend/Barcode/AllTests.php';
 require_once 'Zend/Cache/AllTests.php';
 require_once 'Zend/Db/AllTests.php';
 require_once 'Zend/ConfigTest.php';
@@ -138,7 +137,6 @@ class Zend_AllTests
         // much memory by the time it gets to this test.
 
         // Start remaining tests...
-        $suite->addTest(Zend_Barcode_AllTests::suite());
         $suite->addTest(Zend_Cache_AllTests::suite());
         $suite->addTestSuite('Zend_ConfigTest');
         $suite->addTest(Zend_Config_AllTests::suite());

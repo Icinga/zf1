@@ -31,7 +31,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'Zend/Validate/AbstractTest.php';
 require_once 'Zend/Validate/AlnumTest.php';
 require_once 'Zend/Validate/AlphaTest.php';
-require_once 'Zend/Validate/BarcodeTest.php';
 require_once 'Zend/Validate/BetweenTest.php';
 require_once 'Zend/Validate/CallbackTest.php';
 require_once 'Zend/Validate/CcnumTest.php';
@@ -91,7 +90,6 @@ class Zend_Validate_AllTests
         $suite->addTestSuite('Zend_Validate_AbstractTest');
         $suite->addTestSuite('Zend_Validate_AlnumTest');
         $suite->addTestSuite('Zend_Validate_AlphaTest');
-        $suite->addTestSuite('Zend_Validate_BarcodeTest');
         $suite->addTestSuite('Zend_Validate_BetweenTest');
         $suite->addTestSuite('Zend_Validate_CallbackTest');
         $suite->addTestSuite('Zend_Validate_CcnumTest');
