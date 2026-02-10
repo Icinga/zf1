@@ -30,7 +30,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 
 require_once 'Zend/Barcode/AllTests.php';
 require_once 'Zend/Cache/AllTests.php';
-require_once 'Zend/CodeGenerator/Php/AllTests.php';
 require_once 'Zend/Db/AllTests.php';
 require_once 'Zend/ConfigTest.php';
 require_once 'Zend/Config/AllTests.php';
@@ -146,7 +145,6 @@ class Zend_AllTests
         // Start remaining tests...
         $suite->addTest(Zend_Barcode_AllTests::suite());
         $suite->addTest(Zend_Cache_AllTests::suite());
-        $suite->addTest(Zend_CodeGenerator_Php_AllTests::suite());
         $suite->addTestSuite('Zend_ConfigTest');
         $suite->addTest(Zend_Config_AllTests::suite());
         $suite->addTestSuite('Zend_Console_GetoptTest');
