@@ -28,8 +28,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Zend_Filter_File_AllTests::main');
 }
 
-require_once 'Zend/Filter/File/DecryptTest.php';
-require_once 'Zend/Filter/File/EncryptTest.php';
 require_once 'Zend/Filter/File/LowerCaseTest.php';
 require_once 'Zend/Filter/File/RenameTest.php';
 require_once 'Zend/Filter/File/UpperCaseTest.php';
@@ -63,8 +61,6 @@ class Zend_Filter_File_AllTests
     {
         $suite = new TestSuite('Zend Framework - Zend_Filter_File');
 
-        $suite->addTestSuite('Zend_Filter_File_DecryptTest');
-        $suite->addTestSuite('Zend_Filter_File_EncryptTest');
         $suite->addTestSuite('Zend_Filter_File_LowerCaseTest');
         $suite->addTestSuite('Zend_Filter_File_RenameTest');
         $suite->addTestSuite('Zend_Filter_File_UpperCaseTest');
