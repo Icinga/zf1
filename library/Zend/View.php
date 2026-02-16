@@ -79,7 +79,6 @@ require_once 'Zend/View/Abstract.php';
  * @method string serverUrl($requestUri = null)
  * @method string translate($messageid = null)
  * @method string url(array $urlOptions = array(), $name = null, $reset = false, $encode = true)
- * @method Zend_Http_UserAgent userAgent(Zend_Http_UserAgent $userAgent = null)
  */
 class Zend_View extends Zend_View_Abstract
 {
