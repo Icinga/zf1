@@ -201,7 +201,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
             call_user_func_array(
                 [$this->_stmt, 'bind_param'],
                 array_values($stmtParams)
-                );
+            );
         }
 
         // execute the statement
@@ -229,7 +229,6 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
 
         // statements that have no result set do not return metadata
         if ($this->_meta !== false) {
-
             // get the column names that will result
             $this->_keys = [];
             foreach ($this->_meta->fetch_fields() as $col) {
@@ -358,5 +357,4 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
         $mysqli = $this->_adapter->getConnection();
         return $mysqli->affected_rows;
     }
-
 }

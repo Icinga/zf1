@@ -34,8 +34,7 @@ require_once 'Zend/Log/FactoryInterface.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-abstract class Zend_Log_Filter_Abstract
-    implements Zend_Log_Filter_Interface, Zend_Log_FactoryInterface
+abstract class Zend_Log_Filter_Abstract implements Zend_Log_Filter_Interface, Zend_Log_FactoryInterface
 {
     /**
      * Validate and optionally convert the config to array
@@ -44,7 +43,7 @@ abstract class Zend_Log_Filter_Abstract
      * @return array
      * @throws Zend_Log_Exception
      */
-    static protected function _parseConfig($config)
+    protected static function _parseConfig($config)
     {
         if ($config instanceof Zend_Config) {
             $config = $config->toArray();

@@ -134,7 +134,7 @@ class Zend_Log
      * @return Zend_Log
      * @throws Zend_Log_Exception
      */
-    static public function factory($config = [])
+    public static function factory($config = [])
     {
         if ($config instanceof Zend_Config) {
             $config = $config->toArray();
@@ -171,7 +171,7 @@ class Zend_Log
         if (!is_array(current($config))) {
             $log->addWriter(current($config));
         } else {
-            foreach($config as $writer) {
+            foreach ($config as $writer) {
                 $log->addWriter($writer);
             }
         }
@@ -344,7 +344,8 @@ class Zend_Log
      */
     protected function _packEvent($message, $priority)
     {
-        return array_merge([
+        return array_merge(
+            [
             'timestamp'    => date($this->_timestampFormat),
             'message'      => $message,
             'priority'     => $priority,
@@ -362,7 +363,7 @@ class Zend_Log
     public function __destruct()
     {
         /** @var Zend_Log_Writer_Abstract $writer */
-        foreach($this->_writers as $writer) {
+        foreach ($this->_writers as $writer) {
             $writer->shutdown();
         }
     }
@@ -504,11 +505,9 @@ class Zend_Log
             /** @see Zend_Log_Filter_Priority */
             require_once 'Zend/Log/Filter/Priority.php';
             $filter = new Zend_Log_Filter_Priority($filter);
-
         } elseif ($filter instanceof Zend_Config || is_array($filter)) {
             $filter = $this->_constructFilterFromConfig($filter);
-
-        } elseif(! $filter instanceof Zend_Log_Filter_Interface) {
+        } elseif (! $filter instanceof Zend_Log_Filter_Interface) {
             /** @see Zend_Log_Exception */
             require_once 'Zend/Log/Exception.php';
             throw new Zend_Log_Exception('Invalid filter provided');

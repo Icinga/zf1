@@ -45,5 +45,4 @@ class Zend_Filter_Word_CamelCaseToSeparator extends Zend_Filter_Word_Separator_A
 
         return parent::filter($value);
     }
-
 }

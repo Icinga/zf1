@@ -125,5 +125,4 @@ class Zend_Filter_Word_SeparatorToSeparator extends Zend_Filter_PregReplace
         $this->setReplacement($this->_replacementSeparator);
         return parent::filter($value);
     }
-
 }

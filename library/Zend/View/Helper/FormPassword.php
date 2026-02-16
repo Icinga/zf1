@@ -83,5 +83,4 @@ class Zend_View_Helper_FormPassword extends Zend_View_Helper_FormElement
                 . $this->_htmlAttribs($attribs)
                 . $this->getClosingBracket();
     }
-
 }

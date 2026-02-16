@@ -246,5 +246,4 @@ abstract class Zend_Cache
         @fclose($fh);
         return true;
     }
-
 }

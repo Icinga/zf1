@@ -67,5 +67,4 @@ abstract class Zend_Session_Validator_Abstract implements Zend_Session_Validator
         }
         return null;
     }
-
 }

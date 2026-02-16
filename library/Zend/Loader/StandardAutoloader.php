@@ -364,5 +364,4 @@ class Zend_Loader_StandardAutoloader implements Zend_Loader_SplAutoloader
         $directory .= DIRECTORY_SEPARATOR;
         return $directory;
     }
-
 }

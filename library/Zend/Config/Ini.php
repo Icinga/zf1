@@ -139,7 +139,7 @@ class Zend_Config_Ini extends Zend_Config
             // Load entire file
             $dataArray = [];
             foreach ($iniArray as $sectionName => $sectionData) {
-                if(!is_array($sectionData)) {
+                if (!is_array($sectionData)) {
                     $dataArray = $this->_arrayMergeRecursive($dataArray, $this->_processKey([], $sectionName, $sectionData));
                 } else {
                     $dataArray[$sectionName] = $this->_processSection($iniArray, $sectionName);
@@ -161,7 +161,6 @@ class Zend_Config_Ini extends Zend_Config
                     throw new Zend_Config_Exception("Section '$sectionName' cannot be found in $filename");
                 }
                 $dataArray = $this->_arrayMergeRecursive($this->_processSection($iniArray, $sectionName), $dataArray);
-
             }
             parent::__construct($dataArray, $allowModifications);
         }
@@ -211,8 +210,7 @@ class Zend_Config_Ini extends Zend_Config
     {
         $loaded = $this->_parseIniFile($filename);
         $iniArray = [];
-        foreach ($loaded as $key => $data)
-        {
+        foreach ($loaded as $key => $data) {
             $pieces = explode($this->_sectionSeparator, $key);
             $thisSection = trim($pieces[0]);
             switch (count($pieces)) {

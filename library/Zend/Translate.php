@@ -36,7 +36,8 @@ require_once 'Zend/Translate/Adapter.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Translate {
+class Zend_Translate
+{
     /**
      * Adapter names constants
      */
@@ -66,7 +67,7 @@ class Zend_Translate {
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $args               = func_get_args();
             $options            = [];
             $options['adapter'] = array_shift($args);
@@ -82,7 +83,7 @@ class Zend_Translate {
                 $opt     = array_shift($args);
                 $options = array_merge($opt, $options);
             }
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = ['adapter' => $options];
         }
 
@@ -101,7 +102,7 @@ class Zend_Translate {
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $args               = func_get_args();
             $options            = [];
             $options['adapter'] = array_shift($args);
@@ -117,7 +118,7 @@ class Zend_Translate {
                 $opt     = array_shift($args);
                 $options = array_merge($opt, $options);
             }
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = ['adapter' => $options];
         }
 

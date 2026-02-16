@@ -185,7 +185,6 @@ class Zend_Cache_Core
             $this->_extendedBackend = true;
             $this->_backendCapabilities = $this->_backend->getCapabilities();
         }
-
     }
 
     /**
@@ -695,7 +694,7 @@ class Zend_Cache_Core
         if (!is_array($tags)) {
             Zend_Cache::throwException('Invalid tags array : must be an array');
         }
-        foreach($tags as $tag) {
+        foreach ($tags as $tag) {
             $this->_validateIdOrTag($tag);
         }
         reset($tags);
@@ -762,5 +761,4 @@ class Zend_Cache_Core
         }
         return $id; // no prefix, just return the $id passed
     }
-
 }

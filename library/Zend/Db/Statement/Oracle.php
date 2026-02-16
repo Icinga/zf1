@@ -111,12 +111,12 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
     protected function _bindParam($parameter, &$variable, $type = null, $length = null, $options = null)
     {
         // default value
-        if ($type === NULL) {
+        if ($type === null) {
             $type = SQLT_CHR;
         }
 
         // default value
-        if ($length === NULL) {
+        if ($length === null) {
             $length = -1;
         }
 
@@ -573,5 +573,4 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
 
         return $num_rows;
     }
-
 }

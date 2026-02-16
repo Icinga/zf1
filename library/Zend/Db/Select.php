@@ -58,8 +58,8 @@ class Zend_Db_Select
     public const FOR_UPDATE_MODE = 'forupdatemode';
 
     // FOR_UPDATE MODES
-    public CONST FU_MODE_NOWAIT = 'nowait';
-    public CONST FU_MODE_SKIP   = 'skiplocked';
+    public const FU_MODE_NOWAIT = 'nowait';
+    public const FU_MODE_SKIP   = 'skiplocked';
 
     public const INNER_JOIN     = 'inner join';
     public const LEFT_JOIN      = 'left join';
@@ -250,7 +250,8 @@ class Zend_Db_Select
      * @param string $regexColumnExpr
      * @return void
      */
-    public function setRegexColumnExpr($regexColumnExpr): void {
+    public function setRegexColumnExpr($regexColumnExpr): void
+    {
         $this->_regexColumnExpr = $regexColumnExpr;
     }
 
@@ -260,7 +261,8 @@ class Zend_Db_Select
      * @param string $regexColumnExprOrder
      * @return void
      */
-    public function setRegexColumnExprOrder($regexColumnExprOrder): void {
+    public function setRegexColumnExprOrder($regexColumnExprOrder): void
+    {
         $this->_regexColumnExprOrder = $regexColumnExprOrder;
     }
 
@@ -270,7 +272,8 @@ class Zend_Db_Select
      * @param string $regexColumnExprGroup
      * @return void
      */
-    public function setRegexColumnExprGroup($regexColumnExprGroup): void {
+    public function setRegexColumnExprGroup($regexColumnExprGroup): void
+    {
         $this->_regexColumnExprGroup = $regexColumnExprGroup;
     }
 
@@ -757,8 +760,8 @@ class Zend_Db_Select
     /**
      * Makes the query SELECT FOR UPDATE, optionally with NOWAIT or SKIP LOCKED options
      *
-     * @param mixed $flag Whether or not the SELECT is FOR UPDATE (default true), 
-                          pass the flag FU_MODE_NOWAIT or FU_MODE_SKIP to make 
+     * @param mixed $flag Whether or not the SELECT is FOR UPDATE (default true),
+                          pass the flag FU_MODE_NOWAIT or FU_MODE_SKIP to make
                           the FOR UPDATE either NOWAIT or SKIP LOCKED
      * @return $this This Zend_Db_Select object.
      */
@@ -1022,7 +1025,7 @@ class Zend_Db_Select
             $c = is_string($k) ? $k : end($name);
         } else {
             // Extract just the last name of a qualified table name
-            $dot = strrpos($name,'.');
+            $dot = strrpos($name, '.');
             $c = ($dot === false) ? $name : substr($name, $dot+1);
         }
         for ($i = 2; array_key_exists($c, $this->_parts[self::FROM]); ++$i) {
@@ -1073,7 +1076,6 @@ class Zend_Db_Select
         }
 
         if ($columnValues) {
-
             // should we attempt to prepend or insert these values?
             if ($afterCorrelationName === true || is_string($afterCorrelationName)) {
                 $tmpColumns = $this->_parts[self::COLUMNS];
@@ -1352,7 +1354,7 @@ class Zend_Db_Select
             $order = [];
             foreach ($this->_parts[self::ORDER] as $term) {
                 if (is_array($term)) {
-                    if(is_numeric($term[0]) && (string) ((int) ($term[0])) == $term[0]) {
+                    if (is_numeric($term[0]) && (string) ((int) ($term[0])) == $term[0]) {
                         $order[] = (int)trim($term[0]) . ' ' . $term[1];
                     } else {
                         $order[] = $this->_adapter->quoteIdentifier($term[0], true) . ' ' . $term[1];
@@ -1477,5 +1479,4 @@ class Zend_Db_Select
         }
         return (string)$sql;
     }
-
 }

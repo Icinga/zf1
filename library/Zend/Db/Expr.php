@@ -73,5 +73,4 @@ class Zend_Db_Expr
     {
         return $this->_expression;
     }
-
 }

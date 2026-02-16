@@ -34,15 +34,15 @@ class Zend_Db_Schema_Manager
      * Constructor
      *
      * Available $options keys:
-     * 		'table_prefix' => prefix string to place before table names
-     * 		'schema_version_table_name' => name of table to use for holding the schema version number
+     *      'table_prefix' => prefix string to place before table names
+     *      'schema_version_table_name' => name of table to use for holding the schema version number
      *
      *
      * @param string                   $dir         Directory where migrations files are stored
      * @param Zend_Db_Adapter_Abstract $db          Database adapter
      * @param string                   $tablePrefix Table prefix to be used by change files
      */
-    public function __construct($dir, Zend_Db_Adapter_Abstract $db, $tablePrefix='')
+    public function __construct($dir, Zend_Db_Adapter_Abstract $db, $tablePrefix = '')
     {
         $this->_dir = realpath($dir);
         $this->_db = $db;
@@ -109,12 +109,12 @@ class Zend_Db_Schema_Manager
         }
         $version = (int)$version;
         $currentVersion = $this->getCurrentSchemaVersion();
-        if($currentVersion == $version) {
+        if ($currentVersion == $version) {
             return self::RESULT_AT_CURRENT_VERSION;
         }
 
         $migrations = $this->_getMigrationFiles($currentVersion, $version);
-        if(empty($migrations)) {
+        if (empty($migrations)) {
             if ($version == PHP_INT_MAX) {
                 return self::RESULT_AT_CURRENT_VERSION;
             }
@@ -133,15 +133,15 @@ class Zend_Db_Schema_Manager
         // TODO: make this more efficient by caching file information instead
         // of fetching it again.
         if ($direction == 'down') {
-        	$files = $this->_getMigrationFiles($version, 0);
-        	if (empty($files)) {
-        		$realVersion = 0;
-        	} else {
-            	$versionFile = array_shift($files);
-        		$realVersion = $versionFile['version'];
-        	}
-        	// update the database to the version we're actually at
-        	$this->_updateSchemaVersion($realVersion);
+            $files = $this->_getMigrationFiles($version, 0);
+            if (empty($files)) {
+                $realVersion = 0;
+            } else {
+                $versionFile = array_shift($files);
+                $realVersion = $versionFile['version'];
+            }
+            // update the database to the version we're actually at
+            $this->_updateSchemaVersion($realVersion);
         }
 
         return self::RESULT_OK;
@@ -165,23 +165,23 @@ class Zend_Db_Schema_Manager
      */
     public function incrementVersion($versions)
     {
-    	$versions = (int)$versions;
-    	if ($versions < 1) {
-    		$versions = 1;
-    	}
-    	$currentVersion = $this->getCurrentSchemaVersion();
+        $versions = (int)$versions;
+        if ($versions < 1) {
+            $versions = 1;
+        }
+        $currentVersion = $this->getCurrentSchemaVersion();
 
-    	$files = $this->_getMigrationFiles($currentVersion, PHP_INT_MAX);
-    	if (empty($files)) {
-    		return self::RESULT_AT_MAXIMUM_VERSION;
-    	}
+        $files = $this->_getMigrationFiles($currentVersion, PHP_INT_MAX);
+        if (empty($files)) {
+            return self::RESULT_AT_MAXIMUM_VERSION;
+        }
 
-    	$files = array_slice($files, 0, $versions);
+        $files = array_slice($files, 0, $versions);
 
-    	$nextFile = array_pop($files);
-    	$nextVersion = $nextFile['version'];
+        $nextFile = array_pop($files);
+        $nextVersion = $nextFile['version'];
 
-    	return $this->updateTo($nextVersion);
+        return $this->updateTo($nextVersion);
     }
 
     /**
@@ -196,22 +196,22 @@ class Zend_Db_Schema_Manager
      */
     public function decrementVersion($versions)
     {
-    	$versions = (int)$versions;
-    	if ($versions < 1) {
-    		$versions = 1;
-    	}
-    	$currentVersion = $this->getCurrentSchemaVersion();
+        $versions = (int)$versions;
+        if ($versions < 1) {
+            $versions = 1;
+        }
+        $currentVersion = $this->getCurrentSchemaVersion();
 
-    	$files = $this->_getMigrationFiles($currentVersion, 0);
-    	if (empty($files)) {
-    		return self::RESULT_AT_MINIMUM_VERSION;
-    	}
+        $files = $this->_getMigrationFiles($currentVersion, 0);
+        if (empty($files)) {
+            return self::RESULT_AT_MINIMUM_VERSION;
+        }
 
-    	$files = array_slice($files, 0, $versions+1);
-    	$nextFile = array_pop($files);
-    	$nextVersion = $nextFile['version'];
+        $files = array_slice($files, 0, $versions+1);
+        $nextFile = array_pop($files);
+        $nextVersion = $nextFile['version'];
 
-    	return $this->updateTo($nextVersion);
+        return $this->updateTo($nextVersion);
     }
 
     /**
@@ -237,7 +237,7 @@ class Zend_Db_Schema_Manager
         $direction = 'up';
         $from = $currentVersion;
         $to  = $stopVersion;
-        if($stopVersion < $currentVersion) {
+        if ($stopVersion < $currentVersion) {
             $direction = 'down';
             $from  = $stopVersion;
             $to = $currentVersion;
@@ -245,13 +245,13 @@ class Zend_Db_Schema_Manager
 
         $files = [];
         if (!is_dir($dir) || !is_readable($dir)) {
-        	return $files;
+            return $files;
         }
 
         $d = dir($dir);
         $seen = [];
         while (false !== ($entry = $d->read())) {
-            if (preg_match('/^([0-9]+)\-(.*)\.php/i', $entry, $matches) ) {
+            if (preg_match('/^([0-9]+)\-(.*)\.php/i', $entry, $matches)) {
                 $versionNumber = (int)$matches[1];
                 if (isset($seen[$versionNumber])) {
                     throw new Zend_Db_Schema_Exception("version $versionNumber is used for multiple migrations.");
@@ -272,7 +272,9 @@ class Zend_Db_Schema_Manager
                     $files = array_merge(
                         $files,
                         $this->_getMigrationFiles(
-                            $currentVersion, $stopVersion, $subdir
+                            $currentVersion,
+                            $stopVersion,
+                            $subdir
                         )
                     );
                 }
@@ -280,7 +282,7 @@ class Zend_Db_Schema_Manager
         }
         $d->close();
 
-        if($direction == 'up') {
+        if ($direction == 'up') {
             ksort($files);
         } else {
             krsort($files);
@@ -330,7 +332,7 @@ class Zend_Db_Schema_Manager
         $class = new $classname($this->_db, $this->_tablePrefix);
         $class->$direction();
 
-        if($direction == 'down') {
+        if ($direction == 'down') {
             // current version is actually one lower than this version now
             $version--;
         }
@@ -381,4 +383,3 @@ class Zend_Db_Schema_Manager
         return str_pad("", count($arFrom) * 3, '..'.$ps).implode($ps, $arTo);
     }
 }
-

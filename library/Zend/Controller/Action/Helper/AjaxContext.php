@@ -70,8 +70,7 @@ class Zend_Controller_Action_Helper_AjaxContext extends Zend_Controller_Action_H
 
         $request = $this->getRequest();
         if (!method_exists($request, 'isXmlHttpRequest') ||
-            !$this->getRequest()->isXmlHttpRequest())
-        {
+            !$this->getRequest()->isXmlHttpRequest()) {
             return;
         }
 

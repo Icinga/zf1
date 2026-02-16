@@ -441,7 +441,7 @@ class Zend_Form_Element_File extends Zend_Form_Element_Xhtml
             }
         }
 
-        if($adapter->isValid($this->getName())) {
+        if ($adapter->isValid($this->getName())) {
             $this->_validated = true;
             return true;
         }
@@ -646,19 +646,19 @@ class Zend_Form_Element_File extends Zend_Form_Element_Xhtml
             $setting = (int) substr($setting, 0, -1);
 
             switch ($type) {
-                case 'K' :
+                case 'K':
                     $setting *= 1024;
                     break;
 
-                case 'M' :
+                case 'M':
                     $setting *= 1024 * 1024;
                     break;
 
-                case 'G' :
+                case 'G':
                     $setting *= 1024 * 1024 * 1024;
                     break;
 
-                default :
+                default:
                     break;
             }
         }

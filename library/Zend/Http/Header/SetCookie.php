@@ -118,7 +118,7 @@ class Zend_Http_Header_SetCookie
     protected $httponly = null;
     
     /**
-     * 
+     *
      * @var string
      */
     protected $sameSite = null;
@@ -156,7 +156,7 @@ class Zend_Http_Header_SetCookie
                 }
 
                 // First K=V pair is always the cookie name and value
-                if ($header->getName() === NULL) {
+                if ($header->getName() === null) {
                     $header->setName($headerKey);
                     $header->setValue($headerValue);
                     continue;
@@ -164,14 +164,30 @@ class Zend_Http_Header_SetCookie
 
                 // Process the remanining elements
                 switch (str_replace(['-', '_'], '', strtolower($headerKey))) {
-                    case 'expires' : $header->setExpires($headerValue); break;
-                    case 'domain'  : $header->setDomain($headerValue); break;
-                    case 'path'    : $header->setPath($headerValue); break;
-                    case 'secure'  : $header->setSecure(true); break;
-                    case 'httponly': $header->setHttponly(true); break;
-                    case 'version' : $header->setVersion((int) $headerValue); break;
-                    case 'maxage'  : $header->setMaxAge((int) $headerValue); break;
-                    case 'samesite'  : $header->setSameSite($headerValue); break;
+                    case 'expires':
+                        $header->setExpires($headerValue);
+                        break;
+                    case 'domain':
+                        $header->setDomain($headerValue);
+                        break;
+                    case 'path':
+                        $header->setPath($headerValue);
+                        break;
+                    case 'secure':
+                        $header->setSecure(true);
+                        break;
+                    case 'httponly':
+                        $header->setHttponly(true);
+                        break;
+                    case 'version':
+                        $header->setVersion((int) $headerValue);
+                        break;
+                    case 'maxage':
+                        $header->setMaxAge((int) $headerValue);
+                        break;
+                    case 'samesite':
+                        $header->setSameSite($headerValue);
+                        break;
                     default:
                         // Intentionally omitted
                 }
@@ -238,10 +254,9 @@ class Zend_Http_Header_SetCookie
             $this->setHttponly($httponly);
         }
         
-        if( !empty($sameSite) ) {
+        if (!empty($sameSite)) {
             $this->setSameSite($sameSite);
         }
-        
     }
 
     /**
@@ -263,7 +278,7 @@ class Zend_Http_Header_SetCookie
         }
 
         $value = $this->getValue();
-        if (strpos($value,'"')!==false) {
+        if (strpos($value, '"')!==false) {
             $value = '"'.urlencode(str_replace('"', '', $value)).'"';
         } else {
             $value = urlencode($value);
@@ -464,35 +479,38 @@ class Zend_Http_Header_SetCookie
     }
     
     /**
-     * 
+     *
      * @return string
      */
-    public function getSameSite() {
+    public function getSameSite()
+    {
         return $this->sameSite;
     }
 
     /**
-     * 
+     *
      * @param string $sameSite
      * @return void
      */
-    public function setSameSite($sameSite) {
+    public function setSameSite($sameSite)
+    {
         
         $validOptions = ['Strict', 'Lax', 'None'];
         
-        if( !in_array($sameSite, $validOptions)) {
-            throw new Zend_Http_Header_Exception_InvalidArgumentException('Invalid SameSite value, use one of: ' . implode(', ', $validOptions) );
+        if (!in_array($sameSite, $validOptions)) {
+            throw new Zend_Http_Header_Exception_InvalidArgumentException('Invalid SameSite value, use one of: ' . implode(', ', $validOptions));
         }
         
         $this->sameSite = $sameSite;
     }
     
     /**
-     * 
+     *
      * @return bool
      */
-    public function hasSameSiteValue(): bool {
-        return empty($this->getSameSite()) === FALSE;
+    public function hasSameSiteValue(): bool
+    {
+        return empty($this->getSameSite()) === false;
     }
 
     
@@ -576,7 +594,6 @@ class Zend_Http_Header_SetCookie
         }
 
         return true;
-
     }
 
     public function toString()
@@ -603,6 +620,4 @@ class Zend_Http_Header_SetCookie
         }
         return $headerLine;
     }
-
-
 }

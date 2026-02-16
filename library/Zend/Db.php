@@ -125,17 +125,17 @@ class Zend_Db
     public const CASE_UPPER = 1;
     public const CURSOR_FWDONLY = 0;
     public const CURSOR_SCROLL = 1;
-    public const ERR_ALREADY_EXISTS = NULL;
-    public const ERR_CANT_MAP = NULL;
-    public const ERR_CONSTRAINT = NULL;
-    public const ERR_DISCONNECTED = NULL;
-    public const ERR_MISMATCH = NULL;
-    public const ERR_NO_PERM = NULL;
+    public const ERR_ALREADY_EXISTS = null;
+    public const ERR_CANT_MAP = null;
+    public const ERR_CONSTRAINT = null;
+    public const ERR_DISCONNECTED = null;
+    public const ERR_MISMATCH = null;
+    public const ERR_NO_PERM = null;
     public const ERR_NONE = '00000';
-    public const ERR_NOT_FOUND = NULL;
-    public const ERR_NOT_IMPLEMENTED = NULL;
-    public const ERR_SYNTAX = NULL;
-    public const ERR_TRUNCATED = NULL;
+    public const ERR_NOT_FOUND = null;
+    public const ERR_NOT_IMPLEMENTED = null;
+    public const ERR_SYNTAX = null;
+    public const ERR_TRUNCATED = null;
     public const ERRMODE_EXCEPTION = 2;
     public const ERRMODE_SILENT = 0;
     public const ERRMODE_WARNING = 1;
@@ -162,7 +162,7 @@ class Zend_Db
     public const FETCH_UNIQUE = 196608;
     public const NULL_EMPTY_STRING = 1;
     public const NULL_NATURAL = 0;
-    public const NULL_TO_STRING = NULL;
+    public const NULL_TO_STRING = null;
     public const PARAM_BOOL = 5;
     public const PARAM_INPUT_OUTPUT = -2147483648;
     public const PARAM_INT = 1;
@@ -282,5 +282,4 @@ class Zend_Db
 
         return $dbAdapter;
     }
-
 }

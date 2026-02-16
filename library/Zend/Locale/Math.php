@@ -178,7 +178,8 @@ class Zend_Locale_Math
         $value = str_replace(
             [$convert['thousands_sep'], $convert['positive_sign'], $convert['decimal_point']],
             ["", "", "."],
-            (string)$value);
+            (string)$value
+        );
 
         if (!empty($convert['negative_sign']) && (strpos($value, $convert['negative_sign']))) {
             $value = str_replace($convert['negative_sign'], "", $value);

@@ -543,8 +543,7 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
             // out of baseUrl. $pos !== 0 makes sure it is not matching a value
             // from PATH_INFO or QUERY_STRING
             if ((strlen($requestUri) >= strlen($baseUrl))
-                && ((false !== ($pos = strpos($requestUri, $baseUrl))) && ($pos !== 0)))
-            {
+                && ((false !== ($pos = strpos($requestUri, $baseUrl))) && ($pos !== 0))) {
                 $baseUrl = substr($requestUri, 0, $pos + strlen($baseUrl));
             }
         }
@@ -652,7 +651,6 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
             } else {
                 $pathInfo = $requestUri;
             }
-
         }
 
         $this->_pathInfo = (string) $pathInfo;
@@ -1073,7 +1071,7 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
         $name   = $this->getServer('SERVER_NAME');
         $port   = $this->getServer('SERVER_PORT');
 
-        if(null === $name) {
+        if (null === $name) {
             return '';
         }
 
@@ -1082,7 +1080,6 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
         }
 
         return $name . ':' . $port;
-
     }
 
     /**
@@ -1095,7 +1092,7 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
     {
         if ($checkProxy && $this->getServer('HTTP_CLIENT_IP') != null) {
             $ip = $this->getServer('HTTP_CLIENT_IP');
-        } else if ($checkProxy && $this->getServer('HTTP_X_FORWARDED_FOR') != null) {
+        } elseif ($checkProxy && $this->getServer('HTTP_X_FORWARDED_FOR') != null) {
             $ip = $this->getServer('HTTP_X_FORWARDED_FOR');
         } else {
             $ip = $this->getServer('REMOTE_ADDR');

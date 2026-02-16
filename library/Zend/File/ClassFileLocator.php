@@ -151,13 +151,12 @@ class Zend_File_ClassFileLocator extends FilterIterator
                                     $namespace = $savedNamespace;
                                 } else {
                                     $namespace = null;
-                    }
-
+                                }
                             }
                             $class = (null === $namespace) ? $content : $namespace . '\\' . $content;
                             $file->addClass($class);
                             $namespace = null;
-                    break;
+                            break;
                         }
                     }
                     break;

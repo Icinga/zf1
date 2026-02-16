@@ -448,5 +448,4 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
             }
         }
     }
-
 }

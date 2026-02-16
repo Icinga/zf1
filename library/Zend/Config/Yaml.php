@@ -344,7 +344,8 @@ class Zend_Config_Yaml extends Zend_Config
                 require_once 'Zend/Config/Exception.php';
                 throw new Zend_Config_Exception(sprintf(
                     'Error parsing YAML at line %d - unsupported syntax: "%s"',
-                    $lineno, $lines[$pointer]
+                    $lineno,
+                    $lines[$pointer]
                 ));
             }
         }

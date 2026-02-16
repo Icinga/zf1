@@ -106,7 +106,8 @@ abstract class Zend_Log_Writer_Abstract implements Zend_Log_FactoryInterface
      * @return void
      */
     public function shutdown()
-    {}
+    {
+    }
 
     /**
      * Write a message to the log.
@@ -123,7 +124,7 @@ abstract class Zend_Log_Writer_Abstract implements Zend_Log_FactoryInterface
      * @return array
      * @throws Zend_Log_Exception
      */
-    static protected function _parseConfig($config)
+    protected static function _parseConfig($config)
     {
         if ($config instanceof Zend_Config) {
             $config = $config->toArray();

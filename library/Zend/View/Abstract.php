@@ -275,7 +275,6 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
     {
         $value = null;
         if ('_' != substr($key, 0, 1) && isset($this->_data[$key])) {
-
             $value = &$this->_data[$key];
             return $value;
         }

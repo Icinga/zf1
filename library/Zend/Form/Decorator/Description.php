@@ -159,7 +159,7 @@ class Zend_Form_Decorator_Description extends Zend_Form_Decorator_Abstract
         }
 
         $description = $element->getDescription();
-        if(is_string($description)) {
+        if (is_string($description)) {
             $description = trim($description);
         }
 

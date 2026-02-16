@@ -100,7 +100,7 @@ class Zend_Controller_Action_Helper_ActionStack extends Zend_Controller_Action_H
 
         $request = $this->getRequest();
 
-        if ($request instanceof Zend_Controller_Request_Abstract === false){
+        if ($request instanceof Zend_Controller_Request_Abstract === false) {
             /**
              * @see Zend_Controller_Action_Exception
              */

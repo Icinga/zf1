@@ -72,5 +72,4 @@ abstract class Zend_Filter_Word_Separator_Abstract extends Zend_Filter_PregRepla
     {
         return $this->_separator;
     }
-
 }

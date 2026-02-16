@@ -49,7 +49,7 @@ class Zend_Paginator_SerializableLimitIterator extends LimitIterator implements 
      * @param int $count Maximum number of elements to show or -1 for all
      * @see LimitIterator::__construct
      */
-    public function __construct (Iterator $it, $offset=0, $count=-1)
+    public function __construct(Iterator $it, $offset = 0, $count = -1)
     {
         parent::__construct($it, $offset, $count);
         $this->_offset = $offset;

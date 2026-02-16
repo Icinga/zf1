@@ -115,10 +115,11 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
                 $recipients,
                 $subject,
                 $body,
-                $header);
+                $header
+            );
             restore_error_handler();
         } else {
-            if(!is_string($this->parameters)) {
+            if (!is_string($this->parameters)) {
                 /**
                  * @see Zend_Mail_Transport_Exception
                  *
@@ -138,23 +139,20 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
             // Sanitize the From header
             // https://github.com/Shardj/zf1-future/issues/326
             
-            if ( empty($fromEmailHeader) === TRUE ) { // nothing to worry about
+            if (empty($fromEmailHeader) === true) { // nothing to worry about
                 goto processMail;
             }
             
-            // now we use 2 different approaches, based ond the usage context            
-            if( substr( $fromEmailHeader, 0, 2 ) === '-f' ) {
-                
-                if(substr_count($fromEmailHeader, '"') >2) { // we are considering just usage of double-quotes
+            // now we use 2 different approaches, based ond the usage context
+            if (substr($fromEmailHeader, 0, 2) === '-f') {
+                if (substr_count($fromEmailHeader, '"') >2) { // we are considering just usage of double-quotes
                     throw new Zend_Mail_Transport_Exception('Potential code injection in From header');
                 }
-  
             } else { // full email validation
-                
-                if( Zend_Validate::is($fromEmailHeader, 'EmailAddress') === FALSE ) {
+                if (Zend_Validate::is($fromEmailHeader, 'EmailAddress') === false) {
                     throw new Zend_Mail_Transport_Exception('Potential code injection in From header');
-                }                
-            }            
+                }
+            }
             
             processMail:
             
@@ -164,9 +162,9 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
                     $subject,
                     $body,
                     $header,
-                    $fromEmailHeader);
+                    $fromEmailHeader
+                );
                 restore_error_handler();
-
         }
 
         if ($this->_errstr !== null || !$result) {
@@ -256,5 +254,4 @@ class Zend_Mail_Transport_Sendmail extends Zend_Mail_Transport_Abstract
         $this->_errstr = $errstr;
         return true;
     }
-
 }

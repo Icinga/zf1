@@ -108,8 +108,7 @@ class Zend_Json_Decoder
         $this->_offset       = 0;
 
         // Normalize and set $decodeType
-        if (!in_array($decodeType, [Zend_Json::TYPE_ARRAY, Zend_Json::TYPE_OBJECT]))
-        {
+        if (!in_array($decodeType, [Zend_Json::TYPE_ARRAY, Zend_Json::TYPE_OBJECT])) {
             $decodeType = Zend_Json::TYPE_ARRAY;
         }
         $this->_decodeType   = $decodeType;
@@ -300,13 +299,13 @@ class Zend_Json_Decoder
     protected function _eatWhitespace()
     {
         if (preg_match(
-                '/([\t\b\f\n\r ])*/s',
-                $this->_source,
-                $matches,
-                PREG_OFFSET_CAPTURE,
-                $this->_offset)
-            && $matches[0][1] == $this->_offset)
-        {
+            '/([\t\b\f\n\r ])*/s',
+            $this->_source,
+            $matches,
+            PREG_OFFSET_CAPTURE,
+            $this->_offset
+        )
+            && $matches[0][1] == $this->_offset) {
             $this->_offset += strlen($matches[0][0]);
         }
     }
@@ -335,8 +334,8 @@ class Zend_Json_Decoder
 
         switch ($str[$i]) {
             case '{':
-               $this->_token = self::LBRACE;
-               break;
+                $this->_token = self::LBRACE;
+                break;
             case '}':
                 $this->_token = self::RBRACE;
                 break;
@@ -352,7 +351,7 @@ class Zend_Json_Decoder
             case ':':
                 $this->_token = self::COLON;
                 break;
-            case  '"':
+            case '"':
                 $result = '';
                 do {
                     $i++;
@@ -369,31 +368,31 @@ class Zend_Json_Decoder
                         }
                         $chr = $str[$i];
                         switch ($chr) {
-                            case '"' :
+                            case '"':
                                 $result .= '"';
                                 break;
                             case '\\':
                                 $result .= '\\';
                                 break;
-                            case '/' :
+                            case '/':
                                 $result .= '/';
                                 break;
-                            case 'b' :
+                            case 'b':
                                 $result .= "\x08";
                                 break;
-                            case 'f' :
+                            case 'f':
                                 $result .= "\x0c";
                                 break;
-                            case 'n' :
+                            case 'n':
                                 $result .= "\x0a";
                                 break;
-                            case 'r' :
+                            case 'r':
                                 $result .= "\x0d";
                                 break;
-                            case 't' :
+                            case 't':
                                 $result .= "\x09";
                                 break;
-                            case '\'' :
+                            case '\'':
                                 $result .= '\'';
                                 break;
                             default:
@@ -401,7 +400,7 @@ class Zend_Json_Decoder
                                 throw new Zend_Json_Exception("Illegal escape "
                                     .  "sequence '" . $chr . "'");
                         }
-                    } elseif($chr == '"') {
+                    } elseif ($chr == '"') {
                         break;
                     } else {
                         $result .= $chr;
@@ -430,7 +429,7 @@ class Zend_Json_Decoder
                 if (($i+ 3) < $str_length && substr($str, $start, 4) == "null") {
                     $this->_token = self::DATUM;
                 }
-                $this->_tokenValue = NULL;
+                $this->_tokenValue = null;
                 $i += 3;
                 break;
         }
@@ -442,9 +441,13 @@ class Zend_Json_Decoder
 
         $chr = $str[$i];
         if ($chr == '-' || $chr == '.' || ($chr >= '0' && $chr <= '9')) {
-            if (preg_match('/-?([0-9])*(\.[0-9]*)?((e|E)((-|\+)?)[0-9]+)?/s',
-                $str, $matches, PREG_OFFSET_CAPTURE, $start) && $matches[0][1] == $start) {
-
+            if (preg_match(
+                '/-?([0-9])*(\.[0-9]*)?((e|E)((-|\+)?)[0-9]+)?/s',
+                $str,
+                $matches,
+                PREG_OFFSET_CAPTURE,
+                $start
+            ) && $matches[0][1] == $start) {
                 $datum = $matches[0][0];
 
                 if (is_numeric($datum)) {
@@ -489,8 +492,7 @@ class Zend_Json_Decoder
         $utf8        = '';
         $strlen_chrs = strlen($chrs);
 
-        for($i = 0; $i < $strlen_chrs; $i++) {
-
+        for ($i = 0; $i < $strlen_chrs; $i++) {
             $substr_chrs_c_2 = substr($chrs, $i, 2);
             $ord_chrs_c = ord($chrs[$i]);
 
@@ -557,7 +559,7 @@ class Zend_Json_Decoder
     protected static function _utf162utf8($utf16)
     {
         // Check for mb extension otherwise do by hand.
-        if( function_exists('mb_convert_encoding') ) {
+        if (function_exists('mb_convert_encoding')) {
             return mb_convert_encoding($utf16, 'UTF-8', 'UTF-16BE');
         }
 
