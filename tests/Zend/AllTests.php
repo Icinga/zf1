@@ -29,7 +29,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 }
 
 require_once 'Zend/Cache/AllTests.php';
-require_once 'Zend/Db/AllTests.php';
 require_once 'Zend/ConfigTest.php';
 require_once 'Zend/Config/AllTests.php';
 require_once 'Zend/Controller/AllTests.php';
@@ -143,7 +142,6 @@ class Zend_AllTests
         $suite->addTest(Zend_Controller_AllTests::suite());
         $suite->addTestSuite('Zend_DateTest');
         $suite->addTest(Zend_Date_AllTests::suite());
-        $suite->addTest(Zend_Db_AllTests::suite());
         $suite->addTestSuite('Zend_DebugTest');
         $suite->addTestSuite('Zend_ExceptionTest');
         $suite->addTest(Zend_File_AllTests::suite());

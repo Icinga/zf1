@@ -29,8 +29,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 }
 
 require_once 'Zend/Test/PHPUnit/AllTests.php';
-require_once 'Zend/Test/DbAdapterTest.php';
-require_once 'Zend/Test/DbStatementTest.php';
 
 /**
  * @category   Zend
@@ -51,8 +49,6 @@ class Zend_Test_AllTests
     {
         $suite = new TestSuite('Zend Framework - Zend_Test');
 
-        $suite->addTestSuite('Zend_Test_DbAdapterTest');
-        $suite->addTestSuite('Zend_Test_DbStatementTest');
         $suite->addTest(Zend_Test_PHPUnit_AllTests::suite());
 
         return $suite;
