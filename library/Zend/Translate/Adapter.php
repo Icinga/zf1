@@ -331,7 +331,7 @@ abstract class Zend_Translate_Adapter
             $this->_addTranslationData($options);
         }
 
-        if ((isset($this->_translate[$originate]) === true) && (count($this->_translate[$originate]) > 0)) {
+        if ((isset($this->_translate[$originate ?? '']) === true) && (count($this->_translate[$originate ?? '']) > 0)) {
             $this->setLocale($originate);
         }
 
@@ -425,7 +425,7 @@ abstract class Zend_Translate_Adapter
     /**
      * Sets locale
      *
-     * @param  string|Zend_Locale $locale Locale to set
+     * @param  string|Zend_Locale|null $locale Locale to set
      * @throws Zend_Translate_Exception
      * @return $this
      */

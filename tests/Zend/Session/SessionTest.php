@@ -108,7 +108,7 @@ class Zend_SessionTest extends TestCase
      */
     public function sortResult(array $result)
     {
-        $results = explode(';', array_pop($result));
+        $results = explode(';', array_pop($result) ?? '');
         sort($results);
         return implode(';', $results);
     }

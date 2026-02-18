@@ -855,8 +855,8 @@ class Zend_Filter_Input
                     if (is_array($rule)) {
                         $keys      = array_keys($rule);
                         $classKey  = array_shift($keys);
-                        if (isset($rule[$classKey])) {
-                            $ruleClass = $rule[$classKey];
+                        if (isset($rule[$classKey ?? ''])) {
+                            $ruleClass = $rule[$classKey ?? ''];
                             if ($ruleClass === 'NotEmpty') {
                                 $foundNotEmptyValidator = true;
                                 // field may not be empty, we are ready

@@ -649,8 +649,7 @@ class Zend_LocaleTest extends TestCase
         putenv("HTTP_ACCEPT_LANGUAGE=");
         unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
         $ref = new ReflectionProperty('Zend_Locale', '_browser');
-        $ref->setAccessible(true);
-        $ref->setValue(null);
+        $ref->setValue(null, null);
 
         $value = new Zend_Locale();
         $list = $value->getBrowser();
@@ -951,7 +950,6 @@ class Zend_LocaleTest extends TestCase
 
         $class = new ReflectionClass('Zend_Locale');
         $property = $class->getProperty('_localeData');
-        $property->setAccessible(true);
 
         $locale = new Zend_Locale();
         $localeData = $property->getValue($locale);

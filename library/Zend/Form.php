@@ -2129,7 +2129,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
      * element (in this case, 'baz').
      *
      * @param  array $value Array to walk
-     * @param  string $arrayPath Array notation path of the part to extract
+     * @param  ?string $arrayPath Array notation path of the part to extract
      * @return string
      */
     protected function _dissolveArrayValue($value, $arrayPath)
@@ -2148,8 +2148,8 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
             $arrayPath = trim(substr($arrayPath, $arrayPos + 1), ']');
         }
 
-        if (isset($value[$arrayPath])) {
-            $value = $value[$arrayPath];
+        if (isset($value[$arrayPath ?? ''])) {
+            $value = $value[$arrayPath ?? ''];
         }
 
         return $value;
