@@ -216,12 +216,12 @@ class Zend_View_Helper_HeadTitleTest extends TestCase
 
     public function testCanTranslateTitle()
     {
-        require_once 'Zend/Translate/Adapter/Ini.php';
+        require_once 'Zend/Translate/Adapter/Array.php';
         require_once 'Zend/Registry.php';
-        $adapter = new Zend_Translate_Adapter_Ini(dirname(__FILE__) . '/../../Translate/Adapter/_files/translation_en.ini', 'en');
+        $adapter = new Zend_Translate_Adapter_Array(dirname(__FILE__) . '/../../Translate/Adapter/_files/translation_en.php', 'en');
         Zend_Registry::set('Zend_Translate', $adapter);
         $this->helper->enableTranslation();
-        $this->helper->headTitle('Message_1');
+        $this->helper->headTitle('Message 1');
         $this->assertEquals('<title>Message 1 (en)</title>', $this->helper->toString());
     }
 
