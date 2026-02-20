@@ -1,4 +1,4 @@
-<?php
+<?php // lint < 0 Never lint
 /**
  * Zend Framework
  *
