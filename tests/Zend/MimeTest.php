@@ -1,6 +1,8 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -111,8 +113,8 @@ class Zend_MimeTest extends TestCase
 
     /**
      * @group ZF-1688
-     * @dataProvider dataTestEncodeMailHeaderQuotedPrintable
      */
+    #[DataProvider('dataTestEncodeMailHeaderQuotedPrintable')]
     public function testEncodeMailHeaderQuotedPrintable($str, $charset, $result)
     {
         $this->assertEquals($result, Zend_Mime::encodeQuotedPrintableHeader($str, $charset));
@@ -133,8 +135,8 @@ class Zend_MimeTest extends TestCase
 
     /**
      * @group ZF-1688
-     * @dataProvider dataTestEncodeMailHeaderBase64
      */
+    #[DataProvider('dataTestEncodeMailHeaderBase64')]
     public function testEncodeMailHeaderBase64($str, $charset, $result)
     {
         $this->assertEquals($result, Zend_Mime::encodeBase64Header($str, $charset));
@@ -152,8 +154,8 @@ class Zend_MimeTest extends TestCase
 
     /**
      * @group ZF-1688
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testLineLengthInQuotedPrintableHeaderEncoding()
     {
         $subject = "Alle meine Entchen schwimmen in dem See, schwimmen in dem See, Köpfchen in das Wasser, Schwänzchen in die Höh!";

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id $
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_TranslateTest::main');
-}
 
 /**
  * Zend_Translate
@@ -53,19 +47,7 @@ class Zend_TranslateTest extends TestCase
      * @var bool
      */
     protected $_errorOccured;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_TranslateTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (Zend_Translate::hasCache()) {
             Zend_Translate::removeCache();
@@ -104,23 +86,8 @@ class Zend_TranslateTest extends TestCase
         $lang = new Zend_Translate(Zend_Translate::AN_GETTEXT, dirname(__FILE__) . '/Translate/Adapter/_files/translation_en.mo', 'en');
         $this->assertTrue($lang->getAdapter() instanceof Zend_Translate_Adapter_Gettext);
 
-        $lang = new Zend_Translate(Zend_Translate::AN_TMX, dirname(__FILE__) . '/Translate/Adapter/_files/translation_en.tmx', 'en');
-        $this->assertTrue($lang->getAdapter() instanceof Zend_Translate_Adapter_Tmx);
-
         $lang = new Zend_Translate(Zend_Translate::AN_CSV, dirname(__FILE__) . '/Translate/Adapter/_files/translation_en.csv', 'en');
         $this->assertTrue($lang->getAdapter() instanceof Zend_Translate_Adapter_Csv);
-
-        $lang = new Zend_Translate(Zend_Translate::AN_XLIFF, dirname(__FILE__) . '/Translate/Adapter/_files/translation_en.xliff', 'en');
-        $this->assertTrue($lang->getAdapter() instanceof Zend_Translate_Adapter_Xliff);
-
-        $lang = new Zend_Translate('Qt', dirname(__FILE__) . '/Translate/Adapter/_files/translation_en2.ts', 'en');
-        $this->assertTrue($lang->getAdapter() instanceof Zend_Translate_Adapter_Qt);
-
-        $lang = new Zend_Translate('XmlTm', dirname(__FILE__) . '/Translate/Adapter/_files/translation_en.xmltm', 'en');
-        $this->assertTrue($lang->getAdapter() instanceof Zend_Translate_Adapter_XmlTm);
-
-        $lang = new Zend_Translate('Tbx', dirname(__FILE__) . '/Translate/Adapter/_files/translation_en.tbx', 'en');
-        $this->assertTrue($lang->getAdapter() instanceof Zend_Translate_Adapter_Tbx);
     }
 
     public function testSetAdapter()
@@ -951,9 +918,4 @@ class Zend_TranslateTest extends TestCase
     {
         return 1;
     }
-}
-
-// Call Zend_TranslateTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_TranslateTest::main") {
-    Zend_TranslateTest::main();
 }

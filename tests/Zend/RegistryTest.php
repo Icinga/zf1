@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -38,12 +38,12 @@ require_once 'Zend/Registry.php';
  */
 class Zend_RegistryTest extends TestCase
 {
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Registry::_unsetInstance();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Registry::_unsetInstance();
     }

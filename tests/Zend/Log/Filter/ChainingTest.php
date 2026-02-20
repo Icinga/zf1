@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Filter_ChainingTest::main');
-}
 
 /** Zend_Log */
 require_once 'Zend/Log.php';
@@ -54,21 +48,14 @@ class Zend_Log_Filter_ChainingTest extends TestCase
      * @var \Zend_Log|mixed
      */
     protected $logger;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->log = fopen('php://memory', 'w');
         $this->logger = new Zend_Log();
         $this->logger->addWriter(new Zend_Log_Writer_Stream($this->log));
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         fclose($this->log);
     }
@@ -109,8 +96,4 @@ class Zend_Log_Filter_ChainingTest extends TestCase
         $this->assertStringContainsString($err, $logdata);
         $this->assertStringNotContainsString($warn, $logdata);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Filter_ChainingTest::main') {
-    Zend_Log_Filter_ChainingTest::main();
 }

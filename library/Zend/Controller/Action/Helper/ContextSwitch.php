@@ -262,7 +262,6 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
         // format provided
         if (!$this->hasContext($context)) {
             if (empty($format) || !$this->hasContext($format)) {
-
                 return;
             }
         }
@@ -959,8 +958,8 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
 
         $this->_contexts[$context] = [];
 
-        $this->setSuffix($context,    (isset($spec['suffix'])    ? $spec['suffix']    : ''))
-             ->setHeaders($context,   (isset($spec['headers'])   ? $spec['headers']   : []))
+        $this->setSuffix($context, (isset($spec['suffix'])    ? $spec['suffix']    : ''))
+             ->setHeaders($context, (isset($spec['headers'])   ? $spec['headers']   : []))
              ->setCallbacks($context, (isset($spec['callbacks']) ? $spec['callbacks'] : []));
         return $this;
     }
@@ -1116,7 +1115,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
             /**
              * @see Zend_Json
              */
-            if(method_exists($view, 'getVars')) {
+            if (method_exists($view, 'getVars')) {
                 require_once 'Zend/Json.php';
                 $vars = Zend_Json::encode($view->getVars());
                 $this->getResponse()->setBody($vars);
@@ -1391,4 +1390,3 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
         return $this->_viewRenderer;
     }
 }
-

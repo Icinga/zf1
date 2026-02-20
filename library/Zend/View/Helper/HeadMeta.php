@@ -209,8 +209,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
     {
         if ((!$item instanceof stdClass)
             || !isset($item->type)
-            || !isset($item->modifiers))
-        {
+            || !isset($item->modifiers)) {
             return false;
         }
 
@@ -222,7 +221,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
         }
 
         // <meta property= ... /> is only supported with doctype RDFa and html5
-        if ( !is_null($this->view) && !$this->view->doctype()->isRdfa() && !$isHtml5
+        if (!is_null($this->view) && !$this->view->doctype()->isRdfa() && !$isHtml5
             && $item->type === 'property') {
             return false;
         }
@@ -393,8 +392,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
 
         if (isset($item->modifiers['conditional'])
             && !empty($item->modifiers['conditional'])
-            && is_string($item->modifiers['conditional']))
-        {
+            && is_string($item->modifiers['conditional'])) {
             if (str_replace(' ', '', $item->modifiers['conditional']) === '!IE') {
                 $meta = '<!-->' . $meta . '<!--';
             }

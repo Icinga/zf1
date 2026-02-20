@@ -93,9 +93,9 @@ abstract class Zend_Controller_Action implements Zend_Controller_Action_Interfac
 
     /**
      * Compatibility for php 8.2 to stop error Deprecated: Creation of dynamic property
-     * @var object 
+     * @var object
      */
-    public  $contexts = null; 
+    public $contexts = null;
     
     /**
      * Compatibility for php 8.2 to stop error Deprecated: Creation of dynamic property
@@ -612,7 +612,7 @@ abstract class Zend_Controller_Action implements Zend_Controller_Action_Interfac
     public function getParam($paramName, $default = null)
     {
         $value = $this->getRequest()->getParam($paramName);
-         if ((null === $value || '' === $value) && (null !== $default)) {
+        if ((null === $value || '' === $value) && (null !== $default)) {
             $value = $default;
         }
 

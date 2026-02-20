@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_ExcludeMimeTypeTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_ExcludeMimeTypeTest::main");
-}
-
 /**
  * @see Zend_Validate_File_ExcludeMimeType
  */
@@ -47,17 +40,6 @@ require_once 'Zend/Validate/File/ExcludeMimeType.php';
  */
 class Zend_Validate_File_ExcludeMimeTypeTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_ExcludeMimeTypeTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Ensures that the validator follows expected behavior
      *
@@ -159,7 +141,6 @@ class Zend_Validate_File_ExcludeMimeTypeTest extends TestCase
         $this->assertEquals(['image/gif', 'text', 'jpg', 'to', 'zip', 'ti'], $validator->getMimeType(true));
     }
 
-
     /**
      * Ensure validator is not affected by PHP bug #63976
      */
@@ -173,9 +154,4 @@ class Zend_Validate_File_ExcludeMimeTypeTest extends TestCase
             $validator->getMessages()
         );
     }
-}
-
-// Call Zend_Validate_File_ExcludeMimeTypeTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_ExcludeMimeTypeTest::main") {
-    Zend_Validate_File_ExcludeMimeTypeTest::main();
 }

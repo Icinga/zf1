@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Form_SubFormTest::main');
-}
-
 // error_reporting(E_ALL);
 
 require_once 'Zend/Form/SubForm.php';
@@ -49,21 +43,14 @@ class Zend_Form_SubFormTest extends TestCase
      * @var Zend_Form_SubForm
      */
     private $form;
-
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Form_SubFormTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Form::setDefaultTranslator(null);
 
         $this->form = new Zend_Form_SubForm();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -175,8 +162,4 @@ class Zend_Form_SubFormTest_SubForm extends Zend_Form_SubForm
     {
         $this->setDisableLoadDefaultDecorators(true);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Form_SubFormTest::main') {
-    Zend_Form_SubFormTest::main();
 }

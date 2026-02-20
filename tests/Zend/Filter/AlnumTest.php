@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -72,7 +72,7 @@ class Zend_Filter_AlnumTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_filter = new Zend_Filter_Alnum();
         if (null === self::$_unicodeEnabled) {

@@ -127,5 +127,4 @@ class Zend_Db_Table_Definition
     {
         return (isset($this->_tableConfigs[$tableName]));
     }
-
 }

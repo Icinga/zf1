@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Log_Writer_MailTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Log_Writer_MailTest::main");
-}
-
 /** Zend_Layout */
 require_once 'Zend/Layout.php';
 
@@ -51,7 +45,6 @@ require_once 'Zend/View/Exception.php';
 /** Zend_Mail_Transport_Abstract */
 require_once 'Zend/Mail/Transport/Abstract.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Log
@@ -68,37 +61,26 @@ class Zend_Log_Writer_MailTest extends TestCase
      * @var Zend_Mail_Transport_Abstract
      */
     protected $_transport;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
+    protected function setUp(): void
     {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
-    {
-        $this->_transport = $this->getMockForAbstractClass(
-            Zend_Mail_Transport_Abstract::class,
-            []
-        );
+        $this->_transport = new class extends Zend_Mail_Transport_Abstract {
+            protected function _sendMail()
+            {
+            }
+        };
         Zend_Mail::setDefaultTransport($this->_transport);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Mail::clearDefaultTransport();
     }
 
     /**
      * Tests normal logging, but with multiple messages for a level.
-     * @doesNotPerformAssertions
      * @return void
      */
+    #[DoesNotPerformAssertions]
     public function testNormalLoggingMultiplePerLevel()
     {
         list(, , $log) = $this->_getSimpleLogger();
@@ -108,9 +90,9 @@ class Zend_Log_Writer_MailTest extends TestCase
 
     /**
      * Tests normal logging without use of Zend_Layout.
-     * @doesNotPerformAssertions
      * @return void
      */
+    #[DoesNotPerformAssertions]
     public function testNormalLoggingNoLayout()
     {
         list(, , $log) = $this->_getSimpleLogger();
@@ -120,9 +102,9 @@ class Zend_Log_Writer_MailTest extends TestCase
 
     /**
      * Tests normal logging with Zend_Layout usage.
-     * @doesNotPerformAssertions
      * @return void
      */
+    #[DoesNotPerformAssertions]
     public function testNormalLoggingWithLayout()
     {
         list(, , $log) = $this->_getSimpleLogger(true);
@@ -132,8 +114,8 @@ class Zend_Log_Writer_MailTest extends TestCase
 
     /**
      * Tests normal logging with Zend_Layout and a custom formatter for it.
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testNormalLoggingWithLayoutAndItsFormatter()
     {
         list(, $writer, $log) = $this->_getSimpleLogger(true);
@@ -252,8 +234,11 @@ class Zend_Log_Writer_MailTest extends TestCase
      */
     public function testDestructorMailError()
     {
-        $this->expectException(version_compare(phpversion(), '7.1', '>') ? \PHPUnit\Framework\Error\Error::class : \Error::class);
-        $this->expectExceptionMessage('unable to send log entries via email;');
+        $captured = null;
+        set_error_handler(function ($errno, $errstr) use (&$captured) {
+            $captured = ['errno' => $errno, 'errstr' => $errstr];
+            return true;
+        });
         list($mail, $writer, $log) = $this->_getSimpleLogger(false);
 
         // Force the send() method to throw the same exception that would be
@@ -265,7 +250,15 @@ class Zend_Log_Writer_MailTest extends TestCase
         // Log an error message so that there's something to send via email.
         $log->err('a bogus error message to force mail sending');
 
-        unset($log);
+        try {
+            unset($log);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertNotNull($captured);
+        $this->assertSame(E_USER_WARNING, $captured['errno']);
+        $this->assertStringContainsString('unable to send log entries via email;', $captured['errstr']);
     }
 
     /**
@@ -277,8 +270,11 @@ class Zend_Log_Writer_MailTest extends TestCase
      */
     public function testDestructorLayoutError()
     {
-        $this->expectException(version_compare(phpversion(), '7.1', '>') ? \PHPUnit\Framework\Error\Error::class : \Error::class);
-        $this->expectExceptionMessage('exception occurred when rendering layout; unable to set html body for message; message = bogus message');
+        $captured = null;
+        set_error_handler(function ($errno, $errstr) use (&$captured) {
+            $captured = ['errno' => $errno, 'errstr' => $errstr];
+            return true;
+        });
 
         list($mail, $writer, $log, $layout) = $this->_getSimpleLogger(true);
 
@@ -291,7 +287,18 @@ class Zend_Log_Writer_MailTest extends TestCase
         // Log an error message so that there's something to send via email.
         $log->err('a bogus error message to force mail sending');
 
-        unset($log);
+        try {
+            unset($log);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertNotNull($captured);
+        $this->assertSame(E_USER_NOTICE, $captured['errno']);
+        $this->assertStringContainsString(
+            'exception occurred when rendering layout; unable to set html body for message; message = bogus message',
+            $captured['errstr']
+        );
     }
 
     /**
@@ -515,9 +522,4 @@ class Zend_Log_Writer_MailTest extends TestCase
             'priorityName' => 'INFO'
         ];
     }
-}
-
-// Call Zend_Log_Writer_MailTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Log_Writer_MailTest::main") {
-    Zend_Log_Writer_MailTest::main();
 }

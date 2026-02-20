@@ -1,7 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Zend Framework
@@ -23,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Http_Client_CurlTest::main');
-}
 
 require_once dirname(__FILE__) . '/CommonHttpTests.php';
 
@@ -63,19 +58,12 @@ class Zend_Http_Client_CurlTest extends Zend_Http_Client_CommonHttpTests
     protected $config = [
         'adapter' => 'Zend_Http_Client_Adapter_Curl'
     ];
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!extension_loaded('curl')) {
             $this->markTestSkipped('cURL is not installed, marking all Http Client Curl Adapter tests skipped.');
         }
-        parent::set_up();
+        parent::setUp();
     }
 
     /**
@@ -124,10 +112,9 @@ class Zend_Http_Client_CurlTest extends Zend_Http_Client_CommonHttpTests
         $this->assertEquals($config->nested->item, $hasConfig['nested']['item']);
     }
 
+    #[DataProvider('invalidConfigProvider')]
     /**
      * Check that an exception is thrown when trying to set invalid config
-     *
-     * @dataProvider invalidConfigProvider
      */
     public function testSetConfigInvalidConfig($config)
     {
@@ -306,7 +293,7 @@ class Zend_Http_Client_CurlTest extends Zend_Http_Client_CommonHttpTests
 
         $this->assertTrue(is_resource($adapter->getHandle()));
     }
-    
+
     /**
      * @group ZF-9857
      */
@@ -318,8 +305,4 @@ class Zend_Http_Client_CurlTest extends Zend_Http_Client_CommonHttpTests
         $this->client->request('HEAD');
         $this->assertEquals('', $this->client->getLastResponse()->getBody());
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Http_Client_CurlTest::main') {
-    Zend_Http_Client_CurlTest::main();
 }

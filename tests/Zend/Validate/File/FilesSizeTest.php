@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_FilesSizeTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_FilesSizeTest::main");
-}
-
 /**
  * @see Zend_Validate_File_FilesSize
  */
@@ -49,18 +43,7 @@ class Zend_Validate_File_FilesSizeTest extends TestCase
      * @var bool
      */
     protected $multipleOptionsDetected;
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_FilesSizeTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->multipleOptionsDetected = false;
     }
@@ -194,9 +177,7 @@ class Zend_Validate_File_FilesSizeTest extends TestCase
         $this->assertEquals('976.56kB', $validator->getMax());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorShouldRaiseErrorWhenPassedMultipleOptions()
     {
         $handler = set_error_handler([$this, 'errorHandler'], E_USER_NOTICE);
@@ -234,9 +215,4 @@ class Zend_Validate_File_FilesSizeTest extends TestCase
             $this->multipleOptionsDetected = true;
         }
     }
-}
-
-// Call Zend_Validate_File_FilesSizeTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_FilesSizeTest::main") {
-    Zend_Validate_File_FilesSizeTest::main();
 }

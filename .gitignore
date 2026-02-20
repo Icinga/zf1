@@ -1,4 +1,12 @@
-.vagrant
+# Exclude all hidden files
+.*
+# Except those related to Git
+!.git*
+
+# Exclude assets and dependencies installed by Composer
+composer.lock
+vendor/
+
 tests/Zend/Db/Table/_files/cachefiles/*
 tests/Zend/Auth/Adapter/OpenId/_files/*
 tests/Zend/Filter/_files/Compress/*
@@ -13,13 +21,3 @@ tests/Zend/Filter/_files/traversed.*
 tests/Zend/Filter/_files/**/zipextracted.txt
 tests/Zend/Mail/_files/test.tmp/INBOX
 tests/Zend/Paginator/_files/test-write-tmp.sqlite
-vendor/*
-composer.lock
-bin/dbunit
-bin/phpunit
-bin/parallel-lint
-.php-cs-fixer.cache
-.php_cs.cache
-.phpstan.cache/*
-.idea
-.vscode

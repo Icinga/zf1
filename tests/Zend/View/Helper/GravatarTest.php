@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: BaseUrlTest.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
-
-// Call Zend_View_Helper_BaseUrlTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_View_Helper_GravatarTest::main');
-}
 
 /**
  * @see Zend_View_Helper_Gravatar
@@ -60,20 +54,10 @@ class Zend_View_Helper_GravatarTest extends TestCase
      * @var Zend_View
      */
     protected $_view;
-
-    /**
-     * Main
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_GravatarTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Prepares the environment before running a test.
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_object = new Zend_View_Helper_Gravatar();
         $this->_view = new Zend_View();
@@ -88,7 +72,7 @@ class Zend_View_Helper_GravatarTest extends TestCase
     /**
      * Cleans up the environment after running a test.
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->_object, $this->_view);
     }
@@ -304,9 +288,8 @@ class Zend_View_Helper_GravatarTest extends TestCase
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testInvalidKeyPassedToSetOptionsMethod()
     {
         $options = [
@@ -314,9 +297,4 @@ class Zend_View_Helper_GravatarTest extends TestCase
         ];
         $this->_object->gravatar()->setOptions($options);
     }
-}
-
-// Call Zend_View_Helper_BaseUrlTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === 'Zend_View_Helper_BaseUrlTest::main') {
-    Zend_View_Helper_BaseUrlTest::main();
 }

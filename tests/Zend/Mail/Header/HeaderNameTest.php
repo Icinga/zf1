@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -33,7 +34,7 @@ class Zend_Mail_Header_HeaderNameTest extends TestCase
     /**
      * Data for filter name
      */
-    public function getFilterNames()
+    public static function getFilterNames()
     {
         return [
             ['Subject', 'Subject'],
@@ -46,8 +47,8 @@ class Zend_Mail_Header_HeaderNameTest extends TestCase
         ];
     }
 
+    #[DataProvider('getFilterNames')]
     /**
-     * @dataProvider getFilterNames
      * @group ZF2015-04
      */
     public function testFilterName($name, $expected)
@@ -55,7 +56,7 @@ class Zend_Mail_Header_HeaderNameTest extends TestCase
         $this->assertEquals($expected, Zend_Mail_Header_HeaderName::filter($name));
     }
 
-    public function validateNames()
+    public static function validateNames()
     {
         return [
             ['Subject', 'assertTrue'],
@@ -68,8 +69,8 @@ class Zend_Mail_Header_HeaderNameTest extends TestCase
         ];
     }
 
+    #[DataProvider('validateNames')]
     /**
-     * @dataProvider validateNames
      * @group ZF2015-04
      */
     public function testValidateName($name, $assertion)
@@ -77,7 +78,7 @@ class Zend_Mail_Header_HeaderNameTest extends TestCase
         $this->{$assertion}(Zend_Mail_Header_HeaderName::isValid($name));
     }
 
-    public function assertNames()
+    public static function assertNames()
     {
         return [
             ['Subject:'],
@@ -87,8 +88,8 @@ class Zend_Mail_Header_HeaderNameTest extends TestCase
         ];
     }
 
+    #[DataProvider('assertNames')]
     /**
-     * @dataProvider assertNames
      * @group ZF2015-04
      */
     public function testAssertValidRaisesExceptionForInvalidNames($name)

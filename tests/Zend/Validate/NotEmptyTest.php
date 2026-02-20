@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,16 +23,10 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_NotEmptyTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_NotEmptyTest::main");
-}
-
 /**
  * @see Zend_Validate_NotEmpty
  */
 require_once 'Zend/Validate/NotEmpty.php';
-
 
 /**
  * @category   Zend
@@ -47,17 +39,6 @@ require_once 'Zend/Validate/NotEmpty.php';
 class Zend_Validate_NotEmptyTest extends TestCase
 {
     /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_NotEmptyTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    /**
      * Zend_Validate_NotEmpty object
      *
      * @var Zend_Validate_NotEmpty
@@ -69,7 +50,7 @@ class Zend_Validate_NotEmptyTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_NotEmpty();
     }
@@ -629,9 +610,4 @@ class ClassTest3
     {
         return '';
     }
-}
-
-// Call Zend_Validate_NotEmptyTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_NotEmptyTest::main") {
-    Zend_Validate_NotEmptyTest::main();
 }

@@ -184,7 +184,7 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
         $op1 = self::normalize($op1);
         $result = sqrt($op1);
         if (is_nan($result)) {
-            return NULL;
+            return null;
         }
 
         return self::round(self::normalize($result), $scale);
@@ -196,13 +196,13 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
             $op1 = 0;
         }
         if (empty($op2)) {
-            return NULL;
+            return null;
         }
         $op1 = (int) self::normalize($op1);
         $op2 = (int) self::normalize($op2);
 
         if ((int)$op2 === 0) {
-            return NULL;
+            return null;
         }
 
         $result = $op1 % $op2;
@@ -235,7 +235,7 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
         }
         if ($op1 > $op2) {
             return 1;
-        } else if ($op1 < $op2) {
+        } elseif ($op1 < $op2) {
             return -1;
         }
         return 0;

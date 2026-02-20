@@ -55,7 +55,7 @@ class Zend_Mail_Protocol_Imap
      * @param  bool     $ssl   use ssl? 'SSL', 'TLS' or false
      * @throws Zend_Mail_Protocol_Exception
      */
-    function __construct($host = '', $port = null, $ssl = false)
+    public function __construct($host = '', $port = null, $ssl = false)
     {
         if ($host) {
             $this->connect($host, $port, $ssl);
@@ -323,7 +323,7 @@ class Zend_Mail_Protocol_Imap
         // last line has response code
         if ($tokens[0] == 'OK') {
             return $lines ? $lines : true;
-        } else if ($tokens[0] == 'NO'){
+        } elseif ($tokens[0] == 'NO') {
             return false;
         }
         return null;
@@ -574,9 +574,9 @@ class Zend_Mail_Protocol_Imap
     {
         if (is_array($from)) {
             $set = implode(',', $from);
-        } else if ($to === null) {
+        } elseif ($to === null) {
             $set = (int)$from;
-        } else if ($to === INF) {
+        } elseif ($to === INF) {
             $set = (int)$from . ':*';
         } else {
             $set = (int)$from . ':' . (int)$to;
@@ -838,5 +838,4 @@ class Zend_Mail_Protocol_Imap
         }
         return [];
     }
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id:$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Stdlib_CallbackHandlerTest::main');
-}
 
 require_once 'Zend/Stdlib/CallbackHandler.php';
 require_once 'Zend/Stdlib/TestAsset/SignalHandlers/InstanceMethod.php';
@@ -53,14 +47,7 @@ class Zend_Stdlib_CallbackHandlerTest extends TestCase
      * @var bool
      */
     protected $error;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (isset($this->args)) {
             unset($this->args);
@@ -157,8 +144,4 @@ class Zend_Stdlib_CallbackHandlerTest extends TestCase
     {
         $this->args = func_get_args();
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Stdlib_CallbackHandlerTest::main') {
-    Zend_Stdlib_CallbackHandlerTest::main();
 }

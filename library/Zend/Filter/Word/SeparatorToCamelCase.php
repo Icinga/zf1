@@ -60,5 +60,4 @@ class Zend_Filter_Word_SeparatorToCamelCase extends Zend_Filter_Word_Separator_A
         }
         return strtoupper($matches[1]);
     }
-
 }

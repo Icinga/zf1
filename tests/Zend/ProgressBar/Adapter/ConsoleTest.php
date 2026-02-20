@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_ProgressBar_Adapter_ConsoleTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_ProgressBar_Adapter_ConsoleTest::main");
-}
-
 /**
  * Zend_ProgressBar_Adapter_Console
  */
@@ -47,27 +40,15 @@ require_once 'MockupStream.php';
  */
 class Zend_ProgressBar_Adapter_ConsoleTest extends TestCase
 {
-    protected function set_up()
+    protected function setUp(): void
     {
         stream_wrapper_register("zendprogressbaradapterconsole", "Zend_ProgressBar_Adapter_Console_MockupStream");
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         stream_wrapper_unregister('zendprogressbaradapterconsole');
     }
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_ProgressBar_Adapter_ConsoleTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testWindowsWidth()
     {
         if (substr(PHP_OS, 0, 3) === 'WIN') {
@@ -269,7 +250,7 @@ class Zend_ProgressBar_Adapter_ConsoleTest extends TestCase
     {
         $beforePHP8 = version_compare(PHP_VERSION, '8.0.0', '<');
         $this->expectException($beforePHP8 ? Zend_ProgressBar_Adapter_Exception::class : ValueError::class);
-        $this->expectExceptionMessage($beforePHP8 ? "Unable to open stream" : "cannot be empty");
+        $this->expectExceptionMessage($beforePHP8 ? "Unable to open stream" : "not be empty");
         $adapter = new Zend_ProgressBar_Adapter_Console();
         $adapter->setOutputStream(null);
     }
@@ -364,9 +345,4 @@ class Zend_ProgressBar_Adapter_Console_Stub extends Zend_ProgressBar_Adapter_Con
     {
         $this->_lastOutput = $data;
     }
-}
-
-// Call Zend_ProgressBar_Adapter_ConsoleTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_ProgressBar_Adapert_ConsoleTest::main") {
-    Zend_ProgressBar_Adapter_ConsoleTest::main();
 }

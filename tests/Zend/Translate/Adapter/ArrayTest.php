@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Translate_Adapter_ArrayTest::main');
-}
-
 /**
  * Zend_Translate_Adapter_Array
  */
@@ -50,19 +44,7 @@ class Zend_Translate_Adapter_ArrayTest extends TestCase
      * @var boolean
      */
     protected $_errorOccurred = false;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Translate_Adapter_ArrayTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (Zend_Translate_Adapter_Array::hasCache()) {
             Zend_Translate_Adapter_Array::clearCache();
@@ -70,7 +52,7 @@ class Zend_Translate_Adapter_ArrayTest extends TestCase
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if (Zend_Translate_Adapter_Array::hasCache()) {
             Zend_Translate_Adapter_Array::clearCache();
@@ -356,9 +338,4 @@ class Zend_Translate_Adapter_ArrayTest extends TestCase
     {
         $this->_errorOccurred = true;
     }
-}
-
-// Call Zend_Translate_Adapter_ArrayTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Translate_Adapter_ArrayTest::main") {
-    Zend_Translate_Adapter_ArrayTest::main();
 }

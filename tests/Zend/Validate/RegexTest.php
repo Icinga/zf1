@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -27,7 +27,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @see Zend_Validate_Regex
  */
 require_once 'Zend/Validate/Regex.php';
-
 
 /**
  * @category   Zend

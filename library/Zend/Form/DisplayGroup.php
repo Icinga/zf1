@@ -27,7 +27,7 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-class Zend_Form_DisplayGroup implements Iterator,Countable
+class Zend_Form_DisplayGroup implements Iterator, Countable
 {
     /**
      * Element Id
@@ -774,8 +774,10 @@ class Zend_Form_DisplayGroup implements Iterator,Countable
                             break;
                         case (1 <= $argc):
                             $decorator  = array_shift($decoratorInfo);
+                            // Fall-through intended.
                         case (2 <= $argc):
                             $options = array_shift($decoratorInfo);
+                            // Fall-through intended.
                         default:
                             $this->addDecorator($decorator, $options);
                             break;

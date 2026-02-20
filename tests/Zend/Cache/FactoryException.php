@@ -1,6 +1,6 @@
 <?php
 
-use PHPUnit\Extensions\ExceptionTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -32,11 +32,11 @@ require_once 'Zend/Cache.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Cache_FactoryException extends ExceptionTestCase
+class Zend_Cache_FactoryException extends TestCase
 {
-    public function set_up()
+    public function setUp(): void
     {
-        $this->setExpectedException('Zend_Cache_Exception');
+        $this->expectException('Zend_Cache_Exception');
     }
 
     public function testBadFrontend()

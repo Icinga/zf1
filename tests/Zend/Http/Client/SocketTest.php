@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Zend Framework
  *
@@ -105,8 +108,8 @@ class Zend_Http_Client_SocketTest extends Zend_Http_Client_CommonHttpTests
     /**
      * Check that an exception is thrown when trying to set invalid config
      *
-     * @dataProvider invalidConfigProvider
      */
+    #[DataProvider('invalidConfigProvider')]
     public function testSetConfigInvalidConfig($config)
     {
         $this->expectException(Zend_Http_Client_Adapter_Exception::class);
@@ -156,8 +159,8 @@ class Zend_Http_Client_SocketTest extends Zend_Http_Client_CommonHttpTests
     /**
      * Test that setting invalid options / context causes an exception
      *
-     * @dataProvider      invalidContextProvider
      */
+    #[DataProvider('invalidContextProvider')]
     public function testSetInvalidContextOptions($invalid)
     {
         $this->expectException(Zend_Http_Client_Adapter_Exception::class);

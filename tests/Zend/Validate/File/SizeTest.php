@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_SizeTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_SizeTest::main");
-}
-
 /**
  * @see Zend_Validate_File_Size
  */
@@ -45,17 +38,6 @@ require_once 'Zend/Validate/File/Size.php';
  */
 class Zend_Validate_File_SizeTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_SizeTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Ensures that the validator follows expected behavior
      *
@@ -216,9 +198,4 @@ class Zend_Validate_File_SizeTest extends TestCase
         $this->assertStringContainsString('9999', current($validator->getMessages()));
         $this->assertStringContainsString('794', current($validator->getMessages()));
     }
-}
-
-// Call Zend_Validate_File_SizeTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_SizeTest::main") {
-    Zend_Validate_File_SizeTest::main();
 }

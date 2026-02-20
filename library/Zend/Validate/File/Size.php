@@ -109,7 +109,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
             $options = ['max' => $options];
         } elseif (!is_array($options)) {
             require_once 'Zend/Validate/Exception.php';
-            throw new Zend_Validate_Exception ('Invalid options to validator provided');
+            throw new Zend_Validate_Exception('Invalid options to validator provided');
         }
 
         if (1 < func_num_args()) {
@@ -183,7 +183,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     {
         if (!is_string($min) && !is_numeric($min)) {
             require_once 'Zend/Validate/Exception.php';
-            throw new Zend_Validate_Exception ('Invalid options to validator provided');
+            throw new Zend_Validate_Exception('Invalid options to validator provided');
         }
 
         $min = (int) $this->_fromByteString($min);
@@ -225,7 +225,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     {
         if (!is_string($max) && !is_numeric($max)) {
             require_once 'Zend/Validate/Exception.php';
-            throw new Zend_Validate_Exception ('Invalid options to validator provided');
+            throw new Zend_Validate_Exception('Invalid options to validator provided');
         }
 
         $max = (int) $this->_fromByteString($max);

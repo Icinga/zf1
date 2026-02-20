@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -51,7 +52,7 @@ class Zend_Mail_FileTransportTest extends TestCase
     protected $_transport;
     protected $_tmpdir;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->createdTmpDir = false;
 
@@ -74,7 +75,7 @@ class Zend_Mail_FileTransportTest extends TestCase
         $this->_cleanDir($this->_tmpdir);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->_cleanDir($this->_tmpdir);
         if ($this->createdTmpDir) {
@@ -100,7 +101,7 @@ class Zend_Mail_FileTransportTest extends TestCase
             }
         }
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testTransportSetup()
     {
         $transport = new Zend_Mail_Transport_File();

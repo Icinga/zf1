@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id: $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Filter_Compress_GzTest::main');
-}
-
 /**
  * @see Zend_Filter_Compress_Gz
  */
@@ -44,25 +38,14 @@ require_once 'Zend/Filter/Compress/Gz.php';
  */
 class Zend_Filter_Compress_GzTest extends TestCase
 {
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Filter_Compress_GzTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!extension_loaded('zlib')) {
             $this->markTestSkipped('This adapter needs the zlib extension');
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if (file_exists(dirname(__FILE__) . '/../_files/compressed.gz')) {
             unlink(dirname(__FILE__) . '/../_files/compressed.gz');
@@ -226,8 +209,4 @@ class Zend_Filter_Compress_GzTest extends TestCase
         $filter = new Zend_Filter_Compress_Gz();
         $this->assertEquals('Gz', $filter->toString());
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Filter_Compress_GzTest::main') {
-    Zend_Filter_Compress_GzTest::main();
 }

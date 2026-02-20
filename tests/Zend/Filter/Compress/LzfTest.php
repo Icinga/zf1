@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id: $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Filter_Compress_LzfTest::main');
-}
-
 /**
  * @see Zend_Filter_Compress_Lzf
  */
@@ -44,18 +38,7 @@ require_once 'Zend/Filter/Compress/Lzf.php';
  */
 class Zend_Filter_Compress_LzfTest extends TestCase
 {
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Filter_Compress_LzfTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!extension_loaded('lzf')) {
             $this->markTestSkipped('This adapter needs the lzf extension');
@@ -89,8 +72,4 @@ class Zend_Filter_Compress_LzfTest extends TestCase
         $filter = new Zend_Filter_Compress_Lzf();
         $this->assertEquals('Lzf', $filter->toString());
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Filter_Compress_LzfTest::main') {
-    Zend_Filter_Compress_LzfTest::main();
 }

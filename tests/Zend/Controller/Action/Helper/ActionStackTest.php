@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,12 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Controller_Action_Helper_ActionStackTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Action_Helper_ActionStackTest::main");
-}
-
 
 require_once 'Zend/Controller/Action/Helper/ActionStack.php';
 require_once 'Zend/Controller/Front.php';
@@ -58,26 +50,13 @@ class Zend_Controller_Action_Helper_ActionStackTest extends TestCase
      * @var Zend_Controller_Request_Http
      */
     public $request;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Action_Helper_ActionStackTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->front = Zend_Controller_Front::getInstance();
         $this->front->resetInstance();
@@ -92,7 +71,7 @@ class Zend_Controller_Action_Helper_ActionStackTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -197,9 +176,4 @@ class Zend_Controller_Action_Helper_ActionStackTest extends TestCase
         $this->assertEquals('baz', $next->getActionName());
         $this->assertFalse($next->isDispatched());
     }
-}
-
-// Call Zend_Controller_Action_Helper_ActionStackTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Action_Helper_ActionStackTest::main") {
-    Zend_Controller_Action_Helper_ActionStackTest::main();
 }

@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Writer_NullTest::main');
-}
-
 /** Zend_Log_Writer_Null */
 require_once 'Zend/Log/Writer/Null.php';
 
@@ -42,15 +37,8 @@ require_once 'Zend/Log/Writer/Null.php';
  */
 class Zend_Log_Writer_NullTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrite()
     {
         $writer = new Zend_Log_Writer_Null();
@@ -67,8 +55,4 @@ class Zend_Log_Writer_NullTest extends TestCase
         $logger = Zend_Log::factory($cfg['log']);
         $this->assertTrue($logger instanceof Zend_Log);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Writer_NullTest::main') {
-    Zend_Log_Writer_NullTest::main();
 }

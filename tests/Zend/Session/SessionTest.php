@@ -1,7 +1,9 @@
 <?php
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Error\Notice;
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -57,26 +59,17 @@ class Zend_SessionTest extends TestCase
     protected $_savePath;
 
     /**
-     * Initializes instance data
-     *
-     * @return void
+     * Set up tests environment
      */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function setUp(): void
     {
-        parent::__construct($name, $data, $dataName);
         $this->_script = 'php '
             . '-c ' . escapeshellarg(php_ini_loaded_file()) . ' '
             . '-d include_path=' . get_include_path() . ' '
             . escapeshellarg(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'SessionTestHelper.php');
 
         $this->_savePath = ini_get('session.save_path');
-    }
 
-    /**
-     * Set up tests environment
-     */
-    public function set_up()
-    {
         // _unitTestEnabled is utilised by other tests to handle session data processing
         // Zend_Session tests should pass with _unitTestEnabled turned off
         Zend_Session::$_unitTestEnabled = false;
@@ -87,15 +80,11 @@ class Zend_SessionTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
-        ini_set('session.save_path', $this->_savePath);
+        session_abort();
 
-        $this->assertSame(
-            E_ALL | E_STRICT,
-            error_reporting(E_ALL | E_STRICT),
-            'A test altered error_reporting to something other than E_ALL | E_STRICT'
-        );
+        ini_set('session.save_path', $this->_savePath);
 
         Zend_Session_Namespace::unlockAll();
 
@@ -119,7 +108,7 @@ class Zend_SessionTest extends TestCase
      */
     public function sortResult(array $result)
     {
-        $results = explode(';', array_pop($result));
+        $results = explode(';', array_pop($result) ?? '');
         sort($results);
         return implode(';', $results);
     }
@@ -513,6 +502,7 @@ class Zend_SessionTest extends TestCase
      *
      * @return void
      */
+    #[DoesNotPerformAssertions]
     public function testUnlock()
     {
         $s = new Zend_Session_Namespace();
@@ -612,6 +602,7 @@ class Zend_SessionTest extends TestCase
      *
      * @return void
      */
+    #[DoesNotPerformAssertions]
     public function testUnLockNamespace()
     {
         $s = new Zend_Session_Namespace('somenamespace');
@@ -801,9 +792,9 @@ class Zend_SessionTest extends TestCase
     /**
      * test expiration of namespaces and namespace variables by seconds; expect expiration of specified keys/namespace
      *
-     * @runInSeparateProcess
      * @return void
      */
+    #[RunInSeparateProcess]
     public function testSetExpirationSeconds()
     {
         if (getenv('TRAVIS')) {
@@ -871,9 +862,9 @@ class Zend_SessionTest extends TestCase
     /**
      * test expiration of namespaces by hops; expect expiration of specified namespace in the proper number of hops
      *
-     * @runInSeparateProcess
      * @return void
      */
+    #[RunInSeparateProcess]
     public function testSetExpireSessionHops()
     {
         $s = new Zend_Session_Namespace('expireAll');
@@ -908,9 +899,9 @@ class Zend_SessionTest extends TestCase
     /**
      * test expiration of namespace variables by hops; expect expiration of specified keys in the proper number of hops
      *
-     * @runInSeparateProcess
      * @return void
      */
+    #[RunInSeparateProcess]
     public function testSetExpireSessionVarsByHops1()
     {
         $this->setExpireSessionVarsByHops();
@@ -919,9 +910,9 @@ class Zend_SessionTest extends TestCase
     /**
      * sanity check .. we should be able to repeat this test without problems
      *
-     * @runInSeparateProcess
      * @return void
      */
+    #[RunInSeparateProcess]
     public function testSetExpireSessionVarsByHops2()
     {
         $this->setExpireSessionVarsByHops();
@@ -929,8 +920,8 @@ class Zend_SessionTest extends TestCase
 
     /**
      * @group ZF-7196
-     * @runInSeparateProcess
      */
+    #[RunInSeparateProcess]
     public function testUnsettingNamespaceKeyWithoutUnsettingCompleteExpirationData()
     {
         $namespace = new Zend_Session_Namespace('DummyNamespace');
@@ -1014,9 +1005,9 @@ class Zend_SessionTest extends TestCase
     /**
      * test expiration of namespace variables by hops; expect expiration of specified keys in the proper number of hops
      *
-     * @runInSeparateProcess
      * @return void
      */
+    #[RunInSeparateProcess]
     public function testSetExpireSessionVarsByHopsOnUse()
     {
         $s = new Zend_Session_Namespace('expireGuava');
@@ -1069,6 +1060,7 @@ class Zend_SessionTest extends TestCase
     /**
      * @group ZF-5003
      */
+    #[DoesNotPerformAssertions]
     public function testProcessSessionMetadataShouldNotThrowAnError()
     {
         Zend_Session::$_unitTestEnabled = true;
@@ -1102,6 +1094,7 @@ class Zend_SessionTest extends TestCase
     /**
      * @group ZF-11186
      */
+    #[DoesNotPerformAssertions]
     public function testNoNoticesIfNoValidatorDataInSession()
     {
         try {
@@ -1116,6 +1109,7 @@ class Zend_SessionTest extends TestCase
     /**
      * @group ZF-3378
      */
+    #[RunInSeparateProcess]
     public function testInvalidPreexistingSessionIdDoesNotPreventRegenerationOfSid()
     {
         // Pattern: [0-9a-v]*

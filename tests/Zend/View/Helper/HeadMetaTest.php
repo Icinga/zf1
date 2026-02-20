@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_HeadMetaTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_HeadMetaTest::main");
-}
 
 /** Zend_View_Helper_HeadMeta */
 require_once 'Zend/View/Helper/HeadMeta.php';
@@ -75,23 +69,12 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
      */
     protected $view;
     /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_HeadMetaTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->error = false;
         foreach ([Zend_View_Helper_Placeholder_Registry::REGISTRY_KEY, 'Zend_View_Helper_Doctype'] as $key) {
@@ -113,7 +96,7 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->helper);
     }
@@ -140,9 +123,8 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
         $this->assertTrue($placeholder instanceof Zend_View_Helper_HeadMeta);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testAppendPrependAndSetThrowExceptionsWhenNonMetaValueProvided()
     {
         try {
@@ -267,9 +249,8 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
         $this->_testOverloadSet('http-equiv');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testOverloadingThrowsExceptionWithFewerThanTwoArgs()
     {
         try {
@@ -279,9 +260,8 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testOverloadingThrowsExceptionWithInvalidMethodType()
     {
         try {
@@ -515,8 +495,8 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
 
     /**
   * @group ZF-7722
-  * @doesNotPerformAssertions
   */
+    #[DoesNotPerformAssertions]
     public function testCharsetValidateFail()
     {
         $view = new Zend_View();
@@ -550,14 +530,14 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
             $view->headMeta()->toString()
         );
     }
-    
+
     /**
      * @group ZF-11835
      */
     public function testConditional()
     {
         $html = $this->helper->appendHttpEquiv('foo', 'bar', ['conditional' => 'lt IE 7'])->toString();
-        
+
         $this->assertMatchesRegularExpression("|^<!--\[if lt IE 7\]>|", $html);
         $this->assertMatchesRegularExpression("|<!\[endif\]-->$|", $html);
     }
@@ -592,9 +572,4 @@ class Zend_View_Helper_HeadMetaTest extends TestCase
         $this->assertStringContainsString('<!--[if ! IE]><!--><', $html);
         $this->assertStringContainsString('<!--<![endif]-->', $html);
     }
-}
-
-// Call Zend_View_Helper_HeadMetaTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_HeadMetaTest::main") {
-    Zend_View_Helper_HeadMetaTest::main();
 }

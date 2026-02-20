@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -318,9 +319,7 @@ class Zend_Controller_Router_Route_RegexTest extends TestCase
         $this->assertSame('users/vicki', $url);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAssembleWithoutMatch()
     {
         $route = new Zend_Controller_Router_Route_Regex('users/(.+)', null, null, 'users/%s');
@@ -363,7 +362,6 @@ class Zend_Controller_Router_Route_RegexTest extends TestCase
         $url = $route->assemble(['username' => 'vicki']);
         $this->assertSame('users/vicki', $url);
     }
-
 
     public function testAssembleZF1332()
     {

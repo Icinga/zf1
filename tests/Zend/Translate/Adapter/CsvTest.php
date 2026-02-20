@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -44,19 +42,7 @@ class Zend_Translate_Adapter_CsvTest extends TestCase
      * @var bool
      */
     protected $_errorOccurred;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Translate_Adapter_CsvTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (Zend_Translate_Adapter_Csv::hasCache()) {
             Zend_Translate_Adapter_Csv::removeCache();
@@ -249,9 +235,4 @@ class Zend_Translate_Adapter_CsvTest extends TestCase
     {
         $this->_errorOccurred = true;
     }
-}
-
-// Call Zend_Translate_Adapter_CsvTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Translate_Adapter_CsvTest::main") {
-    Zend_Translate_Adapter_CsvTest::main();
 }

@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -33,7 +34,6 @@ require_once 'Zend/Mail/Storage/Folder/Mbox.php';
  */
 require_once 'Zend/Config.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Mail
@@ -49,7 +49,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
     protected $_tmpdir;
     protected $_subdirs = ['.', 'subfolder'];
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_originalDir = dirname(__FILE__) . '/_files/test.mbox/';
 
@@ -94,7 +94,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         foreach (array_reverse($this->_subdirs) as $dir) {
             $dh = opendir($this->_tmpdir . $dir);
@@ -111,7 +111,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
             }
         }
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testLoadOk()
     {
         try {
@@ -120,7 +120,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
             $this->fail('exception raised while loading mbox folder');
         }
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testLoadConfig()
     {
         try {
@@ -129,7 +129,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
             $this->fail('exception raised while loading mbox folder');
         }
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testNoParams()
     {
         try {
@@ -140,7 +140,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
 
         $this->fail('no exception raised with empty params');
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testFilenameParam()
     {
         try {
@@ -152,7 +152,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
 
         $this->fail('no exception raised with filename as param');
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testLoadFailure()
     {
         try {
@@ -163,7 +163,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
 
         $this->fail('no exception raised while loading unknown dirname');
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testLoadUnknownFolder()
     {
         $this->_params['folder'] = 'UnknownFolder';
@@ -187,7 +187,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
 
         $this->assertEquals($mail->getCurrentFolder(), DIRECTORY_SEPARATOR . 'subfolder' . DIRECTORY_SEPARATOR . 'test');
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testChangeFolderUnselectable()
     {
         $mail = new Zend_Mail_Storage_Folder_Mbox($this->_params);
@@ -199,7 +199,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
 
         $this->fail('no exception raised while selecting unselectable folder');
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testUnknownFolder()
     {
         $mail = new Zend_Mail_Storage_Folder_Mbox($this->_params);
@@ -287,7 +287,6 @@ class Zend_Mail_MboxFolderTest extends TestCase
         }
     }
 
-
     public function testCount()
     {
         $mail = new Zend_Mail_Storage_Folder_Mbox($this->_params);
@@ -344,7 +343,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
         $this->assertEquals($mail->countMessages(), $count);
         $this->assertEquals($mail->getMessage(1)->getContent(), $content);
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testNotMboxFile()
     {
         touch($this->_params['dirname'] . 'foobar');
@@ -358,7 +357,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
 
         $this->fail('file, which is not mbox, got parsed');
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testNotReadableFolder()
     {
         $stat = stat($this->_params['dirname'] . 'subfolder');
@@ -388,7 +387,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
             $this->fail('no exception while loading invalid dir with subfolder not readable');
         }
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testGetInvalidFolder()
     {
         $mail = new Zend_Mail_Storage_Folder_Mbox($this->_params);
@@ -402,7 +401,7 @@ class Zend_Mail_MboxFolderTest extends TestCase
 
         $this->fail('no error while getting invalid folder');
     }
-    /** @doesNotPerformAssertions */
+    #[DoesNotPerformAssertions]
     public function testGetVanishedFolder()
     {
         $mail = new Zend_Mail_Storage_Folder_Mbox($this->_params);

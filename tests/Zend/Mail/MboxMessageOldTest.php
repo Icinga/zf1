@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -65,7 +65,7 @@ class Zend_Mail_MboxMessageOldTest extends TestCase
     protected $_mboxFile;
     protected $_tmpdir;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         if ($this->_tmpdir == null) {
             if (TESTS_ZEND_MAIL_TEMPDIR != null) {
@@ -94,7 +94,7 @@ class Zend_Mail_MboxMessageOldTest extends TestCase
         copy($this->_mboxOriginalFile, $this->_mboxFile);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unlink((string) $this->_mboxFile);
     }
@@ -133,7 +133,6 @@ class Zend_Mail_MboxMessageOldTest extends TestCase
         list($content, ) = explode("\n", $content, 2);
         $this->assertEquals('Fair river! in thy bright, clear flow', trim($content));
     }
-
 
     public function testShortMbox()
     {

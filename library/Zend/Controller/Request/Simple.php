@@ -51,5 +51,4 @@ class Zend_Controller_Request_Simple extends Zend_Controller_Request_Abstract
             $this->setParams($params);
         }
     }
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_HtmlFlashTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_HtmlFlashTest::main");
-}
 
 require_once 'Zend/View.php';
 require_once 'Zend/View/Helper/HtmlFlash.php';
@@ -53,33 +46,20 @@ class Zend_View_Helper_HtmlFlashTest extends TestCase
      * @var Zend_View_Helper_HtmlFlash
      */
     public $helper;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_HtmlFlashTest");
-        (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @access protected
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->view = new Zend_View();
         $this->helper = new Zend_View_Helper_HtmlFlash();
         $this->helper->setView($this->view);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->helper);
     }
@@ -93,9 +73,4 @@ class Zend_View_Helper_HtmlFlashTest extends TestCase
         $this->assertStringContainsString($objectStartElement, $htmlFlash);
         $this->assertStringContainsString('</object>', $htmlFlash);
     }
-}
-
-// Call Zend_View_Helper_HtmlFlashTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_HtmlFlashTest::main") {
-    Zend_View_Helper_HtmlFlashTest::main();
 }

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,12 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Filter_DashToUnderscoreTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Filter_Word_DashToUnderscoreTest::main");
-}
-
-
 require_once 'Zend/Filter/Word/DashToUnderscore.php';
 
 /**
@@ -45,18 +37,6 @@ require_once 'Zend/Filter/Word/DashToUnderscore.php';
  */
 class Zend_Filter_Word_DashToUnderscoreTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Filter_Word_DashToUnderscoreTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testFilterSeparatesCamelCasedWordsWithDashes()
     {
         $string = 'dash-separated-words';
@@ -66,9 +46,4 @@ class Zend_Filter_Word_DashToUnderscoreTest extends TestCase
         $this->assertNotEquals($string, $filtered);
         $this->assertEquals('dash_separated_words', $filtered);
     }
-}
-
-// Call Zend_Filter_Word_DashToUnderscoreTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Filter_Word_DashToUnderscoreTest::main") {
-    Zend_Filter_Word_DashToUnderscoreTest::main();
 }

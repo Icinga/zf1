@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -28,7 +29,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  */
 require_once 'Zend/Validate/Int.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Validate
@@ -51,7 +51,7 @@ class Zend_Validate_IntTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_Int();
     }
@@ -118,6 +118,7 @@ class Zend_Validate_IntTest extends TestCase
     /**
      * @ZF-7489
      */
+    #[RunInSeparateProcess]
     public function testUsingApplicationLocale()
     {
         Zend_Registry::set('Zend_Locale', new Zend_Locale('de'));
@@ -128,6 +129,7 @@ class Zend_Validate_IntTest extends TestCase
     /**
      * @ZF-7703
      */
+    #[RunInSeparateProcess]
     public function testLocaleDetectsNoEnglishLocaleOnOtherSetLocale()
     {
         Zend_Registry::set('Zend_Locale', new Zend_Locale('de'));

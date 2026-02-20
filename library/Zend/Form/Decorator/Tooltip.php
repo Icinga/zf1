@@ -54,5 +54,4 @@ class Zend_Form_Decorator_Tooltip extends Zend_Form_Decorator_Abstract
         $this->getElement()->setAttrib('title', $title);
         return $content;
     }
-
 }

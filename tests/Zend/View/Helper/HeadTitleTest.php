@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_HeadTitleTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_HeadTitleTest::main");
-}
 
 /** Zend_View_Helper_HeadTitle */
 require_once 'Zend/View/Helper/HeadTitle.php';
@@ -61,25 +54,13 @@ class Zend_View_Helper_HeadTitleTest extends TestCase
      * @var string
      */
     public $basePath;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_HeadTitleTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $regKey = Zend_View_Helper_Placeholder_Registry::REGISTRY_KEY;
         if (Zend_Registry::isRegistered($regKey)) {
@@ -96,7 +77,7 @@ class Zend_View_Helper_HeadTitleTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->helper);
     }
@@ -183,7 +164,6 @@ class Zend_View_Helper_HeadTitleTest extends TestCase
         $this->helper->headTitle()->setAutoEscape(false);
         $this->assertFalse($this->helper->headTitle()->getAutoEscape());
 
-
         $this->assertEquals('<title>Some Title &copyright;</title>', $this->helper->toString());
     }
 
@@ -216,12 +196,12 @@ class Zend_View_Helper_HeadTitleTest extends TestCase
 
     public function testCanTranslateTitle()
     {
-        require_once 'Zend/Translate/Adapter/Ini.php';
+        require_once 'Zend/Translate/Adapter/Array.php';
         require_once 'Zend/Registry.php';
-        $adapter = new Zend_Translate_Adapter_Ini(dirname(__FILE__) . '/../../Translate/Adapter/_files/translation_en.ini', 'en');
+        $adapter = new Zend_Translate_Adapter_Array(dirname(__FILE__) . '/../../Translate/Adapter/_files/translation_en.php', 'en');
         Zend_Registry::set('Zend_Translate', $adapter);
         $this->helper->enableTranslation();
-        $this->helper->headTitle('Message_1');
+        $this->helper->headTitle('Message 1');
         $this->assertEquals('<title>Message 1 (en)</title>', $this->helper->toString());
     }
 
@@ -250,9 +230,4 @@ class Zend_View_Helper_HeadTitleTest extends TestCase
         $this->assertTrue($this->helper->setDefaultAttachOrder('PREPEND') instanceof  Zend_View_Helper_HeadTitle);
         $this->assertEquals('PREPEND', $this->helper->getDefaultAttachOrder());
     }
-}
-
-// Call Zend_View_Helper_HeadTitleTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_View_Helper_HeadTitleTest::main") {
-    Zend_View_Helper_HeadTitleTest::main();
 }

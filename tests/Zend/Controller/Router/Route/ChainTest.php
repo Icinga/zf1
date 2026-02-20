@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Controller_Router_Route_ChainTest::main');
-}
 
 /** Zend_Config */
 require_once 'Zend/Config.php';
@@ -76,18 +70,6 @@ require_once 'Zend/Config.php';
  */
 class Zend_Controller_Router_Route_ChainTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Router_Route_ChainTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testChaining()
     {
         $request = new Zend_Controller_Router_ChainTest_Request('http://localhost/foo/bar');
@@ -567,7 +549,6 @@ class Zend_Controller_Router_Route_ChainTest extends TestCase
         $token = $router->route($request);
     }
 
-
     public function testConfigChainingMixed()
     {
         $routes = [
@@ -824,7 +805,6 @@ class Zend_Controller_Router_Route_ChainTest extends TestCase
         $foo = new Zend_Controller_Router_Route_SubclassTest('foo');
         $bar = new Zend_Controller_Router_Route_SubclassTest('bar', ['baz' => 'no']);
 
-
         $chain = $foo->chain($bar);
 
         $foo2 = new Zend_Controller_Router_Route_SubclassTest('foo');
@@ -849,7 +829,6 @@ class Zend_Controller_Router_Route_ChainTest extends TestCase
     {
         $foo = new Zend_Controller_Router_Route_SubclassTest('notfoo');
         $bar = new Zend_Controller_Router_Route_SubclassTest('bar', ['baz' => 'no']);
-
 
         $chain = $foo->chain($bar);
 
@@ -1119,8 +1098,4 @@ class Zend_Controller_Router_ChainTest_Dispatcher extends Zend_Controller_Dispat
     {
         return 'defact';
     }
-}
-
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Router_Route_ChainTest::main") {
-    Zend_Controller_Router_Route_ChainTest::main();
 }

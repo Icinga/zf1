@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -55,19 +56,19 @@ class Zend_Paginator_Adapter_IteratorTest extends TestCase
     /**
      * Prepares the environment before running a test.
      */
-    protected function set_up()
+    protected function setUp(): void
     {
-        parent::set_up();
+        parent::setUp();
         $iterator = new ArrayIterator(range(1, 101));
         $this->_adapter = new Zend_Paginator_Adapter_Iterator($iterator);
     }
     /**
      * Cleans up the environment after running a test.
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->_adapter = null;
-        parent::tear_down();
+        parent::tearDown();
     }
 
     public function testGetsItemsAtOffsetZero()
@@ -113,14 +114,15 @@ class Zend_Paginator_Adapter_IteratorTest extends TestCase
 
     /**
      * @group ZF-4151
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testDoesNotThrowOutOfBoundsExceptionIfIteratorIsEmpty()
     {
         $this->_paginator = Zend_Paginator::factory(new ArrayIterator([]));
         $items = $this->_paginator->getCurrentItems();
         try {
-            foreach ($items as $item);
+            foreach ($items as $item) {
+            }
         } catch (OutOfBoundsException $e) {
             $this->fail('Empty iterator caused in an OutOfBoundsException');
         }

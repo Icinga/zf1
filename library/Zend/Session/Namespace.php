@@ -157,7 +157,6 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
         // do not allow write access to namespaces, after stop() or writeClose()
         if (parent::$_writable === true) {
             if (isset($_SESSION['__ZF'][$namespace])) {
-
                 // Expire Namespace by Namespace Hop (ENNH)
                 if (isset($_SESSION['__ZF'][$namespace]['ENNH'])) {
                     $_SESSION['__ZF'][$namespace]['ENNH']--;
@@ -184,7 +183,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
                             unset($_SESSION['__ZF'][$namespace]['ENVNH'][$variable]);
                         }
                     }
-                    if(empty($_SESSION['__ZF'][$namespace]['ENVNH'])) {
+                    if (empty($_SESSION['__ZF'][$namespace]['ENVNH'])) {
                         unset($_SESSION['__ZF'][$namespace]['ENVNH']);
                     }
                 }
@@ -444,12 +443,9 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
         }
 
         if ($variables === null) {
-
             // apply expiration to entire namespace
             $_SESSION['__ZF'][$this->_namespace]['ENT'] = time() + $seconds;
-
         } else {
-
             if (is_string($variables)) {
                 $variables = [$variables];
             }
@@ -492,16 +488,13 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
         }
 
         if ($variables === null) {
-
             // apply expiration to entire namespace
             if ($hopCountOnUsageOnly === false) {
                 $_SESSION['__ZF'][$this->_namespace]['ENGH'] = $hops;
             } else {
                 $_SESSION['__ZF'][$this->_namespace]['ENNH'] = $hops;
             }
-
         } else {
-
             if (is_string($variables)) {
                 $variables = [$variables];
             }

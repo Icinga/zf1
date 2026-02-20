@@ -122,5 +122,4 @@ interface Zend_Cache_Backend_ExtendedInterface extends Zend_Cache_Backend_Interf
      * @return array associative of with capabilities
      */
     public function getCapabilities();
-
 }

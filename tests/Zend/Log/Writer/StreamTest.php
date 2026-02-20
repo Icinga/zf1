@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Writer_StreamTest::main');
-}
-
 /** Zend_Log */
 require_once 'Zend/Log.php';
 
@@ -45,12 +40,6 @@ require_once 'Zend/Log/Writer/Stream.php';
  */
 class Zend_Log_Writer_StreamTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testConstructorThrowsWhenResourceIsNotStream()
     {
         $resource = xml_parser_create();
@@ -63,21 +52,18 @@ class Zend_Log_Writer_StreamTest extends TestCase
         } catch (TypeError $e) {
             $this->assertMatchesRegularExpression('/must be of t/i', $e->getMessage());
         }
-        xml_parser_free($resource);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testConstructorWithValidStream()
     {
         $stream = fopen('php://memory', 'w+');
         new Zend_Log_Writer_Stream($stream);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testConstructorWithValidUrl()
     {
         new Zend_Log_Writer_Stream('php://memory');
@@ -105,7 +91,7 @@ class Zend_Log_Writer_StreamTest extends TestCase
             $this->assertMatchesRegularExpression('/cannot be opened/i', $e->getMessage());
         } catch (Error $e) {
             $this->assertTrue($e instanceof ValueError);
-            $this->assertMatchesRegularExpression('/cannot be empty/i', $e->getMessage());
+            $this->assertStringContainsString('not be empty', $e->getMessage());
         }
     }
 
@@ -138,7 +124,7 @@ class Zend_Log_Writer_StreamTest extends TestCase
             $this->assertMatchesRegularExpression('/unable to write/i', $e->getMessage());
         } catch (Error $e) {
             $this->assertTrue($e instanceof TypeError);
-            $this->assertMatchesRegularExpression('/resource is not a valid/i', $e->getMessage());
+            $this->assertMatchesRegularExpression('/(open|valid) stream resource/i', $e->getMessage());
         }
     }
 
@@ -157,7 +143,7 @@ class Zend_Log_Writer_StreamTest extends TestCase
             $this->assertMatchesRegularExpression('/unable to write/i', $e->getMessage());
         } catch (Error $e) {
             $this->assertTrue($e instanceof TypeError);
-            $this->assertMatchesRegularExpression('/resource is not a valid/i', $e->getMessage());
+            $this->assertMatchesRegularExpression('/(open|valid) stream resource/i', $e->getMessage());
         }
     }
 
@@ -205,8 +191,4 @@ class Zend_Log_Writer_StreamTest extends TestCase
         $logger = Zend_Log::factory($cfg['log']);
         $this->assertTrue($logger instanceof Zend_Log);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Writer_StreamTest::main') {
-    Zend_Log_Writer_StreamTest::main();
 }

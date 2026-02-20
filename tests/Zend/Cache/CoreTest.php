@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -50,7 +51,7 @@ class Zend_Cache_CoreTest extends TestCase
 
     private $_instance;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!$this->_instance) {
             $this->_instance = new Zend_Cache_Core([]);
@@ -59,14 +60,12 @@ class Zend_Cache_CoreTest extends TestCase
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->_instance);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorCorrectCall()
     {
         $test = new Zend_Cache_Core(['lifetime' => 3600, 'caching' => true]);
@@ -74,8 +73,8 @@ class Zend_Cache_CoreTest extends TestCase
 
     /**
      * @group ZF-7568
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testConstructorCorrectCallWithZendConfig()
     {
         $test = new Zend_Cache_Core(
@@ -105,9 +104,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->assertSame(null, $test->getOption('lifetime'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorBadOption()
     {
         try {
@@ -118,17 +115,13 @@ class Zend_Cache_CoreTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetLifeTime()
     {
         $this->_instance->setLifeTime(3600);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetBackendCorrectCall1()
     {
         $backend = new Zend_Cache_Backend_File([]);
@@ -144,17 +137,13 @@ class Zend_Cache_CoreTest extends TestCase
         $this->assertTrue(is_array($log['args'][0]));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetOptionCorrectCall()
     {
         $this->_instance->setOption('caching', false);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetOptionBadCall()
     {
         try {
@@ -170,8 +159,8 @@ class Zend_Cache_CoreTest extends TestCase
      * options, however, should throw exceptions.
      *
      * @group ZF-5034
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testSetOptionUnknownOption()
     {
         try {
@@ -187,9 +176,7 @@ class Zend_Cache_CoreTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSaveCorrectBadCall1()
     {
         try {
@@ -200,9 +187,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSaveCorrectBadCall2()
     {
         try {
@@ -213,9 +198,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSaveCorrectBadCall3()
     {
         try {
@@ -226,9 +209,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSaveWithABadCacheId()
     {
         try {
@@ -239,9 +220,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSaveWithABadCacheId2()
     {
         try {
@@ -252,9 +231,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSaveWithABadTags()
     {
         try {
@@ -382,9 +359,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->assertEquals($i1, $i2);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testTestBadCall()
     {
         try {
@@ -425,9 +400,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->assertEquals($i1, $i2);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testGetBadCall()
     {
         try {
@@ -457,9 +430,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->assertEquals(['foo'], $res);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRemoveBadCall()
     {
         try {
@@ -494,9 +465,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->assertEquals($expected, $log);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCleanBadCall1()
     {
         try {
@@ -507,9 +476,7 @@ class Zend_Cache_CoreTest extends TestCase
         $this->fail('Zend_Cache_Exception was expected but not thrown');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCleanBadCall2()
     {
         try {

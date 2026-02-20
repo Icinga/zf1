@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -67,7 +67,7 @@ class Zend_Config_IniTest extends TestCase
     protected $_iniFileAllSectionsConfig;
     protected $_iniFileCircularConfig;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_iniFileConfig = dirname(__FILE__) . '/_files/config.ini';
         $this->_iniFileAllSectionsConfig = dirname(__FILE__) . '/_files/allsections.ini';
@@ -300,7 +300,7 @@ class Zend_Config_IniTest extends TestCase
         );
 
         $this->assertTrue(isset(
-           $config->user->login->elements->password
+            $config->user->login->elements->password
         ));
 
         $this->assertEquals(

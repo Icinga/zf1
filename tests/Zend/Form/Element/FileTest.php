@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Form_Element_FileTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Element_FileTest::main");
-}
 
 require_once 'Zend/Form/Element/File.php';
 require_once 'Zend/File/Transfer/Adapter/Abstract.php';
@@ -59,25 +52,13 @@ class Zend_Form_Element_FileTest extends TestCase
      * @var bool
      */
     protected $_errorOccurred = false;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Element_FileTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Registry::_unsetInstance();
         Zend_Form::setDefaultTranslator(null);
@@ -90,7 +71,7 @@ class Zend_Form_Element_FileTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -491,7 +472,6 @@ class Zend_Form_Element_FileTest extends TestCase
         $this->_errorOccurred = true;
     }
 
-
     /**
      * Prove the fluent interface on Zend_Form_Element_File::loadDefaultDecorators
      *
@@ -502,7 +482,7 @@ class Zend_Form_Element_FileTest extends TestCase
     {
         $this->assertSame($this->element, $this->element->loadDefaultDecorators());
     }
-    
+
     /**
      * @group ZF-12173
      */
@@ -521,7 +501,7 @@ class Zend_Form_Element_FileTest extends TestCase
         );
         $this->element->setTransferAdapter('Bar');
         $test = $this->element->getTransferAdapter();
-        
+
         $expectedType = 'Zend\Form\Element\FileTest\Adapter\Bar';
         $this->assertTrue(
             $test instanceof $expectedType
@@ -684,9 +664,4 @@ class Zend_Form_Element_FileTest_MockAdapter extends Zend_File_Transfer_Adapter_
     {
         return;
     }
-}
-
-// Call Zend_Form_Element_FileTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Element_FileTest::main") {
-    Zend_Form_Element_FileTest::main();
 }

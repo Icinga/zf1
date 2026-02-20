@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -74,13 +75,13 @@ class Zend_Paginator_Adapter_DbSelectTest extends TestCase
     /**
      * Prepares the environment before running a test.
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!extension_loaded('pdo_sqlite')) {
             $this->markTestSkipped('Pdo_Sqlite extension is not loaded');
         }
 
-        parent::set_up();
+        parent::setUp();
 
         $this->_db = new Zend_Db_Adapter_Pdo_Sqlite([
             'dbname' => dirname(__FILE__) . '/../_files/test.sqlite'
@@ -97,10 +98,10 @@ class Zend_Paginator_Adapter_DbSelectTest extends TestCase
     /**
      * Cleans up the environment after running a test.
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->_adapter = null;
-        parent::tear_down();
+        parent::tearDown();
     }
 
     /**
@@ -108,7 +109,7 @@ class Zend_Paginator_Adapter_DbSelectTest extends TestCase
      */
     public function testCacheIdentifierIsHashOfAssembledSelect()
     {
-        $dbAdapter = $this->getMockForAbstractClass('Zend_Db_Adapter_Abstract', [''], '', false);
+        $dbAdapter = $this->createMock(Zend_Db_Adapter_Abstract::class);
         $select = new Zend_Db_Select($dbAdapter);
         $select->from('ZF_6989');
 
@@ -120,7 +121,7 @@ class Zend_Paginator_Adapter_DbSelectTest extends TestCase
             'Cache identifier incorrect!'
         );
     }
-    
+
     public function testGetsItemsAtOffsetZero()
     {
         $actual = $this->_adapter->getItems(0, 10);
@@ -299,8 +300,8 @@ class Zend_Paginator_Adapter_DbSelectTest extends TestCase
 
     /**
      * @group ZF-5233
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testSelectHasAliasedColumns()
     {
         $db = new Zend_Db_Adapter_Pdo_Sqlite([

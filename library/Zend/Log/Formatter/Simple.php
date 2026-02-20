@@ -62,10 +62,10 @@ class Zend_Log_Formatter_Simple extends Zend_Log_Formatter_Abstract
     }
 
     /**
-	 * Factory for Zend_Log_Formatter_Simple classe
-	 *
-	 * @param array|Zend_Config $options
-	 * @return Zend_Log_Formatter_Simple
+     * Factory for Zend_Log_Formatter_Simple classe
+     *
+     * @param array|Zend_Config $options
+     * @return Zend_Log_Formatter_Simple
      */
     public static function factory($options)
     {
@@ -94,7 +94,7 @@ class Zend_Log_Formatter_Simple extends Zend_Log_Formatter_Abstract
         $output = $this->_format;
 
         foreach ($event as $name => $value) {
-            if ((is_object($value) && !method_exists($value,'__toString'))
+            if ((is_object($value) && !method_exists($value, '__toString'))
                 || is_array($value)
             ) {
                 $value = gettype($value);

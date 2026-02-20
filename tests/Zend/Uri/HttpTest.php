@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -44,7 +45,7 @@ require_once 'Zend/Uri/Http.php';
  */
 class Zend_Uri_HttpTest extends TestCase
 {
-    protected function set_up()
+    protected function setUp(): void
     {
         Zend_Uri::setConfig(['allow_unwise' => false]);
     }
@@ -148,33 +149,29 @@ class Zend_Uri_HttpTest extends TestCase
         $this->_testValidUri('http://a_.!~*\'(-)n0123Di%25%26:pass;:&=+$,word@www.zend.com');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testUsernameInvalidCharacter()
     {
         $this->_testInvalidUri('http://an`di:password@www.zend.com');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testNoUsernamePassword()
     {
         $this->_testInvalidUri('http://:password@www.zend.com');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testPasswordInvalidCharacter()
     {
         $this->_testInvalidUri('http://andi:pass%word@www.zend.com');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testMissingDomainParts()
     {
         $this->_testInvalidUri('https://www.zend..com');
@@ -289,8 +286,8 @@ class Zend_Uri_HttpTest extends TestCase
      *
      * @group ZF-3712
      * @group ZF-7840
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testVeryLongUriZF3712()
     {
         if (!defined('TESTS_ZEND_URI_CRASH_TEST_ENABLED') || constant('TESTS_ZEND_URI_CRASH_TEST_ENABLED') == false) {

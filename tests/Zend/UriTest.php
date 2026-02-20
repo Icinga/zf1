@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id $
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_UriTest::main');
-}
 
 /**
  * Zend_Uri
@@ -68,21 +63,14 @@ class Zend_UriTest extends TestCase
      * @var string
      */
     protected $error;
-
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_UriTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->notices = [];
         $this->errorReporting = error_reporting();
         $this->displayErrors = ini_get('display_errors');
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         error_reporting($this->errorReporting);
         ini_set('display_errors', $this->displayErrors);
@@ -123,9 +111,9 @@ class Zend_UriTest extends TestCase
 
     /**
      * Tests that Zend_Uri::setConfig() allows Zend_Config
-     * @doesNotPerformAssertions
      * @group ZF-5578
      */
+    #[DoesNotPerformAssertions]
     public function testSetConfigWithArray()
     {
         Zend_Uri::setConfig(['allow_unwise' => true]);
@@ -133,9 +121,9 @@ class Zend_UriTest extends TestCase
 
     /**
      * Tests that Zend_Uri::setConfig() allows Array
-     * @doesNotPerformAssertions
      * @group ZF-5578
      */
+    #[DoesNotPerformAssertions]
     public function testSetConfigWithZendConfig()
     {
         Zend_Uri::setConfig(new Zend_Config(['allow_unwise' => true]));
@@ -265,9 +253,4 @@ class Zend_Uri_ExceptionCausing extends Zend_Uri
 }
 class Fake_Zend_Uri
 {
-}
-
-// Call Zend_UriTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_UriTest::main") {
-    Zend_UriTest::main();
 }

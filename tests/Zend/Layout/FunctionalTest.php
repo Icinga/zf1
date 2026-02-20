@@ -1,8 +1,5 @@
 <?php
 
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
-
 /**
  * Zend Framework
  *
@@ -24,11 +21,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Layout_FunctionalTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Layout_FunctionalTest::main");
-}
-
 require_once 'Zend/Test/PHPUnit/ControllerTestCase.php';
 
 require_once 'Zend/Controller/Plugin/ErrorHandler.php';
@@ -43,20 +35,10 @@ require_once 'Zend/Controller/Plugin/ErrorHandler.php';
  */
 class Zend_Layout_FunctionalTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->bootstrap = [$this, 'appBootstrap'];
+        parent::setUp();
     }
 
     public function appBootstrap()
@@ -86,9 +68,4 @@ class Zend_Layout_FunctionalTest extends Zend_Test_PHPUnit_ControllerTestCase
         $this->dispatch('/zend-layout-functional-test-test/missing-view-script');
         $this->assertEquals(trim($this->response->getBody()), "[DEFAULT_LAYOUT_START]\n[DEFAULT_LAYOUT_START]\n[DEFAULT_LAYOUT_END]\n(ErrorController::errorAction output)[DEFAULT_LAYOUT_END]");
     }
-}
-
-// Call Zend_Layout_FunctionalTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Layout_FunctionalTest::main") {
-    Zend_Layout_FunctionalTest::main();
 }

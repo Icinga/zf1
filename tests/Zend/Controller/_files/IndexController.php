@@ -20,9 +20,6 @@
  * @version    $Id$
  */
 
-
-
-
 require_once 'Zend/Controller/Action.php';
 
 /**

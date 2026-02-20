@@ -236,7 +236,7 @@ class Zend_Db_Adapter_Pdo_Sqlite extends Zend_Db_Adapter_Pdo_Abstract
             if (preg_match('/^((?:var)?char)\((\d+)\)/i', $row[$type], $matches)) {
                 $row[$type] = $matches[1];
                 $length = $matches[2];
-            } else if (preg_match('/^decimal\((\d+),(\d+)\)/i', $row[$type], $matches)) {
+            } elseif (preg_match('/^decimal\((\d+),(\d+)\)/i', $row[$type], $matches)) {
                 $row[$type] = 'DECIMAL';
                 $precision = $matches[1];
                 $scale = $matches[2];
@@ -305,12 +305,12 @@ class Zend_Db_Adapter_Pdo_Sqlite extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * Quote a raw string.
      *
-     * @param string $value     Raw string
+     * @param ?string $value     Raw string
      * @return string           Quoted string
      */
     protected function _quote($value)
     {
-        if (!is_int($value) && !is_float($value)) {
+        if ($value !== null && !is_int($value) && !is_float($value)) {
             // Fix for null-byte injection
             $value = addcslashes($value, "\000\032");
         }

@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -38,8 +39,9 @@ require_once 'Zend/Http/Cookie.php';
  */
 class Zend_Http_CookieTest extends TestCase
 {
-    protected function set_up()
-    {    }
+    protected function setUp(): void
+    {
+    }
 
     /**
      * Cookie creation and data accessors tests
@@ -47,8 +49,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Make sure we can't set invalid names
      *
-     * @dataProvider invalidCookieNameCharProvider
      */
+    #[DataProvider('invalidCookieNameCharProvider')]
     public function testSetInvalidName($char)
     {
         $this->expectException(Zend_Http_Exception::class);
@@ -58,8 +60,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Test we get the cookie name properly
      *
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testGetName($cStr, $cInfo)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -76,8 +78,8 @@ class Zend_Http_CookieTest extends TestCase
      * Make sure we get the correct value if it was set through the constructor
      *
      * @param        string $value
-     * @dataProvider validCookieValueProvider
      */
+    #[DataProvider('validCookieValueProvider')]
     public function testGetValueConstructor($val)
     {
         $cookie = new Zend_Http_Cookie('cookie', $val, 'example.com', time(), '/', true);
@@ -88,8 +90,8 @@ class Zend_Http_CookieTest extends TestCase
      * Make sure we get the correct value if it was set through fromString()
      *
      * @param        string $value
-     * @dataProvider validCookieValueProvider
      */
+    #[DataProvider('validCookieValueProvider')]
     public function testGetValueFromString($val)
     {
         $cookie = Zend_Http_Cookie::fromString('cookie=' . urlencode($val) . '; domain=example.com');
@@ -100,8 +102,8 @@ class Zend_Http_CookieTest extends TestCase
      * Make sure we get the correct value if it was set through fromString()
      *
      * @param        string $value
-     * @dataProvider validCookieValueProvider
      */
+    #[DataProvider('validCookieValueProvider')]
     public function testGetRawValueFromString($val)
     {
         // Because ';' has special meaning in the cookie, strip it out for this test.
@@ -114,8 +116,8 @@ class Zend_Http_CookieTest extends TestCase
      * Make sure we get the correct value if it was set through fromString()
      *
      * @param        string $value
-     * @dataProvider validCookieValueProvider
      */
+    #[DataProvider('validCookieValueProvider')]
     public function testGetRawValueFromStringToString($val)
     {
         // Because ';' has special meaning in the cookie, strip it out for this test.
@@ -128,8 +130,8 @@ class Zend_Http_CookieTest extends TestCase
      * Make sure we get the correct value if it was set through fromString()
      *
      * @param        string $value
-     * @dataProvider validCookieValueProvider
      */
+    #[DataProvider('validCookieValueProvider')]
     public function testGetValueFromStringEncodedToString($val)
     {
         // Because ';' has special meaning in the cookie, strip it out for this test.
@@ -141,8 +143,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Make sure we get the correct domain when it's set in the cookie string
      *
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testGetDomainInStr($cStr, $cInfo)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -158,8 +160,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Make sure we get the correct domain when it's set in a reference URL
      *
-     * @dataProvider refUrlProvider
      */
+    #[DataProvider('refUrlProvider')]
     public function testGetDomainInRefUrl(Zend_Uri $uri)
     {
         $domain = $uri->getHost();
@@ -174,8 +176,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Make sure we get the correct path when it's set in the cookie string
      *
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testGetPathInStr($cStr, $cInfo)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -191,8 +193,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Make sure we get the correct path when it's set a reference URL
      *
-     * @dataProvider refUrlProvider
      */
+    #[DataProvider('refUrlProvider')]
     public function testGetPathInRefUrl(Zend_Uri $uri)
     {
         $path = $uri->getPath();
@@ -215,8 +217,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Test we get the correct expiry time
      *
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testGetExpiryTime($cStr, $cInfo)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -237,8 +239,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Make sure the "is secure" flag is correctly set
      *
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testIsSecure($cStr, $cInfo)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -258,8 +260,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Make sure we get the correct value for 'isExpired'
      *
-     * @dataProvider cookieWithExpiredFlagProvider
      */
+    #[DataProvider('cookieWithExpiredFlagProvider')]
     public function testIsExpired($cStr, $expired)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -306,8 +308,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Test we can properly check if a cookie is a session cookie (has no expiry time)
      *
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testIsSessionCookie($cStr, $cInfo)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -320,12 +322,11 @@ class Zend_Http_CookieTest extends TestCase
         }
     }
 
-
     /**
      * Make sure cookies are properly converted back to strings
      *
-     * @dataProvider validCookieWithInfoProvider
      */
+    #[DataProvider('validCookieWithInfoProvider')]
     public function testToString($cStr, $cInfo)
     {
         $cookie = Zend_Http_Cookie::fromString($cStr);
@@ -359,8 +360,8 @@ class Zend_Http_CookieTest extends TestCase
     /**
      * Test the match() method against a domain
      *
-     * @dataProvider domainMatchTestProvider
      */
+    #[DataProvider('domainMatchTestProvider')]
     public function testMatchDomain($cookieStr, $uri, $match)
     {
         $cookie = Zend_Http_Cookie::fromString($cookieStr);

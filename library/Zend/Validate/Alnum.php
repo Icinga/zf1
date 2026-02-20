@@ -145,5 +145,4 @@ class Zend_Validate_Alnum extends Zend_Validate_Abstract
 
         return true;
     }
-
 }

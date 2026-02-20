@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Form_Decorator_ViewHelperTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Decorator_ViewHelperTest::main");
-}
 
 require_once 'Zend/Form/Decorator/ViewHelper.php';
 
@@ -52,25 +45,13 @@ class Zend_Form_Decorator_ViewHelperTest extends TestCase
      * @var Zend_Form_Decorator_ViewHelper
      */
     protected $decorator;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Decorator_ViewHelperTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->decorator = new Zend_Form_Decorator_ViewHelper();
     }
@@ -81,7 +62,7 @@ class Zend_Form_Decorator_ViewHelperTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -189,14 +170,14 @@ class Zend_Form_Decorator_ViewHelperTest extends TestCase
             $this->assertStringContainsString($translations[$value], $test);
         }
     }
-    
+
     /**
      * @group ZF-9689
      */
     public function testRenderWithListSeparatorForMulticheckbox()
     {
         require_once 'Zend/Form/Element/MultiCheckbox.php';
-        
+
         $element = new Zend_Form_Element_MultiCheckbox('foo');
         $options = [
             'foo' => 'Foo',
@@ -210,21 +191,21 @@ class Zend_Form_Decorator_ViewHelperTest extends TestCase
                 ['HtmlTag', ['tag' => 'p']],
             ]
         );
-        
+
         $expected = '<p><label><input type="checkbox" name="foo[]" id="foo-foo" value="foo">Foo</label></p>'
                   . '<p><label><input type="checkbox" name="foo[]" id="foo-bar" value="bar">Bar</label></p>';
         $actual = $element->render($this->getView());
-        
+
         $this->assertEquals($expected, $actual);
     }
-    
+
     /**
      * @group ZF-9689
      */
     public function testRenderWithListSeparatorForRadio()
     {
         require_once 'Zend/Form/Element/Radio.php';
-        
+
         $element = new Zend_Form_Element_Radio('foo');
         $options = [
             'foo' => 'Foo',
@@ -238,11 +219,11 @@ class Zend_Form_Decorator_ViewHelperTest extends TestCase
                 ['HtmlTag', ['tag' => 'p']],
             ]
         );
-        
+
         $expected = '<p><label><input type="radio" name="foo" id="foo-foo" value="foo">Foo</label></p>'
                   . '<p><label><input type="radio" name="foo" id="foo-bar" value="bar">Bar</label></p>';
         $actual = $element->render($this->getView());
-        
+
         $this->assertEquals($expected, $actual);
     }
 
@@ -306,9 +287,4 @@ class Zend_Form_Decorator_ViewHelperTest_Textarea extends Zend_Form_Element
         }
         $this->helper = null;
     }
-}
-
-// Call Zend_Form_Decorator_ViewHelperTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Decorator_ViewHelperTest::main") {
-    Zend_Form_Decorator_ViewHelperTest::main();
 }

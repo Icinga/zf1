@@ -1,8 +1,8 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Controller_Action_HelperBrokerTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Action_HelperBrokerTest::main");
-}
 
 require_once 'Zend/Controller/Front.php';
 require_once 'Zend/Controller/Request/Http.php';
@@ -54,20 +49,7 @@ class Zend_Controller_Action_HelperBrokerTest extends TestCase
      * @var Zend_Controller_Front
      */
     protected $front;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Action_HelperBrokerTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->front = Zend_Controller_Front::getInstance();
         $this->front->resetInstance();
@@ -99,9 +81,7 @@ class Zend_Controller_Action_HelperBrokerTest extends TestCase
         $this->assertSame($received, $helper);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testGetExistingHelperThrowsExceptionWithUnregisteredHelper()
     {
         try {
@@ -349,6 +329,7 @@ class Zend_Controller_Action_HelperBrokerTest extends TestCase
     /**
      * @group ZF-4704
      */
+    #[RunInSeparateProcess]
     public function testBrokerShouldAcceptCustomPluginLoaderInstance()
     {
         $loader = Zend_Controller_Action_HelperBroker::getPluginLoader();
@@ -383,9 +364,4 @@ class Zend_Controller_Action_HelperBrokerController extends Zend_Controller_Acti
     {
         $this->_helper->getHelper('testHelper');
     }
-}
-
-// Call Zend_Controller_Action_HelperBrokerTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Action_HelperBrokerTest::main") {
-    Zend_Controller_Action_HelperBrokerTest::main();
 }

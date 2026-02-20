@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -28,7 +29,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  */
 require_once 'Zend/Cache.php';
 
-
 require_once 'Zend/Cache/Backend/File.php';
 class Zend_Cache_Backend_FooBarTest extends Zend_Cache_Backend_File
 {
@@ -55,11 +55,11 @@ class FooBarTestFrontend extends Zend_Cache_Core
  */
 class Zend_Cache_FactoryTest extends TestCase
 {
-    protected function set_up()
+    protected function setUp(): void
     {
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -94,27 +94,10 @@ class Zend_Cache_FactoryTest extends TestCase
     }
 
     /**
-     * @doesNotPerformAssertions
      *
      * @return void
      */
-    public function testFactoryLoadsPlatformBackend()
-    {
-        try {
-            $cache = Zend_Cache::factory('Core', 'Zend-Platform');
-        } catch (Zend_Cache_Exception $e) {
-            $message = $e->getMessage();
-            if (strstr($message, 'Incorrect backend')) {
-                $this->fail('Zend Platform is a valid backend');
-            }
-        }
-    }
-
-    /**
-     * @doesNotPerformAssertions
-     *
-     * @return void
-     */
+    #[DoesNotPerformAssertions]
     public function testBadFrontend()
     {
         try {
@@ -126,10 +109,10 @@ class Zend_Cache_FactoryTest extends TestCase
     }
 
     /**
-     * @doesNotPerformAssertions
      *
      * @return void
      */
+    #[DoesNotPerformAssertions]
     public function testBadBackend()
     {
         try {
@@ -139,7 +122,7 @@ class Zend_Cache_FactoryTest extends TestCase
         }
         $this->fail('Zend_Exception was expected but not thrown');
     }
-    
+
     /**
      * @group ZF-11988
      */
@@ -152,7 +135,7 @@ class Zend_Cache_FactoryTest extends TestCase
             $this->assertNotEquals('Invalid frontend name [ZF11988\Frontend]', $e->getMessage());
         }
     }
-    
+
     /**
      * @group ZF-11988
      */

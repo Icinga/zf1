@@ -37,4 +37,3 @@ require_once 'Zend/Db/Exception.php';
 class Zend_Db_Profiler_Exception extends Zend_Db_Exception
 {
 }
-

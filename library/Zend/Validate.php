@@ -101,7 +101,7 @@ class Zend_Validate implements Zend_Validate_Interface
             $result = false;
             $messages = $validator->getMessages();
             $this->_messages = array_merge($this->_messages, $messages);
-            $this->_errors   = array_merge($this->_errors,   array_keys($messages));
+            $this->_errors   = array_merge($this->_errors, array_keys($messages));
             if ($element['breakChainOnFailure']) {
                 break;
             }
@@ -199,7 +199,7 @@ class Zend_Validate implements Zend_Validate_Interface
         try {
             if (!class_exists($className, false)) {
                 require_once 'Zend/Loader.php';
-                foreach($namespaces as $namespace) {
+                foreach ($namespaces as $namespace) {
                     $class = $namespace . '_' . $className;
                     $file  = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
                     if (Zend_Loader::isReadable($file)) {
@@ -215,7 +215,7 @@ class Zend_Validate implements Zend_Validate_Interface
                 if ($class->hasMethod('__construct')) {
                     $keys    = array_keys($args);
                     $numeric = false;
-                    foreach($keys as $key) {
+                    foreach ($keys as $key) {
                         if (is_numeric($key)) {
                             $numeric = true;
                             break;

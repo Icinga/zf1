@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Form_FormTest::main');
-}
 
 require_once 'Zend/Form.php';
 
@@ -73,13 +68,6 @@ class Zend_Form_FormTest extends TestCase
      * @var string
      */
     private $html;
-
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Form_FormTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function clearRegistry()
     {
         if (Zend_Registry::isRegistered('Zend_Translate')) {
@@ -88,7 +76,7 @@ class Zend_Form_FormTest extends TestCase
         }
     }
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->clearRegistry();
         Zend_Form::setDefaultTranslator(null);
@@ -101,7 +89,7 @@ class Zend_Form_FormTest extends TestCase
         $this->form = new Zend_Form();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->clearRegistry();
     }
@@ -144,9 +132,7 @@ class Zend_Form_FormTest extends TestCase
         $this->assertEquals('put', $form->getMethod());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetOptionsSkipsCallsToSetOptionsAndSetConfig()
     {
         $options = $this->getOptions();
@@ -156,9 +142,7 @@ class Zend_Form_FormTest extends TestCase
         $this->form->setOptions($options);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetOptionsSkipsSettingAccessorsRequiringObjectsWhenNonObjectPassed()
     {
         $options = $this->getOptions();
@@ -408,8 +392,8 @@ class Zend_Form_FormTest extends TestCase
 
     /**
      * @group ZF-3250
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testDisplayGroupOrderInConfigShouldNotMatter()
     {
         require_once 'Zend/Config/Xml.php';
@@ -484,7 +468,6 @@ class Zend_Form_FormTest extends TestCase
         $this->assertEquals('/foo/bar', $form->getAction());
         $this->assertEquals('put', $form->getMethod());
     }
-
 
     // Attribs:
 
@@ -1255,7 +1238,6 @@ class Zend_Form_FormTest extends TestCase
         $this->assertEquals('bar', $subForm->foo->getBelongsTo());
     }
 
-
     public function testGetSubFormReturnsNullForUnregisteredSubForm()
     {
         $this->assertNull($this->form->getSubForm('foo'));
@@ -1415,7 +1397,6 @@ class Zend_Form_FormTest extends TestCase
 
         $form->addSubForm($subForm, 'sub')
              ->addElement('submit', 'save', ['value' => 'submit', 'ignore' => true]);
-
 
         $data = ['foobar' => [
             'firstName' => 'Mabel',
@@ -2253,7 +2234,6 @@ class Zend_Form_FormTest extends TestCase
         $form->addSubForm($subForm, 'sub')
              ->addElement('submit', 'save', ['value' => 'submit']);
 
-
         $data = ['foobar' => [
             'firstName' => 'Mabel',
             'lastName' => 'Cow',
@@ -2338,7 +2318,6 @@ class Zend_Form_FormTest extends TestCase
         $form->addSubForm($subForm, 'sub')
              ->addElement('submit', 'save', ['value' => 'submit']);
 
-
         $data = ['foobar' => [
             'lastName' => 'Cow',
         ]];
@@ -2396,7 +2375,6 @@ class Zend_Form_FormTest extends TestCase
         $form->addSubForm($subForm, 'sub')
              ->addElement('submit', 'save', ['value' => 'submit']);
 
-
         $data = ['foo' => [
             'bar' => [
                 'lastName' => 'Cow',
@@ -2452,13 +2430,11 @@ class Zend_Form_FormTest extends TestCase
         $form->addSubForm($subForm, 'sub')
              ->addElement('submit', 'save', ['value' => 'submit']);
 
-
         $data = ['foo' => [
             'bar' => [
                 'lastName' => 'Cow',
             ],
         ]];
-
 
         $form->sub->subSub->home->addValidator('StringLength', false, [4, 6]);
         $data['foo']['bar']['baz'] = ['bat' => ['quux' => ['home' => 'ab']]];
@@ -2530,9 +2506,7 @@ class Zend_Form_FormTest extends TestCase
         $this->assertEquals(array_keys($data), array_keys($return), var_export($return, 1));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testPersistDataStoresDataInSession()
     {
         $this->markTestIncomplete('Zend_Form does not implement session storage at this time');
@@ -3537,9 +3511,7 @@ class Zend_Form_FormTest extends TestCase
         $this->assertSame($expected, $received);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRemovingFormItemsShouldNotRaiseExceptionsDuringIteration()
     {
         $this->setupElements();
@@ -3577,9 +3549,7 @@ class Zend_Form_FormTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testClearingAttachedItemsShouldNotCauseIterationToRaiseExceptions()
     {
         $form = new Zend_Form();
@@ -4046,7 +4016,9 @@ class Zend_Form_FormTest extends TestCase
         $form->reset();
         $test = $form->getValues();
         $this->assertNotEquals($values, $test);
-        $this->assertEquals(0, array_sum($test));
+        array_walk_recursive($test, function ($value, $key) {
+            $this->assertNull($value, "$key is not null");
+        });
     }
 
     /**
@@ -4958,8 +4930,4 @@ class Zend_Form_FormTest_AddToDisplayGroup extends Zend_Form_FormTest_WithDispla
 
 class MyTestView extends Zend_View
 {
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Form_FormTest::main') {
-    Zend_Form_FormTest::main();
 }

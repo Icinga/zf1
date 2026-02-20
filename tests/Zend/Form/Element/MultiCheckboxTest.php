@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Form_Element_MultiCheckboxTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Element_MultiCheckboxTest::main");
-}
-
 require_once 'Zend/Form/Element/MultiCheckbox.php';
 
 /**
@@ -48,25 +42,13 @@ class Zend_Form_Element_MultiCheckboxTest extends TestCase
      * @var Zend_Form_Element_MultiCheckbox
      */
     protected $element;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Element_MultiCheckboxTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->element = new Zend_Form_Element_MultiCheckbox('foo');
     }
@@ -77,7 +59,7 @@ class Zend_Form_Element_MultiCheckboxTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -275,8 +257,8 @@ class Zend_Form_Element_MultiCheckboxTest extends TestCase
      * No assertion; just making sure no error occurs
      *
      * @group ZF-4915
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testRetrievingErrorMessagesShouldNotResultInError()
     {
         $this->element->addMultiOptions([
@@ -300,28 +282,28 @@ class Zend_Form_Element_MultiCheckboxTest extends TestCase
             'baz' => 'Baz',
         ]);
         $this->element->setRegisterInArrayValidator(true);
-    
+
         $this->assertTrue($this->element->isValid(['foo']));
         $this->assertTrue($this->element->isValid(['foo', 'baz']));
-        
+
         $this->element->setAllowEmpty(true);
         $this->assertTrue($this->element->isValid([]));
 
         // Empty value + AllowEmpty=true = no error messages
         $messages = $this->element->getMessages();
         $this->assertEquals(0, count($messages), 'Received unexpected error message(s)');
-        
+
         $this->element->setAllowEmpty(false);
         $this->assertFalse($this->element->isValid([]));
-        
+
         // Empty value + AllowEmpty=false = notInArray error message
         $messages = $this->element->getMessages();
         $this->assertTrue(is_array($messages), 'Expected error message');
         $this->assertArrayHasKey('notInArray', $messages, 'Expected \'notInArray\' error message');
-        
+
         $this->element->setRequired(true)->setAllowEmpty(false);
         $this->assertFalse($this->element->isValid([]));
-        
+
         // Empty value + Required=true + AllowEmpty=false = isEmpty error message
         $messages = $this->element->getMessages();
         $this->assertTrue(is_array($messages), 'Expected error message');
@@ -355,9 +337,4 @@ class Zend_Form_Element_MultiCheckboxTest extends TestCase
                   . '</dd>';
         $this->assertSame($expected, $this->element->render($this->getView()));
     }
-}
-
-// Call Zend_Form_Element_MultiCheckboxTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Element_MultiCheckboxTest::main") {
-    Zend_Form_Element_MultiCheckboxTest::main();
 }

@@ -1,8 +1,10 @@
 <?php
 
 use MyApp\Controller\Plugin\ThrowingPlugin;
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Zend Framework
  *
@@ -23,22 +25,6 @@ use PHPUnit\Framework\TestSuite;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Controller_FrontTest::main() if this source file is executed directly.
-use PHPUnit\TextUI\TestRunner;
-
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_FrontTest::main");
-
-    $basePath = realpath(dirname(__FILE__) . str_repeat(DIRECTORY_SEPARATOR . '..', 3));
-
-    set_include_path(
-        $basePath . DIRECTORY_SEPARATOR . 'tests'
-        . PATH_SEPARATOR . $basePath . DIRECTORY_SEPARATOR . 'library'
-        . PATH_SEPARATOR . get_include_path()
-    );
-}
-
 
 require_once 'Zend/Controller/Front.php';
 require_once 'Zend/Controller/Request/Http.php';
@@ -61,20 +47,7 @@ require_once 'Zend/Controller/Action/Helper/ViewRenderer.php';
 class Zend_Controller_FrontTest extends TestCase
 {
     protected $_controller = null;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_FrontTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_controller = Zend_Controller_Front::getInstance();
         $this->_controller->resetInstance();
@@ -86,7 +59,7 @@ class Zend_Controller_FrontTest extends TestCase
         Zend_Controller_Action_HelperBroker::resetHelpers();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->_controller);
     }
@@ -131,9 +104,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertTrue($request instanceof Zend_Controller_Request_Http);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetRequestThrowsExceptionWithBadRequest()
     {
         try {
@@ -156,9 +127,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertTrue($response instanceof Zend_Controller_Response_Cli);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetResponseThrowsExceptionWithBadResponse()
     {
         try {
@@ -181,9 +150,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertTrue($router instanceof Zend_Controller_Router_Rewrite);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetRouterThrowsExceptionWithBadRouter()
     {
         try {
@@ -433,9 +400,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertEquals($request->getBaseUrl(), $this->_controller->getBaseUrl());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetBaseUrlThrowsExceptionOnNonString()
     {
         try {
@@ -479,8 +444,8 @@ class Zend_Controller_FrontTest extends TestCase
 
     /**
      * Test that with throwExceptions() set, an exception is thrown
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testThrowExceptionsThrows()
     {
         $this->_controller->throwExceptions(true);
@@ -532,9 +497,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertStringContainsString($actual, $body);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRunStatically()
     {
         $request = new Zend_Controller_Request_Http('http://example.com/index/index');
@@ -542,9 +505,7 @@ class Zend_Controller_FrontTest extends TestCase
         Zend_Controller_Front::run(dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testRunDynamically()
     {
         $request = new Zend_Controller_Request_Http('http://example.com/index/index');
@@ -731,6 +692,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertFalse(Zend_Controller_Action_HelperBroker::hasHelper('viewRenderer'));
     }
 
+    #[RunInSeparateProcess]
     public function testDispatcherHandlesTypeError()
     {
         $request = new Zend_Controller_Request_Http('http://example.com/index/type-error');
@@ -753,6 +715,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertSame(500, $this->_controller->getResponse()->getHttpResponseCode());
     }
 
+    #[RunInSeparateProcess]
     public function testDispatcherHandlesException()
     {
         $request = new Zend_Controller_Request_Http('http://example.com/index/exception');
@@ -771,6 +734,7 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertSame(500, $this->_controller->getResponse()->getHttpResponseCode());
     }
 
+    #[RunInSeparateProcess]
     public function testDispatcherPassesTypeErrorThroughWhenThrowExceptions()
     {
         $request = new Zend_Controller_Request_Http('http://example.com/index/type-error');
@@ -797,6 +761,7 @@ class Zend_Controller_FrontTest extends TestCase
         }
     }
 
+    #[RunInSeparateProcess]
     public function testDispatcherCatchesTypeExceptionFromPlugin()
     {
         $request = new Zend_Controller_Request_Http('http://example.com/index/index');
@@ -818,8 +783,3 @@ class Zend_Controller_FrontTest extends TestCase
         $this->assertSame(500, $this->_controller->getResponse()->getHttpResponseCode());
     }
 }
-
-// Call Zend_Controller_FrontTest::main() if this source file is executed directly.
-// if (PHPUnit_MAIN_METHOD === "Zend_Controller_FrontTest::main") {
-//     Zend_Controller_FrontTest::main();
-// }

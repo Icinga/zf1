@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Formatter_SimpleTest::main');
-}
-
 /** Zend_Log_Formatter_Simple */
 require_once 'Zend/Log/Formatter/Simple.php';
 
@@ -42,12 +36,6 @@ require_once 'Zend/Log/Formatter/Simple.php';
  */
 class Zend_Log_Formatter_SimpleTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testConstructorThrowsOnBadFormatString()
     {
         try {
@@ -140,8 +128,4 @@ class Zend_Log_Formatter_SimpleTest_TestObject1
 
 class Zend_Log_Formatter_SimpleTest_TestObject2
 {
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Formatter_SimpleTest::main') {
-    Zend_Log_Formatter_SimpleTest::main();
 }

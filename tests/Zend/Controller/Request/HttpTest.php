@@ -1,8 +1,8 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Controller_Request_HttpTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Request_HttpTest::main");
-}
 
 require_once 'Zend/Controller/Request/Http.php';
 
@@ -54,20 +49,7 @@ class Zend_Controller_Request_HttpTest extends TestCase
      * @var array
      */
     protected $_origServer;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Request_HttpTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_origServer = $_SERVER;
         $_GET = [];
@@ -79,7 +61,7 @@ class Zend_Controller_Request_HttpTest extends TestCase
         $this->_request = new Zend_Controller_Request_Http('http://framework.zend.com/news/3?var1=val1&var2=val2#anchor');
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         unset($this->_request);
         $_SERVER = $this->_origServer;
@@ -152,9 +134,7 @@ class Zend_Controller_Request_HttpTest extends TestCase
         $this->assertEquals('val1', $this->_request->get('var1'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetIsAlias()
     {
         try {
@@ -195,9 +175,7 @@ class Zend_Controller_Request_HttpTest extends TestCase
         $this->assertTrue($this->_request->has('var1'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function test__SetThrowsException()
     {
         try {
@@ -376,7 +354,6 @@ class Zend_Controller_Request_HttpTest extends TestCase
         $this->assertEquals($expected, $this->_request->getQuery());
     }
 
-
     public function testGetPost()
     {
         $_POST['post1'] = 'val1';
@@ -450,7 +427,7 @@ class Zend_Controller_Request_HttpTest extends TestCase
      * Dataprovider for testing prefix paths in the base url
      * @group ZF-10040
      */
-    public function prefixProvider()
+    public static function prefixProvider()
     {
         return [
             [null],
@@ -460,9 +437,9 @@ class Zend_Controller_Request_HttpTest extends TestCase
         ];
     }
     /**
-     * @dataProvider prefixProvider
      * @group ZF-10040
      */
+    #[DataProvider('prefixProvider')]
     public function testBaseUrlSetsProperLocation($prefix)
     {
         $_SERVER['REQUEST_URI'] = $prefix . '/index.php/news/3?var1=val1&var2=val2';
@@ -544,7 +521,6 @@ class Zend_Controller_Request_HttpTest extends TestCase
 
         $this->assertEquals('/index.php', $request->getBaseUrl());
     }
-
 
     public function testSetBaseUrlAutoDiscoveryUsingOrigPathInfo()
     {
@@ -896,7 +872,6 @@ class Zend_Controller_Request_HttpTest extends TestCase
         $this->assertSame('', $this->_request->getHeader('X-Foo'));
     }
 
-
     /**
      * @group ZF-3527
      */
@@ -958,7 +933,7 @@ class Zend_Controller_Request_HttpTest extends TestCase
 
         $this->assertEquals('/module/controller/action', $pathInfo, $pathInfo);
     }
-    
+
     /**
      * @group ZF-3527
      * @group ZF-10964
@@ -969,7 +944,7 @@ class Zend_Controller_Request_HttpTest extends TestCase
         $request = new Zend_Controller_Request_Http();
         $_SERVER['REQUEST_URI'] = '/module/controller/action/param/escaped%2Fstring';
         $pathInfo = $request->getPathInfo();
-    
+
         $this->assertEquals('/module/controller/action/param/escaped%2Fstring', $pathInfo, $pathInfo);
     }
 
@@ -981,9 +956,4 @@ class Zend_Controller_Request_HttpTest extends TestCase
         $request = new Zend_Controller_Request_Http();
         $this->assertEquals('', $request->getHttpHost(), 'HttpHost should be :');
     }
-}
-
-// Call Zend_Controller_Request_HttpTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Request_HttpTest::main") {
-    Zend_Controller_Request_HttpTest::main();
 }

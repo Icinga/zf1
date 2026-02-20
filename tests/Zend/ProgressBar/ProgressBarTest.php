@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Console_ProgressBarTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_ProgressBar_ProgressBarTest::main");
-}
-
 /**
  * Zend_ProgressBar
  */
@@ -50,17 +43,6 @@ require_once 'Zend/ProgressBar/Adapter.php';
  */
 class Zend_ProgressBar_ProgressBarTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_ProgressBar_ProgressBarTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testGreaterMin()
     {
         try {
@@ -231,9 +213,4 @@ class Zend_ProgressBar_Adapter_MockUp extends Zend_ProgressBar_Adapter
     {
         return $this->_text;
     }
-}
-
-// Call Zend_ProgressBar_ProgressBarTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_ProgressBar_ProgressBarTest::main") {
-    Zend_ProgressBar_ProgressBarTest::main();
 }

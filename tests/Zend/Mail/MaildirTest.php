@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -47,8 +48,12 @@ class Zend_Mail_MaildirTest extends TestCase
     protected $_maildir;
     protected $_tmpdir;
 
-    protected function set_up()
+    protected function setUp(): void
     {
+        if (TESTS_ZEND_MAIL_MAILDIR_ENABLED !== true) {
+            $this->markTestSkipped('Maildir tests are not enabled in test configuration.');
+        }
+
         $this->_originalMaildir = dirname(__FILE__) . '/_files/test.maildir/';
         if (!is_dir($this->_originalMaildir . '/cur/')) {
             $this->markTestSkipped('You have to unpack maildir.tar in Zend/Mail/_files/test.maildir/ '
@@ -97,8 +102,12 @@ class Zend_Mail_MaildirTest extends TestCase
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
+        if (TESTS_ZEND_MAIL_MAILDIR_ENABLED !== true) {
+            return;
+        }
+
         foreach (['cur', 'new'] as $dir) {
             $dh = opendir($this->_tmpdir . $dir);
             while (($entry = readdir($dh)) !== false) {
@@ -113,9 +122,7 @@ class Zend_Mail_MaildirTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testLoadOk()
     {
         try {
@@ -125,9 +132,7 @@ class Zend_Mail_MaildirTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testLoadConfig()
     {
         try {
@@ -137,9 +142,7 @@ class Zend_Mail_MaildirTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testLoadFailure()
     {
         try {
@@ -151,9 +154,7 @@ class Zend_Mail_MaildirTest extends TestCase
         $this->fail('no exception raised while loading unknown dir');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testLoadInvalid()
     {
         try {
@@ -165,9 +166,7 @@ class Zend_Mail_MaildirTest extends TestCase
         $this->fail('no exception while loading invalid dir');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testClose()
     {
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
@@ -193,9 +192,7 @@ class Zend_Mail_MaildirTest extends TestCase
         $this->assertFalse($mail->hasCreate);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNoop()
     {
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
@@ -219,7 +216,6 @@ class Zend_Mail_MaildirTest extends TestCase
     {
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
         $shouldSizes = [1 => 397, 89, 694, 452, 497];
-
 
         $sizes = $mail->getSize();
         $this->assertEquals($shouldSizes, $sizes);
@@ -267,9 +263,7 @@ class Zend_Mail_MaildirTest extends TestCase
         $this->assertEquals('Fair river! in thy bright, clear flow', trim($content));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testFetchWrongSize()
     {
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
@@ -283,9 +277,7 @@ class Zend_Mail_MaildirTest extends TestCase
         $this->fail('no exception raised while getting size for message 0');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testFetchWrongMessageBody()
     {
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
@@ -299,9 +291,7 @@ class Zend_Mail_MaildirTest extends TestCase
         $this->fail('no exception raised while fetching message 0');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testFailedRemove()
     {
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
@@ -353,9 +343,7 @@ class Zend_Mail_MaildirTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrongUniqueId()
     {
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
@@ -393,25 +381,19 @@ class Zend_Mail_MaildirTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCurIsFile()
     {
         $this->isFileTest('cur');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNewIsFile()
     {
         $this->isFileTest('new');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testTmpIsFile()
     {
         $this->isFileTest('tmp');
@@ -437,17 +419,13 @@ class Zend_Mail_MaildirTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNotReadableCur()
     {
         $this->notReadableTest('cur');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNotReadableNew()
     {
         $this->notReadableTest('new');
@@ -482,7 +460,6 @@ class Zend_Mail_MaildirTest extends TestCase
         rename($this->_maildir . '/cur/1000000001.P1.example.org:2,FS', $this->_maildir . '/cur/1000000001.P1.example.org,S=456:2,FS');
         $mail = new Zend_Mail_Storage_Maildir(['dirname' => $this->_maildir]);
         $shouldSizes = [1 => 123, 456, 694, 452, 497];
-
 
         $sizes = $mail->getSize();
         $this->assertEquals($shouldSizes, $sizes);

@@ -1,6 +1,8 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -50,7 +52,7 @@ class Zend_Http_Client_TestAdapterTest extends TestCase
      * Set up the test adapter before running the test
      *
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->adapter = new Zend_Http_Client_Adapter_Test();
     }
@@ -59,7 +61,7 @@ class Zend_Http_Client_TestAdapterTest extends TestCase
      * Tear down the test adapter after running the test
      *
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->adapter = null;
     }
@@ -73,33 +75,25 @@ class Zend_Http_Client_TestAdapterTest extends TestCase
         $this->adapter->setConfig('foo');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetConfigReturnsQuietly()
     {
         $this->adapter->setConfig(['foo' => 'bar']);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConnectReturnsQuietly()
     {
         $this->adapter->connect('http://foo');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCloseReturnsQuietly()
     {
         $this->adapter->close();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testFailRequestOnDemand()
     {
         $this->adapter->setNextRequestWillFail(true);
@@ -141,10 +135,9 @@ class Zend_Http_Client_TestAdapterTest extends TestCase
         $this->assertEquals($expected[0], $this->adapter->read());
     }
 
+    #[DataProvider('validHttpResponseProvider')]
     /**
      * Test that responses could be added as strings
-     *
-     * @dataProvider validHttpResponseProvider
      */
     public function testAddResponseAsString($testResponse)
     {
@@ -154,11 +147,11 @@ class Zend_Http_Client_TestAdapterTest extends TestCase
         $this->assertEquals($testResponse, $this->adapter->read());
     }
 
+    #[DataProvider('validHttpResponseProvider')]
     /**
      * Test that responses could be added as objects (ZF-7009)
      *
      * @link http://framework.zend.com/issues/browse/ZF-7009
-     * @dataProvider validHttpResponseProvider
      */
     public function testAddResponseAsObject($testResponse)
     {

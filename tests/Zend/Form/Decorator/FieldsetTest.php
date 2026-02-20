@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Form_Decorator_FieldsetTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Decorator_FieldsetTest::main");
-}
 
 require_once 'Zend/Form/Decorator/Fieldset.php';
 
@@ -52,25 +45,13 @@ class Zend_Form_Decorator_FieldsetTest extends TestCase
      * @var Zend_Form_Decorator_Fieldset
      */
     protected $decorator;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Decorator_FieldsetTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->decorator = new Zend_Form_Decorator_Fieldset();
     }
@@ -81,7 +62,7 @@ class Zend_Form_Decorator_FieldsetTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -252,7 +233,7 @@ class Zend_Form_Decorator_FieldsetTest extends TestCase
 
         $this->assertEquals('<fieldset></fieldset>', $html);
     }
-    
+
     /**
      * @group ZF-10803
      */
@@ -261,14 +242,9 @@ class Zend_Form_Decorator_FieldsetTest extends TestCase
         $form = new Zend_Form();
         $form->setAttrib('id', 'form-id')
              ->setView($this->getView());
-        
+
         $html = $this->decorator->setElement($form)->render('content');
-        
+
         $this->assertStringContainsString('<fieldset id="fieldset-form-id"', $html);
     }
-}
-
-// Call Zend_Form_Decorator_FieldsetTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Decorator_FieldsetTest::main") {
-    Zend_Form_Decorator_FieldsetTest::main();
 }

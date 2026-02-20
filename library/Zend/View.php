@@ -37,7 +37,6 @@ require_once 'Zend/View/Abstract.php';
  * Convenience methods for build in helpers (@see __call):
  *
  * @method string baseUrl($file = null)
- * @method string currency($value = null, $currency = null)
  * @method Zend_View_Helper_Cycle cycle(array $data = array(), $name = Zend_View_Helper_Cycle::DEFAULT_NAME)
  * @method Zend_View_Helper_Doctype doctype($doctype = null)
  * @method string fieldset($name, $content, $attribs = null)
@@ -72,7 +71,6 @@ require_once 'Zend/View/Abstract.php';
  * @method Zend_View_Helper_InlineScript inlineScript($mode = Zend_View_Helper_HeadScript::FILE, $spec = null, $placement = 'APPEND', array $attrs = array(), $type = 'text/javascript')
  * @method string|void json($data, $keepLayouts = false, $encodeData = true)
  * @method Zend_View_Helper_Layout layout()
- * @method Zend_View_Helper_Navigation navigation(Zend_Navigation_Container $container = null)
  * @method string paginationControl(Zend_Paginator $paginator = null, $scrollingStyle = null, $partial = null, $params = null)
  * @method string partial($name = null, $module = null, $model = null)
  * @method string partialLoop($name = null, $module = null, $model = null)
@@ -81,7 +79,6 @@ require_once 'Zend/View/Abstract.php';
  * @method string serverUrl($requestUri = null)
  * @method string translate($messageid = null)
  * @method string url(array $urlOptions = array(), $name = null, $reset = false, $encode = true)
- * @method Zend_Http_UserAgent userAgent(Zend_Http_UserAgent $userAgent = null)
  */
 class Zend_View extends Zend_View_Abstract
 {

@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_View_Helper_BaseUrlTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_View_Helper_BaseUrlTest::main');
-}
 
 /**
  * @see Zend_View_Helper_BaseUrl
@@ -64,20 +57,10 @@ class Zend_View_Helper_BaseUrlTest extends TestCase
      * @var array
      */
     protected $_server;
-
-    /**
-     * Main
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_View_Helper_BaseUrlTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Prepares the environment before running a test.
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_previousBaseUrl = Zend_Controller_Front::getInstance()->getBaseUrl();
         $this->_server = $_SERVER;
@@ -86,7 +69,7 @@ class Zend_View_Helper_BaseUrlTest extends TestCase
     /**
      * Cleans up the environment after running a test.
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Controller_Front::getInstance()->setBaseUrl($this->_previousBaseUrl);
         Zend_Controller_Front::getInstance()->resetInstance();
@@ -209,9 +192,4 @@ class Zend_View_Helper_BaseUrlTest extends TestCase
         $helper = new Zend_View_Helper_BaseUrl();
         $this->assertEquals('/mybar', $helper->getBaseUrl());
     }
-}
-
-// Call Zend_View_Helper_BaseUrlTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === 'Zend_View_Helper_BaseUrlTest::main') {
-    Zend_View_Helper_BaseUrlTest::main();
 }

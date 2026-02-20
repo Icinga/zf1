@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Filter_MessageTest::main');
-}
-
 /** Zend_Log */
 require_once 'Zend/Log.php';
 
@@ -45,12 +39,6 @@ require_once 'Zend/Log/Filter/Message.php';
  */
 class Zend_Log_Filter_MessageTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
     public function testMessageFilterRecognizesInvalidRegularExpression()
     {
         try {
@@ -97,8 +85,4 @@ class Zend_Log_Filter_MessageTest extends TestCase
         $filter = Zend_Log_Filter_Message::factory($config->log->memory->filterParams);
         $this->assertTrue($filter instanceof Zend_Log_Filter_Message);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Filter_MessageTest::main') {
-    Zend_Log_Filter_MessageTest::main();
 }

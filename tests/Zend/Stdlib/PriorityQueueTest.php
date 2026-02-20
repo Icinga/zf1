@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,10 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Stdlib_PriorityQueueTest::main');
-}
-
 require_once 'Zend/Stdlib/PriorityQueue.php';
 
 /**
@@ -44,14 +38,7 @@ class Zend_Stdlib_PriorityQueueTest extends TestCase
      * @var \Zend_Stdlib_PriorityQueue|mixed
      */
     protected $queue;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->queue = new Zend_Stdlib_PriorityQueue();
         $this->queue->insert('foo', 3);
@@ -149,8 +136,4 @@ class Zend_Stdlib_PriorityQueueTest extends TestCase
         $this->assertTrue($this->queue->hasPriority(3));
         $this->assertFalse($this->queue->hasPriority(1000));
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Stdlib_PriorityQueueTest::main') {
-    Zend_Stdlib_PriorityQueueTest::main();
 }

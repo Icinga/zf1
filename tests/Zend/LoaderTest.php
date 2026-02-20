@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_LoaderTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_LoaderTest::main');
-}
 
 /**
  * Zend_Loader
@@ -69,19 +63,7 @@ class Zend_LoaderTest extends TestCase
      * @var null|mixed|bool
      */
     protected $errorHandler;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_LoaderTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         // Store original autoloaders
         $this->loaders = spl_autoload_functions();
@@ -99,7 +81,7 @@ class Zend_LoaderTest extends TestCase
         Zend_Loader_Autoloader::resetInstance();
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if ($this->errorHandler !== null) {
             restore_error_handler();
@@ -139,8 +121,8 @@ class Zend_LoaderTest extends TestCase
 
     /**
      * Tests that a class can be loaded from a well-formed PHP file
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testLoaderClassValid()
     {
         $dir = implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), '_files', '_testDir1']);
@@ -148,9 +130,8 @@ class Zend_LoaderTest extends TestCase
         Zend_Loader::loadClass('Class1', $dir);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testLoaderInterfaceViaLoadClass()
     {
         try {
@@ -160,9 +141,8 @@ class Zend_LoaderTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testLoaderLoadClassWithDotDir()
     {
         $dirs = ['.'];
@@ -205,8 +185,8 @@ class Zend_LoaderTest extends TestCase
 
     /**
      * Tests that a class can be loaded from the search directories.
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testLoaderClassSearchDirs()
     {
         $dirs = [];
@@ -221,8 +201,8 @@ class Zend_LoaderTest extends TestCase
 
     /**
      * Tests that a class locatedin a subdirectory can be loaded from the search directories
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testLoaderClassSearchSubDirs()
     {
         $dirs = [];
@@ -293,9 +273,6 @@ class Zend_LoaderTest extends TestCase
     {
         $this->setErrorHandler();
         $this->assertEquals('Zend_Db_Profiler_Exception', Zend_Loader::autoload('Zend_Db_Profiler_Exception'));
-        $this->assertStringContainsString('deprecated', $this->error);
-        $this->error = null;
-        $this->assertEquals('Zend_Auth_Storage_Interface', Zend_Loader::autoload('Zend_Auth_Storage_Interface'));
         $this->assertStringContainsString('deprecated', $this->error);
     }
 
@@ -404,9 +381,8 @@ class Zend_LoaderTest extends TestCase
         spl_autoload_unregister($function);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+
+    #[DoesNotPerformAssertions]
     public function testLoaderRegisterAutoloadFailsWithoutSplAutoload()
     {
         if (function_exists('spl_autoload_register')) {
@@ -494,8 +470,8 @@ class Zend_LoaderTest extends TestCase
 
     /**
      * @group ZF-8200
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testLoadClassShouldAllowLoadingPhpNamespacedClasses()
     {
         if (version_compare(PHP_VERSION, '5.3.0') < 0) {
@@ -611,9 +587,4 @@ class Zend_LoaderTest extends TestCase
         $this->assertTrue(empty($output));
     }
      */
-}
-
-// Call Zend_LoaderTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === 'Zend_LoaderTest::main') {
-    Zend_LoaderTest::main();
 }

@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,11 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_File_MimeTypeTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_MimeTypeTest::main");
-}
-
 /**
  * @see Zend_Validate_File_MimeType
  */
@@ -47,17 +41,6 @@ require_once 'Zend/Validate/File/MimeType.php';
  */
 class Zend_Validate_File_MimeTypeTest extends TestCase
 {
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Validate_File_MimeTypeTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Ensures that the validator follows expected behavior
      *
@@ -179,9 +162,7 @@ class Zend_Validate_File_MimeTypeTest extends TestCase
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetMagicFileWithinConstructor()
     {
         require_once 'Zend/Validate/Exception.php';
@@ -301,9 +282,4 @@ class Zend_Validate_File_MimeTypeTest extends TestCase
             $this->assertTrue($validator->isValid($filetest, $files));
         }
     }
-}
-
-// Call Zend_Validate_File_MimeTypeTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Validate_File_MimeTypeTest::main") {
-    Zend_Validate_File_MimeTypeTest::main();
 }

@@ -260,7 +260,14 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
 
         $result = false;
 
-        $line = fgets($file);
+        set_error_handler(function (int $errno, string $errstr): void {
+            throw new ErrorException(message: $errstr, severity: $errno);
+        }, E_WARNING);
+        try {
+            $line = fgets($file);
+        } finally {
+            restore_error_handler();
+        }
 
         if (strpos($line, 'From ') === 0) {
             $result = true;
@@ -448,5 +455,4 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
             }
         }
     }
-
 }

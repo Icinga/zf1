@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Controller_Action_Helper_ViewRendererTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Action_Helper_ViewRendererTest::main");
-}
 
 require_once 'Zend/Controller/Action/Helper/ViewRenderer.php';
 require_once 'Zend/Controller/Front.php';
@@ -83,26 +77,13 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
      * @var Zend_Controller_Response_Http
      */
     public $response;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Action_Helper_ViewRendererTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @access protected
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->basePath = realpath(dirname(__FILE__) . str_repeat(DIRECTORY_SEPARATOR . '..', 2));
         $this->request = new Zend_Controller_Request_Http();
@@ -123,7 +104,7 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
      *
      * @access protected
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         Zend_Controller_Action_HelperBroker::resetHelpers();
     }
@@ -857,7 +838,7 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
         $body = $this->response->getBody();
         $this->assertStringContainsString('SampleZfHelper invoked', $body, 'Received ' . $body);
     }
-    
+
     /**
      * @group ZF-11127
      */
@@ -866,21 +847,21 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
         $a = new Zend_Controller_Action_Helper_ViewRenderer();
         $a->init();
         $a->setViewSuffix('A');
-        
+
         $this->assertEquals('A', $a->getViewSuffix());
-        
+
         $b = clone $a;
         $this->assertEquals('A', $b->getViewSuffix());
         $b->setViewSuffix('B');
-        
+
         $this->assertEquals('B', $b->getViewSuffix());
         $this->assertNotEquals('B', $a->getViewSuffix());
     }
-    
+
     /**
      * @group ZF-10725
-     * @dataProvider providerViewScriptNameDoesNotIncludeDisallowedCharacters
      */
+    #[DataProvider('providerViewScriptNameDoesNotIncludeDisallowedCharacters')]
     public function testViewScriptNameDoesNotIncludeDisallowedCharacters($actionName)
     {
         $this->request->setModuleName('default')
@@ -891,13 +872,13 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
         $scriptName = $this->helper->getViewScript();
         $this->assertEquals('foo/my-bar.phtml', $scriptName);
     }
-    
+
     /**
      * Data provider for testViewScriptNameDoesNotIncludeDisallowedCharacters
      * @group ZF-10725
      * @return array
      */
-    public function providerViewScriptNameDoesNotIncludeDisallowedCharacters()
+    public static function providerViewScriptNameDoesNotIncludeDisallowedCharacters()
     {
         return [
             ['myBar-'],
@@ -911,8 +892,8 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
 
     /**
      * @group GH-440
-     * @dataProvider providerControllerNameDoesNotIncludeDisallowedCharacters
      */
+    #[DataProvider('providerControllerNameDoesNotIncludeDisallowedCharacters')]
     public function testControllerNameDoesNotIncludeDisallowedCharacters($controllerName)
     {
         $this->request->setControllerName($controllerName)
@@ -937,7 +918,7 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
      * @group GH-440
      * @return array
      */
-    public function providerControllerNameDoesNotIncludeDisallowedCharacters()
+    public static function providerControllerNameDoesNotIncludeDisallowedCharacters()
     {
         return [
             ['!index'],
@@ -986,9 +967,4 @@ class Zend_Controller_Action_Helper_ViewRendererTest extends TestCase
         $scriptName = $this->helper->getViewScript();
         $this->assertEquals('controller/action.phtml', $scriptName);
     }
-}
-
-// Call Zend_Controller_Action_Helper_ViewRendererTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Action_Helper_ViewRendererTest::main") {
-    Zend_Controller_Action_Helper_ViewRendererTest::main();
 }

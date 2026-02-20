@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -55,18 +55,18 @@ class Zend_Paginator_Adapter_NullTest extends TestCase
     /**
      * Prepares the environment before running a test.
      */
-    protected function set_up()
+    protected function setUp(): void
     {
-        parent::set_up();
+        parent::setUp();
         $this->_adapter = new Zend_Paginator_Adapter_Null(101);
     }
     /**
      * Cleans up the environment after running a test.
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $this->_adapter = null;
-        parent::tear_down();
+        parent::tearDown();
     }
 
     public function testGetsItems()

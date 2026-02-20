@@ -20,9 +20,6 @@
  * @version    $Id$
  */
 
-
-
-
 /**
  * Mock file for testbed
  *

@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -23,11 +24,9 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @version    $Id$
  */
 
-
 /**
  * PHPUnit_Framework_TestCase
  */
-
 
 /**
  * @see Zend_Db_Adapter_Pdo_Sqlite
@@ -59,7 +58,6 @@ require_once dirname(__FILE__) . '/_files/Db/MockNoResult.php';
  */
 require_once dirname(__FILE__) . '/_files/Db/MockHasResult.php';
 
-
 /**
  * @category   Zend
  * @package    Zend_Validate
@@ -85,7 +83,7 @@ class Zend_Validate_Db_NoRecordExistsTest extends TestCase
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_adapterHasResult = new Db_MockHasResult();
         $this->_adapterNoResult = new Db_MockNoResult();
@@ -171,8 +169,8 @@ class Zend_Validate_Db_NoRecordExistsTest extends TestCase
      * and no default is set.
      *
      * @return void
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testThrowsExceptionWithNoAdapter()
     {
         Zend_Db_Table_Abstract::setDefaultAdapter(null);
@@ -245,7 +243,7 @@ class Zend_Validate_Db_NoRecordExistsTest extends TestCase
             $this->markTestSkipped('No database available');
         }
     }
-    
+
     /**
      *
      * @group ZF-10705
@@ -257,7 +255,7 @@ class Zend_Validate_Db_NoRecordExistsTest extends TestCase
         $validator = new Zend_Validate_Db_RecordExists('users', 'field1', null, $this->_adapterHasResult);
         $wherePart = $validator->getSelect()->getPart('where');
         $this->assertEquals($wherePart[0], '("field1" = ?)');
-        
+
         $this->_adapterHasResult->setSupportsParametersValues(['named' => true, 'positional' => true]);
         $validator = new Zend_Validate_Db_RecordExists('users', 'field1', null, $this->_adapterHasResult);
         $wherePart = $validator->getSelect()->getPart('where');

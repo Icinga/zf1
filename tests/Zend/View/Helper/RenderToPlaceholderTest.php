@@ -1,6 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -23,14 +23,8 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @version    $Id$
  */
 
-// Call Zend_View_Helper_RenderToPlaceholderTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_View_Helper_RenderToPlaceholderTest::main");
-}
-
 require_once 'Zend/View.php';
 require_once 'Zend/View/Helper/Placeholder.php';
-
 
 /**
  * @category   Zend
@@ -45,7 +39,7 @@ class Zend_View_Helper_RenderToPlaceholderTest extends TestCase
 {
     protected $_view = null;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_view = new Zend_View(['scriptPath' => dirname(__FILE__) . '/_files/scripts/']);
     }

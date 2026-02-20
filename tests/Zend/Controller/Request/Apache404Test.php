@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,12 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Controller_Request_Apache404Test::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Controller_Request_Apache404Test::main");
-}
-
-
 require_once 'Zend/Controller/Request/Apache404.php';
 
 /**
@@ -52,25 +44,12 @@ class Zend_Controller_Request_Apache404Test extends TestCase
      * @var array
      */
     protected $_server;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Controller_Request_Apache404Test");
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_server = $_SERVER;
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $_SERVER = $this->_server;
     }
@@ -100,9 +79,4 @@ class Zend_Controller_Request_Apache404Test extends TestCase
         $this->assertEquals('/foo/bar', $requestUri);
         $this->assertSame(['baz' => 'bat', 'bat' => 'delta'], $request->getQuery());
     }
-}
-
-// Call Zend_Controller_Request_Apache404Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Controller_Request_Apache404Test::main") {
-    Zend_Controller_Request_Apache404Test::main();
 }

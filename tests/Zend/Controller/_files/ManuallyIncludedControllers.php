@@ -20,9 +20,6 @@
  * @version    $Id: ManuallyIncludedControllers.php $
  */
 
-
-
-
 require_once 'Zend/Controller/Action.php';
 
 /**

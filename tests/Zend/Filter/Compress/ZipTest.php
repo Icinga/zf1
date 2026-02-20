@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id: $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Filter_Compress_ZipTest::main');
-}
-
 /**
  * @see Zend_Filter_Compress_Zip
  */
@@ -44,18 +38,7 @@ require_once 'Zend/Filter/Compress/Zip.php';
  */
 class Zend_Filter_Compress_ZipTest extends TestCase
 {
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Filter_Compress_ZipTest');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!extension_loaded('zip')) {
             $this->markTestSkipped('This adapter needs the zip extension');
@@ -93,7 +76,7 @@ class Zend_Filter_Compress_ZipTest extends TestCase
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         $files = [
             dirname(__FILE__) . '/../_files/compressed.zip',
@@ -350,8 +333,4 @@ class Zend_Filter_Compress_ZipTest extends TestCase
 
         $filter->decompress(dirname(__FILE__) . '/../_files/evil.zip');
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Filter_Compress_ZipTest::main') {
-    Zend_Filter_Compress_ZipTest::main();
 }

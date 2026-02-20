@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id: $
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Filter_Compress_Bz2Test::main');
-}
-
 /**
  * @see Zend_Filter_Compress_Bz2
  */
@@ -44,25 +38,14 @@ require_once 'Zend/Filter/Compress/Bz2.php';
  */
 class Zend_Filter_Compress_Bz2Test extends TestCase
 {
-    /**
-     * Runs this test suite
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite('Zend_Filter_Compress_Bz2Test');
-        $result = (new resources_Runner())->run($suite);
-    }
-
-    protected function set_up()
+    protected function setUp(): void
     {
         if (!extension_loaded('bz2')) {
             $this->markTestSkipped('This adapter needs the bz2 extension');
         }
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if (file_exists(dirname(__FILE__) . '/../_files/compressed.bz2')) {
             unlink(dirname(__FILE__) . '/../_files/compressed.bz2');
@@ -207,8 +190,4 @@ class Zend_Filter_Compress_Bz2Test extends TestCase
         $content2 = $filter2->decompress($archive);
         $this->assertEquals('compress me', $content2);
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Filter_Compress_Bz2Test::main') {
-    Zend_Filter_Compress_Bz2Test::main();
 }

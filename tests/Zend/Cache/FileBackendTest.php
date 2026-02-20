@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+
 /**
  * Zend Framework
  *
@@ -35,7 +38,7 @@ require_once 'Zend/Log/Writer/Null.php';
 /**
  * Common tests for backends
  */
-require_once 'CommonExtendedBackendTest.php';
+require_once '_files/CommonExtendedBackendTestCase.php';
 
 /**
  * @category   Zend
@@ -45,71 +48,88 @@ require_once 'CommonExtendedBackendTest.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Cache
  */
-class Zend_Cache_FileBackendTest extends Zend_Cache_CommonExtendedBackendTest
+class Zend_Cache_FileBackendTest extends Zend_Cache_CommonExtendedBackendTestCase
 {
-    protected $_instance;
     protected $_instance2;
     protected $_cache_dir;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    protected function getBackend(): Zend_Cache_Backend_File
     {
-        parent::__construct('Zend_Cache_Backend_File', $data, $dataName);
-    }
-
-    public function set_up($notag = false)
-    {
-        $this->mkdir();
-        $this->_cache_dir = $this->getTmpDir() . DIRECTORY_SEPARATOR;
-        $this->_instance = new Zend_Cache_Backend_File([
+        $tmpDir = $this->getTmpDir();
+        @mkdir($tmpDir);
+        $this->_cache_dir = $tmpDir . DIRECTORY_SEPARATOR;
+        $instance = new Zend_Cache_Backend_File([
             'cache_dir' => $this->_cache_dir,
         ]);
 
         $logger = new Zend_Log(new Zend_Log_Writer_Null());
-        $this->_instance->setDirectives(['logger' => $logger]);
+        $instance->setDirectives(['logger' => $logger]);
 
-        parent::set_up($notag);
+        return $instance;
     }
 
-    protected function tear_down()
+    protected function supportsTags(): bool
     {
-        parent::tear_down();
-        unset($this->_instance);
+        return true;
     }
 
     public function testSetDeprecatedHashedDirectoryUmask()
     {
-        $this->expectException(\PHPUnit\Framework\Error\Notice::class);
-        $this->expectExceptionMessage("'hashed_directory_umask' is deprecated -> please use 'hashed_directory_perm' instead");
-        //$this->expectException(\PHPUnit\Framework\Error\Notice::class);
-        //$this->expectExceptionMessage("'hashed_directory_umask' is deprecated -> please use 'hashed_directory_perm' instead");
-        $cache = new Zend_Cache_Backend_File([
-            'cache_dir' => $this->_cache_dir,
-            'hashed_directory_umask' => 0700,
-        ]);
+        $captured = null;
+        set_error_handler(function ($errno, $errstr) use (&$captured) {
+            $captured = ['errno' => $errno, 'errstr' => $errstr];
+            return true;
+        });
+
+        try {
+            $cache = new Zend_Cache_Backend_File([
+                'cache_dir' => $this->_cache_dir,
+                'hashed_directory_umask' => 0700,
+            ]);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertNotNull($captured);
+        $this->assertSame(E_USER_NOTICE, $captured['errno']);
+        $this->assertSame(
+            "'hashed_directory_umask' is deprecated -> please use 'hashed_directory_perm' instead",
+            $captured['errstr']
+        );
     }
 
     public function testSetDeprecatedCacheFileUmask()
     {
-        # https://phpunit.readthedocs.io/en/9.5/writing-tests-for-phpunit.html?highlight=Error#testing-php-errors-warnings-and-notices
-        $this->expectException(\PHPUnit\Framework\Error\Notice::class);
-        $this->expectExceptionMessage("'cache_file_umask' is deprecated -> please use 'cache_file_perm' instead");
-        $cache = new Zend_Cache_Backend_File([
+        $captured = null;
+        set_error_handler(function ($errno, $errstr) use (&$captured) {
+            $captured = ['errno' => $errno, 'errstr' => $errstr];
+            return true;
+        });
+
+        try {
+            $cache = new Zend_Cache_Backend_File([
                 'cache_dir' => $this->_cache_dir,
                 'cache_file_umask' => 0700,
-        ]);
+            ]);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertNotNull($captured);
+        $this->assertSame(E_USER_NOTICE, $captured['errno']);
+        $this->assertSame(
+            "'cache_file_umask' is deprecated -> please use 'cache_file_perm' instead",
+            $captured['errstr']
+        );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorCorrectCall()
     {
         $test = new Zend_Cache_Backend_File([]);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testConstructorWithABadFileNamePrefix()
     {
         try {

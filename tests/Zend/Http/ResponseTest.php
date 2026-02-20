@@ -1,6 +1,10 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
+use Zend\Http\StreamObject;
+
 /**
  * Zend Framework
  *
@@ -21,8 +25,6 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-use Zend\Http\StreamObject;
 
 /**
  * Zend_Http_Response
@@ -47,11 +49,11 @@ class Zend_Http_ResponseTest extends TestCase
     /** @var null|string */
     private $tempFile;
 
-    protected function set_up()
+    protected function setUp(): void
     {
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if ($this->tempFile !== null && file_exists($this->tempFile)) {
             unlink($this->tempFile);
@@ -217,9 +219,7 @@ class Zend_Http_ResponseTest extends TestCase
         $this->assertFalse($response->isRedirect(), 'Response is OK, but isRedirect() returned true');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function test100Continue()
     {
         $this->markTestIncomplete();
@@ -312,9 +312,7 @@ class Zend_Http_ResponseTest extends TestCase
         $this->assertEquals('text/html; charset=iso-8859-1', $response->getHeader('content-type'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testExceptInvalidChunkedBody()
     {
         try {
@@ -433,7 +431,7 @@ class Zend_Http_ResponseTest extends TestCase
         return preg_replace("#(?<!\r)\n#", "\r\n", $message);
     }
 
-    public function invalidResponseHeaders()
+    public static function invalidResponseHeaders()
     {
         return [
             'bad-status-line' => ["HTTP/1.0a 200 OK\r\nHost: example.com\r\n\r\nMessage Body"],
@@ -446,9 +444,9 @@ class Zend_Http_ResponseTest extends TestCase
         ];
     }
 
+    #[DataProvider('invalidResponseHeaders')]
     /**
      * @group ZF2015-04
-     * @dataProvider invalidResponseHeaders
      */
     public function testExtractHeadersRaisesExceptionWhenDetectingCRLFInjection($message)
     {

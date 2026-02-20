@@ -89,9 +89,10 @@ class Zend_Mime_Decode
      * @throws Zend_Exception
      */
     public static function splitMessageStruct(
-        $message, $boundary, $EOL = Zend_Mime::LINEEND
-    )
-    {
+        $message,
+        $boundary,
+        $EOL = Zend_Mime::LINEEND
+    ) {
         $parts = self::splitMime($message, $boundary);
         if (count($parts) <= 0) {
             return null;
@@ -121,9 +122,11 @@ class Zend_Mime_Decode
      * @return null
      */
     public static function splitMessage(
-        $message, &$headers, &$body, $EOL = Zend_Mime::LINEEND
-    )
-    {
+        $message,
+        &$headers,
+        &$body,
+        $EOL = Zend_Mime::LINEEND
+    ) {
         // check for valid header at first line
         $firstline = strtok($message, "\n");
         if (!preg_match('%^[^\s]+[^:]*:%', $firstline)) {
@@ -133,10 +136,12 @@ class Zend_Mime_Decode
                 [
                     "\r",
                     "\n"
-                ], [
+                ],
+                [
                     '',
                     $EOL
-                ], $message
+                ],
+                $message
             );
 
             return;
@@ -163,7 +168,8 @@ class Zend_Mime_Decode
         }
 
         $headers = iconv_mime_decode_headers(
-            $headers, ICONV_MIME_DECODE_CONTINUE_ON_ERROR
+            $headers,
+            ICONV_MIME_DECODE_CONTINUE_ON_ERROR
         );
 
         if ($headers === false) {
@@ -215,9 +221,10 @@ class Zend_Mime_Decode
      * @return string|array wanted part or all parts as array($firstName => firstPart, partname => value)
      */
     public static function splitHeaderField(
-        $field, $wantedPart = null, $firstName = 0
-    )
-    {
+        $field,
+        $wantedPart = null,
+        $firstName = 0
+    ) {
         $wantedPart = strtolower((string) $wantedPart);
         $firstName  = strtolower($firstName);
 

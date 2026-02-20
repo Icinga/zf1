@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,10 +24,6 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Log_Writer_SyslogTest::main');
-}
-
 /** Zend_Log_Writer_Syslog */
 require_once 'Zend/Log/Writer/Syslog.php';
 
@@ -42,15 +37,8 @@ require_once 'Zend/Log/Writer/Syslog.php';
  */
 class Zend_Log_Writer_SyslogTest extends TestCase
 {
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrite()
     {
         $fields = ['message' => 'foo', 'priority' => LOG_NOTICE];
@@ -123,8 +111,8 @@ class Zend_Log_Writer_SyslogTest extends TestCase
 
     /**
      * @group ZF-8382
-     * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testWriteWithFormatter()
     {
         $event = [
@@ -147,8 +135,4 @@ class WriterSyslogCustom extends Zend_Log_Writer_Syslog
     {
         return $this->_facility;
     }
-}
-
-if (PHPUnit_MAIN_METHOD === 'Zend_Log_Writer_SyslogTest::main') {
-    Zend_Log_Writer_SyslogTest::main();
 }

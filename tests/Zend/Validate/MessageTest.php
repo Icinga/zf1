@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -25,16 +23,10 @@ use PHPUnit\TextUI\TestRunner;
  * @version    $Id$
  */
 
-// Call Zend_Validate_MessageTest::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Zend_Validate_MessageTest::main');
-}
-
 /**
  * @see Zend_Validate_StringLength
  */
 require_once 'Zend/Validate/StringLength.php';
-
 
 /**
  * @category   Zend
@@ -52,19 +44,12 @@ class Zend_Validate_MessageTest extends TestCase
      * @var Zend_Validate_StringLength
      */
     protected $_validator;
-
-    public static function main()
-    {
-        $suite = new TestSuite(__CLASS__);
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Creates a new Zend_Validate_StringLength object for each test method
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_validator = new Zend_Validate_StringLength(4, 8);
     }
@@ -317,9 +302,4 @@ class Zend_Validate_MessageTest extends TestCase
         $messages = $this->_validator->getMessages();
         $this->assertEquals('variables: %notvar% 4 8 ', current($messages));
     }
-}
-
-// Call Zend_Validate_MessageTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === 'Zend_Validate_MessageTest::main') {
-    Zend_Validate_MessageTest::main();
 }

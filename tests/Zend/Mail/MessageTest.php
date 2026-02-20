@@ -1,6 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -50,7 +51,7 @@ class Zend_Mail_MessageTest extends TestCase
 {
     protected $_file;
 
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->_file = tempnam(sys_get_temp_dir(), 'zm_');
         $mail = file_get_contents(dirname(__FILE__) . '/_files/mail.txt');
@@ -58,16 +59,14 @@ class Zend_Mail_MessageTest extends TestCase
         file_put_contents($this->_file, $mail);
     }
 
-    protected function tear_down()
+    protected function tearDown(): void
     {
         if (file_exists($this->_file)) {
             unlink($this->_file);
         }
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testInvalidFile()
     {
         try {
@@ -134,10 +133,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertEquals(substr($message->getPart(1)->getContent(), 0, 14), 'The first part');
     }
 
-
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testGetWrongPart()
     {
         $message = new Zend_Mail_Message(['file' => $this->_file]);
@@ -192,9 +188,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertEquals(Zend_Mime_Decode::splitMessageStruct('', 'xxx'), null);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSplitInvalidMessage()
     {
         try {
@@ -206,9 +200,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->fail('no exception raised while decoding invalid message');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testInvalidMailHandler()
     {
         try {
@@ -220,9 +212,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->fail('no exception raised while using invalid mail handler');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testMissingId()
     {
         $mail = new Zend_Mail_Storage_Mbox(['filename' => dirname(__FILE__) . '/_files/test.mbox/INBOX']);
@@ -266,9 +256,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertEquals(Zend_Mime_Decode::splitHeaderField($header, 'foo'), null);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSplitInvalidHeader()
     {
         $header = '';
@@ -303,9 +291,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertTrue(strpos($message->getToplines(), 'multipart message') === 0);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testNoContent()
     {
         $message = new Zend_Mail_Message(['raw' => 'Subject: test']);
@@ -367,9 +353,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertFalse($message->headerExists('From'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWrongMultipart()
     {
         $message = new Zend_Mail_Message(['raw' => "Content-Type: multipart/mixed\r\n\r\ncontent"]);
@@ -457,9 +441,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertNull($message->getHeaderField('content-type', 'foo'));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testGetHeaderFieldInvalid()
     {
         $message = new Zend_Mail_Message(['file' => $this->_file]);
@@ -490,7 +472,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertEquals(Zend_Mime_Decode::splitHeaderField($header, 'foo'), 'bar');
         $this->assertEquals(Zend_Mime_Decode::splitHeaderField($header, 'baz'), 42);
     }
-    
+
     /**
      * @group ZF-11514
      */
@@ -506,7 +488,7 @@ class Zend_Mail_MessageTest extends TestCase
         $this->assertArrayHasKey('constructor', $flags);
         $this->assertEquals('constructor', $flags['constructor']);
     }
-    
+
     /**
      * @group ZF-3745
      */
@@ -518,7 +500,7 @@ class Zend_Mail_MessageTest extends TestCase
             $this->assertEquals('Zend_Mail_Part', get_class($part));
         }
     }
-    
+
     /**
      * @group ZF-3745
      */
@@ -529,14 +511,14 @@ class Zend_Mail_MessageTest extends TestCase
             'partclass' => 'ZF3745_Mail_Part'
         ]);
         $this->assertEquals('ZF3745_Mail_Part', $message->getPartClass());
-        
+
         // Ensure message parts use the specified part class
         $this->assertGreaterThan(0, iterator_count($message));
         foreach ($message as $part) {
             $this->assertEquals('ZF3745_Mail_Part', get_class($part));
         }
     }
-    
+
     /**
      * @group ZF-3745
      */
@@ -545,14 +527,13 @@ class Zend_Mail_MessageTest extends TestCase
         $message = new Zend_Mail_Message(['file' => $this->_file]);
         $message->setPartClass('ZF3745_Mail_Part');
         $this->assertEquals('ZF3745_Mail_Part', $message->getPartClass());
-        
+
         // Ensure message parts use the specified part class
         $this->assertGreaterThan(0, iterator_count($message));
         foreach ($message as $part) {
             $this->assertEquals('ZF3745_Mail_Part', get_class($part));
         }
     }
-
 }
 
 /**

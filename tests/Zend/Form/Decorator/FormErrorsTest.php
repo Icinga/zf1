@@ -1,8 +1,7 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +23,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Form_Decorator_FormErrorsTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Decorator_FormErrorsTest::main");
-}
 
 require_once 'Zend/Form/Decorator/FormErrors.php';
 require_once 'Zend/Form.php';
@@ -57,25 +51,13 @@ class Zend_Form_Decorator_FormErrorsTest extends TestCase
      * @var Zend_Form
      */
     protected $form;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Decorator_FormErrorsTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    protected function set_up()
+    protected function setUp(): void
     {
         $this->decorator = new Zend_Form_Decorator_FormErrors();
     }
@@ -86,7 +68,7 @@ class Zend_Form_Decorator_FormErrorsTest extends TestCase
      *
      * @return void
      */
-    protected function tear_down()
+    protected function tearDown(): void
     {
     }
 
@@ -317,10 +299,7 @@ class Zend_Form_Decorator_FormErrorsTest extends TestCase
         $this->assertStringNotContainsString('form-badness', $html);
     }
 
-
-    /**
-     * @dataProvider markupOptionMethodsProvider
-     */
+    #[DataProvider('markupOptionMethodsProvider')]
     public function testMarkupOptionsMayBeMutated($property)
     {
         $setter = 'set' . $property;
@@ -410,7 +389,7 @@ class Zend_Form_Decorator_FormErrorsTest extends TestCase
         );
     }
 
-    public function markupOptionMethodsProvider()
+    public static function markupOptionMethodsProvider()
     {
         return [
             ['IgnoreSubForms'],
@@ -422,9 +401,4 @@ class Zend_Form_Decorator_FormErrorsTest extends TestCase
             ['MarkupListStart'],
         ];
     }
-}
-
-// Call Zend_Form_Decorator_FormErrorsTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Decorator_FormErrorsTest::main") {
-    Zend_Form_Decorator_FormErrorsTest::main();
 }

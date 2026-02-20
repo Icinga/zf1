@@ -1,8 +1,6 @@
 <?php
 
-use Yoast\PHPUnitPolyfills\TestCases\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\TestRunner;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Zend Framework
@@ -24,11 +22,6 @@ use PHPUnit\TextUI\TestRunner;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
-
-// Call Zend_Form_Decorator_DescriptionTest::main() if this source file is executed directly.
-if (!defined("PHPUnit_MAIN_METHOD")) {
-    define("PHPUnit_MAIN_METHOD", "Zend_Form_Decorator_DescriptionTest::main");
-}
 
 require_once 'Zend/Form/Decorator/Description.php';
 
@@ -61,25 +54,13 @@ class Zend_Form_Decorator_DescriptionTest extends TestCase
      * @var string
      */
     protected $html;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @return void
-     */
-    public static function main()
-    {
-        $suite = new TestSuite("Zend_Form_Decorator_DescriptionTest");
-        $result = (new resources_Runner())->run($suite);
-    }
-
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
      * @return void
      */
-    public function set_up()
+    public function setUp(): void
     {
         if (isset($this->html)) {
             unset($this->html);
@@ -98,7 +79,7 @@ class Zend_Form_Decorator_DescriptionTest extends TestCase
      *
      * @return void
      */
-    public function tear_down()
+    public function tearDown(): void
     {
     }
 
@@ -234,9 +215,4 @@ class Zend_Form_Decorator_DescriptionTest extends TestCase
             trim($this->decorator->render(''))
         );
     }
-}
-
-// Call Zend_Form_Decorator_DescriptionTest::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD === "Zend_Form_Decorator_DescriptionTest::main") {
-    Zend_Form_Decorator_DescriptionTest::main();
 }
