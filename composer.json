@@ -25,5 +25,8 @@
       "Zend_": "tests/",
       "resources_": "tests/"
     }
-  }
+  },
+  "include-path": [
+    "library/"
+  ]
 }
